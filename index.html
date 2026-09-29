@@ -148,6 +148,15 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 
 #focusbar{position:absolute;left:50%;transform:translateX(-50%);top:var(--top,104px);z-index:18;display:flex;align-items:center;gap:12px;padding:6px 6px 6px 14px;max-width:calc(100% - 32px)}
 #focusbar .kicker{white-space:nowrap}
+#lost{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--top,104px) + 58px);z-index:18;display:flex;align-items:center;gap:10px;padding:7px 8px 7px 12px;font:inherit;font-size:13px;color:var(--ivory);cursor:pointer;border-color:rgba(127,227,212,.45);animation:lostIn .25s ease}
+#lost #lost-arrow{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(127,227,212,.16);color:#7FE3D4;font-weight:700;transition:transform .2s ease}
+#lost b{color:#7FE3D4;font-weight:700}
+#lost > span:nth-child(2){white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#lost em{white-space:nowrap;flex:none}
+#lost #lost-arrow{flex:none}
+#lost em{font-style:normal;font-weight:700;color:#1a1405;background:var(--gold);border-radius:8px;padding:4px 10px}
+#lost:hover em{background:var(--gold-hi)}
+@keyframes lostIn{from{opacity:0;transform:translate(-50%,-4px)}to{opacity:1;transform:translate(-50%,0)}}
 #crumbs{display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0}
 #crumbs button,#crumbs span{border:0;background:none;color:var(--muted);font-size:13px;font-weight:600;padding:3px 4px;border-radius:6px;white-space:nowrap;font-family:inherit}
 #crumbs button{cursor:pointer}
@@ -269,6 +278,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   .tmode button{padding:4px 8px}
   #focusbar{left:8px;right:8px;transform:none;max-width:none;justify-content:space-between;top:calc(var(--top,104px) + 44px)}
   #navtools{left:8px;bottom:auto;top:var(--top,104px)}
+  #lost{top:calc(var(--top,104px) + 96px);max-width:calc(100% - 16px);font-size:12.5px}
 }
 @media (max-width: 480px){#speed-out{display:none} #clock{padding-left:8px}}
 @media (prefers-reduced-motion: reduce){#ladder{transition:none}}
@@ -321,6 +331,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
     <nav id="crumbs" aria-label="Where you are"></nav>
     <button id="focus-back" type="button" hidden>← Whole universe</button>
   </div>
+  <button id="lost" class="panel" type="button" hidden><span id="lost-arrow" aria-hidden="true">↑</span><span><b id="lost-name"></b> is out of view</span><em>Bring it back</em></button>
 
   <nav id="ladder" class="panel" aria-label="Tiers of the universe">
     <header>
@@ -419,8 +430,8 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
         <p><b>Schematic</b> compresses distances so every tier can be seen and clicked. The order of everything is exact. The spacing is not: each island and ocean ring grows by one step for every doubling of its real width, and heights are stretched near the disc and squeezed far above it.</p>
         <p><b>True proportions</b> draws radii and heights on one linear scale, 1 unit to 1,000,000 yojanas. The seven islands shrink to the inner fifth of the disc, the golden land becomes the widest band, and every planet from the Sun to Dhruvaloka sits within 3.8 million yojanas of the disc.</p>
         <p><b>Cutaway</b> removes the quarter of the large layers nearest you, so you can see the lower worlds and the water inside. The missing quarter turns with you as you move around the model. Nothing in the text is being removed; it only lets you see inside. It is off while you explore a single world.</p>
-        <p><b>Moving around.</b> Use the Rotate and Pan buttons at the bottom left. In Pan, dragging moves the view without turning or zooming; holding Space pans too. Drag the coloured height ruler, use Shift + scroll or PageUp/PageDown to glide up and down the universe. Arrow keys pan, F frames the selected item, Home resets the view.</p>
-        <p><b>Spotlight.</b> Clicking anything dims the rest of the model and draws your choice bright on top, with a trail at the top showing where you are. Click empty space or press Esc to clear it.</p>
+        <p><b>Moving around.</b> Use the Rotate and Pan buttons at the bottom left. In Pan, dragging moves the view without turning or zooming; holding Space pans too. Drag the coloured height ruler, use Shift + scroll or PageUp/PageDown to glide up and down the universe. Scrolling zooms toward whatever is under the mouse. Arrow keys pan, F frames the selected item, Home resets the view.</p>
+        <p><b>Spotlight.</b> Clicking anything dims the rest of the model and draws your choice bright and whole on top (the cutaway never slices it), with a trail at the top showing where you are. A selected planet is followed as it moves. If you zoom or pan so far that your choice leaves the screen, a “Bring it back” button appears. Clicking empty space or dragging never clears your choice; press Esc or pick “Universe” in the trail.</p>
         <p><b>Layers</b> shows or hides parts of the model itself. <b>Panels</b> shows or hides each panel of the page separately, so you can clear the view. <b>Drone</b> plays a soft tanpura-style sound in the background.</p>
         <p><b>Symbols.</b> Trees, lotuses, cities, rivers and serpents inside each world are symbols placed where the text mentions them. They are not to scale, and where the text doesn't say where something is, the placement is only illustrative.</p>
 
@@ -2015,7 +2026,7 @@ function updateLabels(){
     }
     if (want && !L.zone && !L.far && !L.trueOnly && !L.mark){
       L.anchor.getWorldPosition(tmpV);
-      if (cutCur < 300 && inCut(tmpV)) want = false;
+      if (cutCur < 300 && !(spotOn && own) && inCut(tmpV)) want = false;
       else if (!(spotOn && own) && behindDisc(tmpV)) want = false;
     }
     let cand = false, x = 0, y = 0, r = null;
@@ -2072,9 +2083,96 @@ function spotRoots(id){
   return [];
 }
 function setSpot(id){
+  selSphereT = 0; gSphere.radius = 0;
   SPOT_SET.forEach(o => o.layers.set(0)); SPOT_SET.length = 0;
   spotRoots(id).filter(Boolean).forEach(r => r.traverse(o => { o.layers.set(SPOT_LAYER); SPOT_SET.push(o); }));
   spotOn = SPOT_SET.length > 0;
+}
+const followP = new THREE.Vector3(); let followId = null;
+function followSel(){
+  const g = GRAHAS.find(b => b.id === sel);
+  if (!g){ followId = null; return; }
+  const p = g.mesh.getWorldPosition(tmpQ);
+  if (followId === sel && !flight && T === modeTarget){
+    const dx = p.x - followP.x, dy = p.y - followP.y, dz = p.z - followP.z;
+    if (Math.abs(dx) + Math.abs(dy) + Math.abs(dz) < 40){ camera.position.x += dx; camera.position.y += dy; camera.position.z += dz; controls.target.x += dx; controls.target.y += dy; controls.target.z += dz; }
+  }
+  followId = sel; followP.copy(p);
+}
+function solidOf(id){
+  const g = GRAHAS.find(b => b.id === id); if (g) return g.mesh;
+  if (id === 'dhruva') return dhruva;
+  return null;
+}
+const gC = new THREE.Vector3(), gS = new THREE.Vector3(), gSphere = new THREE.Sphere(), gBox = new THREE.Box3();
+function solidGuard(){   // how close the camera may come to a selected planet: it then fills about half the view
+  const m = solidOf(sel); if (!m || !m.geometry) return 0;
+  if (!m.geometry.boundingSphere) m.geometry.computeBoundingSphere();
+  m.getWorldPosition(gC); m.getWorldScale(gS);
+  return m.geometry.boundingSphere.radius * Math.max(gS.x, gS.y, gS.z) * 5;
+}
+function guardSolid(){
+  const r = solidGuard(); if (!r) return;
+  const off = camera.position.clone().sub(gC), dd = off.length();
+  if (dd < r && dd > 1e-6){ camera.position.copy(gC).add(off.multiplyScalar(r/dd)); }
+}
+const frus = new THREE.Frustum(), frusM = new THREE.Matrix4();
+const WIDE = new Set(['manasottara','lokaloka','naksatra','ganga','siddha','garbhodaka','sisumara','saptarsi','bhumandala','karana']);
+let inViewT = 0, lostShown = false, selSphereT = 0;
+function selSphere(now){
+  if (now - selSphereT < 300 && gSphere.radius > 0) return gSphere;
+  selSphereT = now; gBox.makeEmpty();
+  const m = solidOf(sel);
+  if (m && m.geometry){   // a planet: its own body, not its glow or orbit ring
+    if (!m.geometry.boundingSphere) m.geometry.computeBoundingSphere();
+    m.getWorldPosition(gSphere.center); m.getWorldScale(gS);
+    gSphere.radius = m.geometry.boundingSphere.radius * Math.max(gS.x, gS.y, gS.z) * (sel === 'surya' ? 2.5 : 1.2);
+    selSphereT = 0;   // it moves: measure every time
+    return gSphere;
+  }
+  spotRoots(sel).filter(Boolean).forEach(o => { if (o !== selOutline || selOutline.visible) gBox.expandByObject(o); });
+  if (gBox.isEmpty()) gSphere.radius = 0; else gBox.getBoundingSphere(gSphere);
+  return gSphere;
+}
+function checkInView(now){
+  if (now - inViewT < 200) return; inViewT = now;
+  let lost = false;
+  if (spotOn && !flight && sel && sel !== 'overview'){
+    const sp = selSphere(now);
+    if (sp.radius > 0){
+      frusM.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); frus.setFromProjectionMatrix(frusM);
+      if (!frus.intersectsSphere(sp)) lost = true;
+      else {
+        // in the frustum, but is it hidden behind the side panels?
+        const W = canvas.clientWidth, H = canvas.clientHeight, c = sp.center.clone().project(camera);
+        const px = (c.x*.5+.5)*W, py = (-c.y*.5+.5)*H;
+        const dist = Math.max(camera.position.distanceTo(sp.center), 1e-6);
+        const rp = sp.radius / (dist * Math.tan(camera.fov*Math.PI/360)) * H/2;
+        let x0 = 0, x1 = W;
+        const lad = $('#ladder'), ins = $('#inspector');
+        if (W >= 900 && lad && lad.offsetParent) x0 = lad.getBoundingClientRect().right;
+        if (W >= 900 && ins && ins.offsetParent) x1 = ins.getBoundingClientRect().left;
+        if (c.z < 1 && (px + rp < x0 || px - rp > x1 || py + rp < 0 || py - rp > H)) lost = true;
+        // a wide layer can be "in view" only as a thin edge: then its named places must be on screen
+        if (!lost && !WIDE.has(sel) && !RING_BY_ID[sel] && sp.radius > 12){
+          const pts = [];
+          LABELS.forEach(L => { if (L.id === sel) pts.push(L.anchor); });
+          (FEAT[sel] || []).forEach(ft => pts.push(ft.anchor));
+          if (pts.length && !pts.some(a => { a.getWorldPosition(tmpQ); tmpQ.project(camera);
+              const qx = (tmpQ.x*.5+.5)*W, qy = (-tmpQ.y*.5+.5)*H;
+              return tmpQ.z < 1 && qx > x0 + 10 && qx < x1 - 10 && qy > 10 && qy < H - 10; })) lost = true;
+        }
+      }
+      if (lost){
+        const c = sp.center.clone().project(camera); let ax = c.x, ay = c.y; if (c.z > 1){ ax = -ax; ay = -ay; }
+        $('#lost-arrow').style.transform = `rotate(${Math.atan2(ax, ay)}rad)`;
+      }
+    }
+  }
+  if (lost !== lostShown){
+    lostShown = lost; $('#lost').hidden = !lost;
+    if (lost) $('#lost-name').textContent = E[sel] ? E[sel].name : 'Your selection';
+  }
 }
 function renderScene(dt){
   spotLevel += ((spotOn ? 1 : 0) - spotLevel) * Math.min(1, dt*6);
@@ -2082,7 +2180,10 @@ function renderScene(dt){
     renderer.autoClear = false; renderer.clear();
     camera.layers.set(0); renderer.render(scene, camera);
     dimMat.opacity = .74*spotLevel; renderer.render(dimScene, dimCam);
-    renderer.clearDepth(); camera.layers.set(SPOT_LAYER); renderer.render(scene, camera);
+    renderer.clearDepth(); camera.layers.set(SPOT_LAYER);
+    const cx = clipX.constant, cz = clipZ.constant; clipX.constant = clipZ.constant = 1e6;   // never cut the selection
+    renderer.render(scene, camera);
+    clipX.constant = cx; clipZ.constant = cz;
     camera.layers.set(0); renderer.autoClear = true;
   } else renderer.render(scene, camera);
 }
@@ -2552,18 +2653,18 @@ function hitAt(clientX, clientY, skipPass){
   ray.params.Line.threshold = 0;
   let hits = ray.intersectObjects(PICK.filter(isVisibleDeep), false);
   // ignore what the cutaway has removed
-  hits = hits.filter(h => !(h.object.material && h.object.material.clippingPlanes && inCut(h.point)));
+  hits = hits.filter(h => !(h.object.material && h.object.material.clippingPlanes && inCut(h.point) && !(spotOn && h.object.layers.mask === (1 << SPOT_LAYER))));
   if (!hits.length) return null;
   const hit = hits.find(h => !h.object.userData.pass) || (skipPass ? null : hits[0]);
   return hit ? hit.object.userData.id : null;
 }
-canvas.addEventListener('pointerdown', e => { down = {x:e.clientX, y:e.clientY}; });
+canvas.addEventListener('pointerdown', e => { down = e.isPrimary ? {x:e.clientX, y:e.clientY, t:performance.now()} : null; });
 canvas.addEventListener('pointerup', e => {
   if (rulerDrag) return;
-  if (!down || Math.hypot(e.clientX-down.x, e.clientY-down.y) > 6) { down=null; return; }
+  // a drag, a slow press or a multi-finger gesture is navigation, not a click
+  if (!down || Math.hypot(e.clientX-down.x, e.clientY-down.y) > 5 || performance.now()-down.t > 450) { down=null; return; }
   down=null; const id = hitAt(e.clientX, e.clientY);
-  if (id) select(id, false);
-  else if (!focusId && sel && sel !== 'overview') setSel('overview');
+  if (id && id !== sel) select(id, false);   // empty space never clears what you selected (Esc does)
 });
 
 /* ------------------------------------------------------------------
@@ -2595,16 +2696,45 @@ function stepLevel(dir){
   if (next !== undefined) glideTo(next + (dir>0 ? 3 : 3));
 }
 $('#nav-frame').addEventListener('click', frameSel);
+$('#lost').addEventListener('click', frameSel);
 $('#nav-home').addEventListener('click', resetView);
 function frameSel(){ if (focusId) flyExplore(focusId); else if (sel) flyTo(sel); }
 function resetView(){ if (focusId) exitExplore(); else { setSel('overview'); flyTo('overview'); } }
 // Shift + scroll glides up and down instead of zooming
-canvas.addEventListener('wheel', e => {
-  if (!e.shiftKey) return;
+const zP = new THREE.Vector3(), zPlane = new THREE.Plane(), zN = new THREE.Vector3();
+function zoomPoint(clientX, clientY){
+  const rect = canvas.getBoundingClientRect();
+  ndc.set(((clientX-rect.left)/rect.width)*2-1, -((clientY-rect.top)/rect.height)*2+1);
+  ray.setFromCamera(ndc, camera);
+  const d = camera.position.distanceTo(controls.target);
+  // prefer the surface under the mouse; otherwise a plane through the pivot, facing the viewer
+  let hits = ray.intersectObjects(PICK.filter(isVisibleDeep), false).filter(h => !(h.object.material && h.object.material.clippingPlanes && inCut(h.point) && !(spotOn && h.object.layers.mask === (1 << SPOT_LAYER))));
+  hits = hits.filter(h => !h.object.userData.pass && h.distance < d*3);
+  if (hits.length) return zP.copy(hits[0].point);
+  camera.getWorldDirection(zN); zPlane.setFromNormalAndCoplanarPoint(zN, controls.target);
+  return ray.ray.intersectPlane(zPlane, zP) ? zP : zP.copy(controls.target);
+}
+function onWheel(e){
   e.preventDefault(); e.stopImmediatePropagation();
-  const d = camera.position.distanceTo(controls.target), v = e.deltaY || e.deltaX;
-  shiftView(0, -Math.sign(v) * d * .04, 0);
-}, {capture:true, passive:false});
+  flight = null;
+  const v = e.deltaMode === 1 ? e.deltaY*33 : e.deltaMode === 2 ? e.deltaY*400 : e.deltaY;
+  if (e.shiftKey){
+    const d = camera.position.distanceTo(controls.target), sv = v || e.deltaX;
+    shiftView(0, -Math.sign(sv) * d * .04, 0); return;
+  }
+  if (!v) return;
+  const P = zoomPoint(e.clientX, e.clientY);
+  const d = camera.position.distanceTo(controls.target), dp = camera.position.distanceTo(P);
+  let s = Math.exp(clamp(v, -240, 240) * .0011 * controls.zoomSpeed);
+  s = clamp(d*s, controls.minDistance, controls.maxDistance) / d;          // pivot distance limits
+  if (s < 1 && dp*s < Math.max(.004, d*.002)) return;                      // don't fly into the surface
+  if (s < 1){ const rg = solidGuard(); if (rg && camera.position.clone().sub(P).multiplyScalar(s).add(P).distanceTo(gC) < rg) return; }   // or into a selected planet
+  // scale the view about the point under the mouse, so that point stays under the mouse
+  camera.position.sub(P).multiplyScalar(s).add(P);
+  controls.target.sub(P).multiplyScalar(s).add(P);
+}
+canvas.addEventListener('wheel', onWheel, {capture:true, passive:false});
+document.getElementById('labels').addEventListener('wheel', onWheel, {passive:false});   // scrolling over a label zooms too
 document.addEventListener('keydown', e => {
   const t = e.target; if (t && t.closest && t.closest('input,textarea,select')) return;
   if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -2694,6 +2824,7 @@ function frame(now){
   if (playing){ if (timeMode==='day'){ const dd = dt*hoursPerSec()/24; D += dd; W -= TAU*dd; } else D += dt * daysPerSec(); }
   syncClock();
   updateMotion();
+  followSel();
   surfMat.uniforms.uTime.value = now/1000; FLOW_MATS.forEach(m => m.uniforms.uTime.value = now/1000);
   if (flight){
     const p = clamp((now-flight.t0)/flight.dur, 0, 1), k = easeIO(p);
@@ -2710,6 +2841,8 @@ function frame(now){
   const dist = camera.position.distanceTo(controls.target);
   const near = clamp(dist*.004, .002, 1.5);
   if (Math.abs(near - camera.near) / camera.near > .15){ camera.near = near; camera.updateProjectionMatrix(); }
+  guardSolid();
+  checkInView(now);
   stepCut(dt);
   renderScene(dt);
   updateLabels();
