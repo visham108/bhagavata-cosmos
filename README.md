@@ -23,7 +23,9 @@ An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrī
 - Drag the **height ruler** or use **Shift + scroll** to move up and down without zooming. **Page Up / Page Down** step one tier at a time.
 - Click anything to spotlight it. Double-click or use **Explore inside** to go in. **Esc** goes back.
 - **Panels** lets you show or hide each panel on its own. **Notes & sources** lists the references and the places where the texts differ.
+- Press **/** to find any world, island or planet by name; diacritics are optional (`sisumara` finds Śiśumāra).
+- Links open on a place: add its id after `#`, for example `…/bhagavata-cosmos/#sutala` or `#meru`. The address follows what you select.
 
 ## Technical
 
-One self-contained `index.html` using Three.js r128 from cdnjs and fonts from Google Fonts. There is no build step. To run it locally, open `index.html` in a browser.
+One self-contained `index.html` using Three.js r128 from cdnjs (with its OrbitControls and bloom post-processing scripts from jsDelivr) and fonts from Google Fonts. Without WebGL 2 the glow is skipped and everything else works. There is no build step. To run it locally, open `index.html` in a browser.
