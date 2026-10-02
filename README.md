@@ -8,8 +8,8 @@ An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrī
 
 - **Bhū-maṇḍala**: Mount Meru, Jambūdvīpa and its nine varṣas, and the seven islands and seven oceans out to Mānasottara and Lokāloka
 - **The luminaries**: Sūrya, Candra, the nakṣatras, the planets, the seven sages and Dhruvaloka, with the Śiśumāra form
-- **The higher worlds**: Mahar, Jana, Tapa and Satya
-- **The lower worlds**: Atala to Pātāla, plus Naraka, Ananta Śeṣa and the Garbhodaka water
+- **The seven upper worlds** (SB 2.5.38–39): Bhūr (the disc), Bhuvar (the sky up to the Sun), Svar (heaven, up to Dhruvaloka), then Mahar, Jana, Tapa and Satya
+- **The seven lower worlds**: Atala to Pātāla, plus Naraka, Ananta Śeṣa and the Garbhodaka water
 - **The Gaṅgā's descent**, the Sun's yearly course, and a day/night view
 
 ## Two views

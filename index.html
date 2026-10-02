@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bhāgavata Cosmos</title>
-<meta name="description" content="Interactive 3D model of the universe as described in Śrīmad-Bhāgavatam Canto 5 — Bhū-maṇḍala, the planets, the higher and lower worlds — with a source for every figure.">
+<meta name="description" content="Interactive 3D model of the universe as described in Śrīmad-Bhāgavatam Canto 5 — Bhū-maṇḍala, the planets, the seven upper and seven lower worlds — with a source for every figure.">
 <meta property="og:title" content="Bhāgavata Cosmos">
-<meta property="og:description" content="Interactive 3D model of the universe as described in Śrīmad-Bhāgavatam Canto 5 — Bhū-maṇḍala, the planets, the higher and lower worlds — with a source for every figure.">
+<meta property="og:description" content="Interactive 3D model of the universe as described in Śrīmad-Bhāgavatam Canto 5 — Bhū-maṇḍala, the planets, the seven upper and seven lower worlds — with a source for every figure.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#090B19">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23090B19' stroke='%23D9A441' stroke-width='4'/%3E%3Cellipse cx='32' cy='34' rx='20' ry='6' fill='none' stroke='%23D9A441' stroke-width='3'/%3E%3Cpath d='M32 12v22' stroke='%23F2CB74' stroke-width='4'/%3E%3C/svg%3E">
@@ -453,7 +453,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
           <li><b>Jambūdvīpa's width.</b> The BBT translation of 5.16.5 reads "one million yojanas"; 5.16.7 and 5.20.2 give 100,000, which every other figure depends on.</li>
           <li><b>Brahmapurī.</b> The BBT translation of 5.16.28 gives ten million yojanas a side, which cannot fit on Meru's 32,000-yojana summit. The chapter summary gives 10,000.</li>
           <li><b>The Sun's orbit.</b> Mānasottara lies 15,750,000 yojanas from Meru's centre by the widths in SB 5.20, a circle of about 98,960,000 yojanas. SB 5.21.19 gives the orbit as 95,100,000.</li>
-          <li><b>Higher worlds.</b> The heights of Mahar-, Jana-, Tapo- and Satyaloka come from the Viṣṇu Purāṇa 2.7. Who moves where at the end of Brahmā's day comes from SB 3.11.30.</li>
+          <li><b>The seven upper worlds.</b> SB 2.5.38–39 names all seven, Bhūr, Bhuvar, Svar, Mahar, Jana, Tapa and Satya, placing them from the legs to the head of the universal form. SB 5.21.2–3 gives the order of the first three: the earthly sphere below, heaven above, and between them the sky called antarikṣa, with the Sun in its midst (also 5.20.43). Canto 5 gives no heights for where one world ends and the next begins. The boundaries drawn here, Bhuvar up to the Sun and Svar from the Sun to Dhruvaloka, and the heights of Mahar-, Jana-, Tapo- and Satyaloka, come from the Viṣṇu Purāṇa 2.7. SB 5.24.5–6 also uses the words in a narrower sense: the earth reaches as high as large birds fly, and antarikṣa as high as wind blows and clouds float. Which three worlds are destroyed at the end of Brahmā's day, and who moves where, comes from SB 3.11.29–30.</li>
           <li><b>Lower worlds and water.</b> The depth of each lower world (10,000 yojanas) is from the Viṣṇu Purāṇa 2.5. Canto 5 gives no depth for the Garbhodaka water; Prabhupāda's purports describe the lower half of the universe as filled with it.</li>
           <li><b>The Sītā.</b> The BBT translation of 5.17.6 says the Sītā reaches the salt ocean "in the west", though it flows east through Gandhamādana and Bhadrāśva. The model draws it reaching the eastern shore.</li>
           <li><b>Interpretations.</b> Linking our planet with Bhārata-varṣa comes from Prabhupāda's purports. Reading Bhū-maṇḍala as the plane of the planets' orbits comes from Richard L. Thompson (Sadāpūta Dāsa). Both are marked as interpretations wherever they appear.</li>
@@ -469,6 +469,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
           <a href="https://vedabase.io/en/library/sb/5/24/" target="_blank" rel="noopener">SB 5.24 Lower worlds</a>
           <a href="https://vedabase.io/en/library/sb/5/25/" target="_blank" rel="noopener">SB 5.25 Ananta</a>
           <a href="https://vedabase.io/en/library/sb/5/26/" target="_blank" rel="noopener">SB 5.26 Naraka</a>
+          <a href="https://vedabase.io/en/library/sb/2/5/" target="_blank" rel="noopener">SB 2.5 The seven upper worlds</a>
           <a href="https://vedabase.io/en/library/sb/3/11/" target="_blank" rel="noopener">SB 3.11 Time and dissolution</a>
           <a href="https://sacred-texts.com/hin/vp/vp065.htm" target="_blank" rel="noopener">Viṣṇu Purāṇa 2.7</a>
         </div>
@@ -518,16 +519,17 @@ const hIsland = () => lerp(.45, 0, T);
 const E = {
 overview:{name:'Brahmāṇḍa', deva:'ब्रह्माण्ड', gloss:'The universe as one enclosed sphere', eyebrow:'The whole universe',
   facts:[['Diameter','500,000,000 yojanas','SB 5.20.38'],['Sun to the shell','250,000,000','SB 5.20.43'],['Meru to Lokāloka','125,000,000','SB 5.20.38'],['Coverings','each ten times thicker than the one inside','SB 3.11.41']],
-  body:'Canto 5 measures the universe from two reference points. Horizontal distances run outward from Mount Meru at the centre of the Bhū-maṇḍala disc. Vertically, the Sun sits at the middle of the sphere. Inside the shell are the disc with its islands and oceans, the planets stacked above it, four higher worlds up to Satyaloka, seven lower worlds, and the Garbhodaka water.',
+  body:'Canto 5 measures the universe from two reference points. Horizontal distances run outward from Mount Meru at the centre of the Bhū-maṇḍala disc. Vertically, the Sun sits at the middle of the sphere. Inside the shell are seven upper worlds and seven lower ones. The upper seven are Bhūr, the disc with its islands and oceans; Bhuvar, the sky up to the Sun; Svar, the heaven of the demigods, up to Dhruvaloka; and then Mahar, Jana, Tapa and Satya. Below the disc are the seven lower worlds, and below them the Garbhodaka water.',
   refs:[['SB 5.20.38','Learned scholars have established that the distance from Sumeru to Lokāloka is one fourth of the diameter of the universe.'],
         ['SB 5.20.43','The Sun is in the vertical middle of the universe, 25 koṭi yojanas from its circumference.'],
+        ['SB 2.5.38–39','Bhūr, Bhuvar, Svar, Mahar, Jana, Tapa and Satya are situated from the legs up to the head of the universal form.'],
         ['SB 10.14.11','Brahmā describes the universe as a pot enclosed by earth, water, fire, air, ether, false ego, the mahat-tattva and unmanifest nature, with countless universes passing through the Lord\'s pores.']],
   drawn:'The coverings are shown as one thin glowing shell. The faint specks far outside stand for the other universes. Pick any tier on the left, or click anything in the scene.'},
 
-bhumandala:{name:'Bhū-maṇḍala', deva:'भूमण्डल', gloss:'The great disc of islands and oceans', eyebrow:'Bhūr · the middle plane',
-  facts:[['Meru to Lokāloka','125,000,000 yojanas','SB 5.20.38'],['Islands','7, each ringed by an ocean as wide as itself','SB 5.20'],['Outer shore of 7th ocean','25,350,000','calc'],['Mānasottara from Meru','15,750,000','calc']],
-  body:'Śukadeva compares Bhū-maṇḍala to a lotus. Jambūdvīpa is the whorl at the centre, and six ring-shaped islands surround it, each separated from the next by an ocean. Past the seventh ocean is a band of inhabited land, then a mirror-like land of gold, then the Lokāloka mountain, which marks the limit of sunlight.',
-  refs:[['SB 5.16.5','Bhū-maṇḍala resembles a lotus flower, and its seven islands resemble the whorl.'],
+bhumandala:{name:'Bhū-maṇḍala', deva:'भूमण्डल', gloss:'The great disc of islands and oceans', eyebrow:'Bhūrloka · upper world 1 of 7',
+  facts:[['Place among the seven','first, Bhūrloka','SB 2.5.38'],['Upper limit','as high as large birds fly','SB 5.24.6'],['Meru to Lokāloka','125,000,000 yojanas','SB 5.20.38'],['Islands','7, each ringed by an ocean as wide as itself','SB 5.20'],['Outer shore of 7th ocean','25,350,000','calc'],['Mānasottara from Meru','15,750,000','calc']],
+  body:'Śukadeva compares Bhū-maṇḍala to a lotus. Jambūdvīpa is the whorl at the centre, and six ring-shaped islands surround it, each separated from the next by an ocean. Past the seventh ocean is a band of inhabited land, then a mirror-like land of gold, then the Lokāloka mountain, which marks the limit of sunlight. Bhū-maṇḍala is Bhūrloka, the first of the seven upper worlds and the lowest of the three that are destroyed at the end of Brahmā\'s day.',
+  refs:[['SB 2.5.38','The planetary systems up to the earthly stratum are situated in the legs of the universal form.'],['SB 5.24.6','The earth\'s upper limit is as high as swans, hawks, eagles and other large birds can fly.'],['SB 5.16.5','Bhū-maṇḍala resembles a lotus flower, and its seven islands resemble the whorl.'],
         ['SB 5.1.31','The rims of Mahārāja Priyavrata\'s chariot wheels left seven impressions that became the seven oceans.']],
   interp:'Richard L. Thompson (Sadāpūta Dāsa), in Vedic Cosmography and Astronomy, reads Bhū-maṇḍala as a map of the plane in which the Sun and planets move. This is his reading, not a statement in the text.',
   drawn:'In Schematic each ring grows by one step per doubling of its real width. Switch to True proportions to see the real widths: the seven islands and oceans fill only the inner fifth of the disc.'},
@@ -635,64 +637,64 @@ aloka:{name:'Aloka-varṣa', deva:'अलोकवर्ष', gloss:'The unlit l
   body:'Outside Lokāloka is a dark land as broad as everything inside the mountain. Beyond it is the destination of those who seek liberation, beyond the modes of nature. Kṛṣṇa took Arjuna through this region to bring back the brāhmaṇa\'s sons.',
   refs:[['SB 5.20.42','Aloka-varṣa extends for the same breadth as the area within the mountain.']]},
 
-surya:{name:'Sūrya', deva:'सूर्य', gloss:'The Sun', eyebrow:'Graha-maṇḍala',
+surya:{name:'Sūrya', deva:'सूर्य', gloss:'The Sun', eyebrow:'Graha-maṇḍala · Bhuvarloka',
   facts:[['Height above Bhū-maṇḍala','100,000 yojanas','VP 2.7'],['Place in the universe','vertical middle, 250,000,000 from the shell','SB 5.20.43'],['Extent','10,000','SB 5.24.2'],['Orbit','on Mānasottara, 95,100,000 long','SB 5.21.19'],['Speed','2,000 yojanas and 2 krośas a moment','SB 5.21.19']],
   body:'The sun-god rides a chariot with one wheel, the year (Saṁvatsara), whose twelve spokes are the months. Its axle runs from Meru\'s summit to Mānasottara. Seven horses named after Vedic meters draw it, and 60,000 thumb-sized Vālakhilya sages go before it offering prayers. The Sun\'s extent is 10,000 yojanas, smaller than the Moon (20,000) and Rāhu (30,000).',
   refs:[['SB 5.21.13','The single wheel is the year; its twelve spokes are the months and its rim is the six seasons.'],['SB 5.21.15','The chariot is 3,600,000 yojanas long, drawn by seven horses named after Gāyatrī and other meters.'],['SB 5.21.17','Sixty thousand Vālakhilyas, each the size of a thumb, go before the sun-god.'],['SB 5.22.2','Like ants on a turning potter\'s wheel, the Sun and planets move against the turning of the zodiac.']],
   note:'Canto 5 gives no height for the Sun above Bhū-maṇḍala; 100,000 yojanas is from the Viṣṇu Purāṇa. 5.20.30 says the Sun travels on top of Mānasottara.',
   drawn:'The Sun is drawn above Mānasottara, with its axle as a gold line to Meru\'s summit. It circles once a year against the stars.'},
-rahu:{name:'Rāhu', deva:'राहु', gloss:'The eclipse planet', eyebrow:'Graha-maṇḍala',
+rahu:{name:'Rāhu', deva:'राहु', gloss:'The eclipse planet', eyebrow:'Graha-maṇḍala · Bhuvarloka',
   facts:[['Below the Sun','10,000 yojanas','SB 5.24.1'],['Extent','30,000','SB 5.24.2']],
   body:'Rāhu, the son of Siṁhikā, moves like one of the stars. He is hostile to the Sun and Moon and tries to cover them on new-moon and full-moon days. The Sudarśana cakra drives him off, and the time he interferes is what people call an eclipse.',
   refs:[['SB 5.24.1','10,000 yojanas below the sun is the planet known as Rāhu, which moves like one of the stars.'],['SB 5.24.3','Rāhu flees the heat of the Sudarśana cakra.']],
   drawn:'The largest of the three bodies whose size is given, as 5.24.2 states.'},
-siddha:{name:'Siddhas, Cāraṇas, Vidyādharas', deva:'सिद्धलोक', gloss:'Abodes just below Rāhu', eyebrow:'Bhuvar · antarikṣa',
+siddha:{name:'Siddhas, Cāraṇas, Vidyādharas', deva:'सिद्धलोक', gloss:'Abodes just below Rāhu', eyebrow:'Bhuvarloka · antarikṣa',
   facts:[['Below Rāhu','10,000 yojanas','SB 5.24.4'],['Earth below the Yakṣas','100 yojanas','SB 5.24.6']],
   body:'Below these abodes, in the sky called antarikṣa, are the places of Yakṣas, Rākṣasas, Piśācas and ghosts, reaching as far up as wind blows and clouds float. The earth\'s own upper limit is as high as large birds can fly.',
   refs:[['SB 5.24.4','Below Rāhu by 10,000 yojanas are Siddhaloka, Cāraṇaloka and Vidyādhara-loka.'],['SB 5.24.5','Antarikṣa extends as far as the wind blows and the clouds float.']],
   drawn:'Shown as a faint ring; no radius is given.'},
-candra:{name:'Candra', deva:'चन्द्र', gloss:'The Moon', eyebrow:'Graha-maṇḍala',
+candra:{name:'Candra', deva:'चन्द्र', gloss:'The Moon', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above the Sun\'s rays','100,000 yojanas','SB 5.22.8'],['Extent','20,000','SB 5.24.2'],['Speed','the whole zodiac in two fortnights','SB 5.22.8']],
   body:'The Moon moves faster than the Sun. Its waxing half is day for the demigods and night for the Pitās, and its waning half the reverse. Because it nourishes plants and all living beings it is called Jīva, Manomaya, Annamaya and Amṛtamaya.',
   refs:[['SB 5.22.8','In two lunar fortnights the Moon travels through the equivalent of a year of the Sun.'],['SB 5.22.9–10','The Moon is the life of all living entities and the deity of the mind.']],
   drawn:'Drawn twice the Sun\'s size, as 5.24.2 gives. It circles in about 27 days.'},
-naksatra:{name:'Nakṣatras', deva:'नक्षत्र', gloss:'The 28 lunar mansions', eyebrow:'Graha-maṇḍala',
+naksatra:{name:'Nakṣatras', deva:'नक्षत्र', gloss:'The 28 lunar mansions', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above the Moon','200,000 yojanas','SB 5.22.11'],['Count','28, headed by Abhijit','SB 5.22.11']],
   body:'The stars are fixed to the wheel of time and turn with it once a day, keeping Meru on their right. The Sun and planets move at their own rates against this background.',
   refs:[['SB 5.22.11','Many stars 200,000 yojanas above the Moon, fixed to the wheel of time; twenty-eight important stars headed by Abhijit.']],
   drawn:'The stars are held still here so each planet\'s own motion against them is visible. The 28 points are evenly spaced.'},
-sukra:{name:'Śukra', deva:'शुक्र', gloss:'Venus', eyebrow:'Graha-maṇḍala',
+sukra:{name:'Śukra', deva:'शुक्र', gloss:'Venus', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above the nakṣatras','200,000 yojanas','SB 5.22.12'],['Motion','near the Sun: behind, ahead or with it','SB 5.22.12']],
   body:'Venus counters the planets that obstruct rainfall, so its presence brings rain and it is considered favourable for every living being.',
   refs:[['SB 5.22.12','Some 200,000 yojanas above this group of stars is Venus.']],
   note:'The Bhāgavatam places Venus below Mercury. The Viṣṇu Purāṇa (2.7) has the reverse.',
   drawn:'Swings to either side of the Sun and back.'},
-budha:{name:'Budha', deva:'बुध', gloss:'Mercury', eyebrow:'Graha-maṇḍala',
+budha:{name:'Budha', deva:'बुध', gloss:'Mercury', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above Venus','200,000 yojanas','SB 5.22.13'],['Parent','son of the Moon','SB 5.22.13']],
   body:'Like Venus, Mercury moves near the Sun. When it strays from the Sun it portends cyclones, dust, and too little or too much rain.',
   refs:[['SB 5.22.13','Mercury is 200,000 yojanas above Venus.']],
   drawn:'Swings to either side of the Sun, faster and closer than Venus.'},
-angaraka:{name:'Aṅgāraka', deva:'अङ्गारक', gloss:'Mars', eyebrow:'Graha-maṇḍala',
+angaraka:{name:'Aṅgāraka', deva:'अङ्गारक', gloss:'Mars', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above Mercury','200,000 yojanas','SB 5.22.14'],['Each sign','three fortnights','SB 5.22.14']],
   body:'Unless it moves crookedly, Mars passes through each sign of the zodiac in three fortnights, all twelve in turn. Its influence is mostly unfavourable.',
   refs:[['SB 5.22.14','Situated 200,000 yojanas above Mercury is Mars.']],
   drawn:'Circles in 18 months.'},
-brhaspati:{name:'Bṛhaspati', deva:'बृहस्पति', gloss:'Jupiter', eyebrow:'Graha-maṇḍala',
+brhaspati:{name:'Bṛhaspati', deva:'बृहस्पति', gloss:'Jupiter', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above Mars','200,000 yojanas','SB 5.22.15'],['Each sign','one Parivatsara','SB 5.22.15']],
   body:'Jupiter passes through one sign of the zodiac in a Parivatsara. When its course is not curved it is very favourable to the brāhmaṇas.',
   refs:[['SB 5.22.15','Situated 200,000 yojanas above Mars is Jupiter.']],
   drawn:'Circles in 12 years.'},
-sani:{name:'Śanaiścara', deva:'शनैश्चर', gloss:'Saturn', eyebrow:'Graha-maṇḍala',
+sani:{name:'Śanaiścara', deva:'शनैश्चर', gloss:'Saturn', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above Jupiter','200,000 yojanas','SB 5.22.16'],['Each sign','30 months','SB 5.22.16']],
   body:'Saturn passes through one sign in thirty months and covers the whole zodiac in thirty Anuvatsaras. It is considered very inauspicious.',
   refs:[['SB 5.22.16','Situated 200,000 yojanas above Jupiter is Saturn.']],
   drawn:'Circles in 30 years.'},
-saptarsi:{name:'Saptarṣi', deva:'सप्तर्षि', gloss:'The seven sages', eyebrow:'Graha-maṇḍala',
+saptarsi:{name:'Saptarṣi', deva:'सप्तर्षि', gloss:'The seven sages', eyebrow:'Graha-maṇḍala · Svarloka',
   facts:[['Above Saturn','1,100,000 yojanas','SB 5.22.17']],
   body:'The seven sages always think of the welfare of all beings. They circle Dhruvaloka, the abode of Lord Viṣṇu.',
   refs:[['SB 5.22.17','Situated 1,100,000 yojanas above Saturn are the seven saintly sages.']],
   drawn:'Drawn as the seven stars of the Big Dipper, the stars traditionally identified with the seven sages.'},
-dhruva:{name:'Dhruvaloka', deva:'ध्रुवलोक', gloss:'The pole star', eyebrow:'Pivot of the wheel of time',
+dhruva:{name:'Dhruvaloka', deva:'ध्रुवलोक', gloss:'The pole star', eyebrow:'Svarloka · pivot of the wheel of time',
   facts:[['Above the seven sages','1,300,000 yojanas','SB 5.23.1'],['Above the Sun','about 3,700,000','calc'],['Above Bhū-maṇḍala','about 3,800,000','calc']],
   body:'Dhruvaloka is the abode of Lord Viṣṇu within the universe, where Dhruva Mahārāja lives. Every planet and star is tied to it by ropes of wind and circles it, the way bulls tied to a central post circle it while threshing rice, each keeping its own track.',
   refs:[['SB 5.23.1','1,300,000 yojanas above the planets of the seven sages is the abode of Lord Viṣṇu.'],['SB 5.23.3','Like bulls tied to a central post, the luminaries turn around Dhruvaloka without leaving their positions.']],
@@ -703,22 +705,44 @@ sisumara:{name:'Śiśumāra-cakra', deva:'शिशुमारचक्र', gl
   refs:[['SB 5.23.4','Yogīs meditate on this form as a visible form of the Supreme Lord.'],['SB 5.23.5','Its head is downward and its body coiled; Dhruva is at the end of its tail.']],
   drawn:'A figure for meditation, drawn as a coiled line of stars hanging from Dhruvaloka. It is not a separate object in space.'},
 
-mahar:{name:'Maharloka', deva:'महर्लोक', gloss:'World of the great sages', eyebrow:'Higher worlds',
-  facts:[['Above Dhruvaloka','10,000,000 yojanas','VP 2.7'],['Residents','sages such as Bhṛgu','SB 3.11.30']],
-  body:'At the end of Brahmā\'s day, fire from the mouth of Saṅkarṣaṇa burns the three worlds. The heat drives Bhṛgu and the other residents of Maharloka up to Janaloka. The Viṣṇu Purāṇa says its residents live there for a whole day of Brahmā.',
-  refs:[['SB 3.11.30','Great sages like Bhṛgu and the other inhabitants of Maharloka transport themselves to Janaloka.'],['VP 2.7','Maharloka is ten million yojanas above Dhruva.']]},
-jana:{name:'Janaloka', deva:'जनलोक', gloss:'Refuge during the partial dissolution', eyebrow:'Higher worlds',
-  facts:[['Above Maharloka','20,000,000 yojanas','VP 2.7'],['Residents','Sanandana and other sons of Brahmā','VP 2.7']],
+bhuvar:{name:'Bhuvarloka', deva:'भुवर्लोक', gloss:'Antarikṣa, the sky between earth and heaven', eyebrow:'Upper world 2 of 7',
+  facts:[['Place among the seven','second, at the navel of the universal form','SB 2.5.38'],['Lies between','the earthly sphere and the heavenly sphere','SB 5.21.2'],['The Sun','travels in its midst','SB 5.21.3'],['Upper edge','the Sun, 100,000 yojanas up','VP 2.7'],['End of Brahmā\'s day','one of the three worlds burned and flooded','SB 3.11.29–32']],
+  body:'Śukadeva compares the universe to a grain split into two halves: the earthly sphere below and the heavenly sphere above, joined by the sky called antarikṣa. The Sun moves in the middle of this sky, and it is by the Sun that the sky, heaven, the earth and the lower worlds are told apart. Below the Sun by 10,000 yojanas is Rāhu; below Rāhu are the Siddhas, Cāraṇas and Vidyādharas; and below them, as far up as wind blows and clouds float, are the places of the Yakṣas, Rākṣasas and ghosts.',
+  refs:[['SB 2.5.38','The middle planetary systems, beginning from Bhuvarloka, are situated in the navel of the universal form.'],
+        ['SB 5.21.2','Between the earthly sphere and the heavenly sphere is the sky called antarikṣa, touching the top of the one and the bottom of the other.'],
+        ['SB 5.21.3','In the midst of antarikṣa is the Sun, who heats the universe and gives light to all.'],
+        ['SB 5.20.43','The Sun is in the vertical middle of the universe, in the region called antarikṣa.'],
+        ['SB 5.20.45','Because of the Sun we can tell apart the sky, the heavenly planets, this world and the lower planets.'],
+        ['SB 5.24.4–5','Below Rāhu are the Siddhas, Cāraṇas and Vidyādharas; below them, in antarikṣa, the Yakṣas and Rākṣasas, as far up as wind and clouds reach.']],
+  note:'The Bhāgavatam places the Sun inside antarikṣa, between earth and heaven, but gives no height where heaven begins. The Viṣṇu Purāṇa (2.7) supplies it: Bhuvar reaches up to the Sun, and Svar begins there. In 5.24.5 the word antarikṣa is also used more narrowly, for the windy sky below the Siddhas.',
+  drawn:'A faint band from the disc up to the Sun\'s height, with the Sun on its top edge. Its width is drawn to take in the planets\' orbits; the text gives none.'},
+svar:{name:'Svarloka', deva:'स्वर्लोक', gloss:'Svarga, the heavenly planets of the demigods', eyebrow:'Upper world 3 of 7',
+  facts:[['Place among the seven','third, at the chest of the universal form','SB 2.5.38'],['Residents','the demigods','SB 2.5.38'],['Lies','above antarikṣa, the upper half of the grain','SB 5.21.2'],['Extent','from the Sun to Dhruvaloka','VP 2.7'],['Height of that span','about 3,700,000 yojanas','calc'],['End of Brahmā\'s day','the highest of the three worlds that burn','SB 3.11.29–30']],
+  body:'Svarloka is the heavenly sphere, the upper of the two halves Śukadeva compares to a split grain, with antarikṣa between it and the earth. The Bhāgavatam names it as the realm of the demigods. Taking the Viṣṇu Purāṇa\'s boundary, it holds the luminaries Canto 5 places above the Sun: the Moon, the nakṣatras, Venus, Mercury, Mars, Jupiter, Saturn, the seven sages and Dhruvaloka. With Bhūr and Bhuvar it makes up the three worlds that go dark and burn at the end of Brahmā\'s day; the sages of Maharloka, just above, move up to Janaloka to escape the heat.',
+  refs:[['SB 2.5.38','The still higher planetary systems, home of the demigods and of great sages, are situated in the chest of the universal form.'],
+        ['SB 5.21.2','The size of the upper part of the universe is known from the lower part, as one half of a split grain shows the size of the other.'],
+        ['SB 5.20.45','Because of the Sun we can tell apart the sky, the heavenly planets, this world and the lower planets.'],
+        ['SB 3.11.29–30','At Brahmā\'s night the three worlds, Bhūḥ, Bhuvaḥ and Svaḥ, go dark, and fire from Saṅkarṣaṇa\'s mouth rages through them.'],
+        ['VP 2.7','Svarloka extends from the Sun up to Dhruva.']],
+  note:'Canto 5 gives the height of each planet above the Sun, but not where heaven begins or ends. The boundary from the Sun to Dhruvaloka is the Viṣṇu Purāṇa\'s. The Viṣṇu Purāṇa makes that span 1,400,000 yojanas; by the Bhāgavatam\'s spacing of the planets it is about 3,700,000, which is what is drawn.',
+  drawn:'A faint band from the Sun\'s height up to Dhruvaloka, wide enough to take in the planets\' orbits; the text gives no width. Indra\'s city Devadhānī is drawn on Mānasottara, where 5.21.7 places it.'},
+
+mahar:{name:'Maharloka', deva:'महर्लोक', gloss:'World of the great sages', eyebrow:'Upper world 4 of 7',
+  facts:[['Place among the seven','fourth, at the chest of the universal form','SB 2.5.38'],['Above Dhruvaloka','10,000,000 yojanas','VP 2.7'],['Residents','sages such as Bhṛgu','SB 3.11.30']],
+  body:'At the end of Brahmā\'s day, fire from the mouth of Saṅkarṣaṇa burns the three worlds below, Bhūr, Bhuvar and Svar. The heat drives Bhṛgu and the other residents of Maharloka up to Janaloka. The Viṣṇu Purāṇa says its residents live there for a whole day of Brahmā.',
+  refs:[['SB 2.5.38','The higher planetary systems of the demigods and great sages are situated in the chest of the universal form.'],['SB 3.11.29','The three worlds, Bhūḥ, Bhuvaḥ and Svaḥ, go out of sight in Brahmā\'s night.'],['SB 3.11.30','Great sages like Bhṛgu and the other inhabitants of Maharloka transport themselves to Janaloka.'],['VP 2.7','Maharloka is ten million yojanas above Dhruva.']]},
+jana:{name:'Janaloka', deva:'जनलोक', gloss:'Refuge during the partial dissolution', eyebrow:'Upper world 5 of 7',
+  facts:[['Place among the seven','fifth, between chest and neck of the universal form','SB 2.5.39'],['Above Maharloka','20,000,000 yojanas','VP 2.7'],['Residents','Sanandana and other sons of Brahmā','VP 2.7']],
   body:'Janaloka is where the sages of Maharloka take shelter during the dissolution at the end of Brahmā\'s day. It is above the reach of that fire.',
-  refs:[['SB 3.11.30','The inhabitants of Maharloka go to Janaloka.'],['VP 2.7','Janaloka is twice Maharloka\'s distance above it.']]},
-tapa:{name:'Tapoloka', deva:'तपोलोक', gloss:'World of austerity', eyebrow:'Higher worlds',
-  facts:[['Above Janaloka','80,000,000 yojanas','VP 2.7'],['Residents','the Vairāja deities, whom fire cannot consume','VP 2.7']],
+  refs:[['SB 2.5.39','From the chest up to the neck of the universal form are Janaloka and Tapoloka.'],['SB 3.11.30','The inhabitants of Maharloka go to Janaloka.'],['VP 2.7','Janaloka is twice Maharloka\'s distance above it.']]},
+tapa:{name:'Tapoloka', deva:'तपोलोक', gloss:'World of austerity', eyebrow:'Upper world 6 of 7',
+  facts:[['Place among the seven','sixth, between chest and neck of the universal form','SB 2.5.39'],['Above Janaloka','80,000,000 yojanas','VP 2.7'],['Residents','the Vairāja deities, whom fire cannot consume','VP 2.7']],
   body:'The Viṣṇu Purāṇa places Tapoloka four times as far above Janaloka as Janaloka is above Maharloka.',
-  refs:[['VP 2.7','Tapoloka is inhabited by the deities called Vairājas, who are unconsumable by fire.']]},
-satya:{name:'Satyaloka', deva:'सत्यलोक', gloss:'Brahmaloka, the highest world in the universe', eyebrow:'Higher worlds',
-  facts:[['Above Tapoloka','120,000,000 yojanas','VP 2.7'],['Above Bhū-maṇḍala','about 233,800,000','calc'],['Brahmā\'s life','100 of his years, about 311 trillion solar years','calc']],
+  refs:[['SB 2.5.39','From the chest up to the neck of the universal form are Janaloka and Tapoloka.'],['VP 2.7','Tapoloka is inhabited by the deities called Vairājas, who are unconsumable by fire.']]},
+satya:{name:'Satyaloka', deva:'सत्यलोक', gloss:'Brahmaloka, the highest world in the universe', eyebrow:'Upper world 7 of 7',
+  facts:[['Place among the seven','seventh, at the head of the universal form','SB 2.5.39'],['Above Tapoloka','120,000,000 yojanas','VP 2.7'],['Above Bhū-maṇḍala','about 233,800,000','calc'],['Brahmā\'s life','100 of his years, about 311 trillion solar years','calc']],
   body:'Satyaloka is Lord Brahmā\'s abode. The Bhāgavatam says there is no grief, old age, death or pain there, and no anxiety except compassion for those suffering in the material world.',
-  refs:[['SB 2.2.27','In Satyaloka there is neither bereavement, nor old age nor death.'],['SB 3.11','Brahmā\'s day is 1,000 cycles of the four yugas; his life is 100 years of such days and nights.']]},
+  refs:[['SB 2.5.39','Satyaloka is situated on the head of the universal form.'],['SB 2.2.27','In Satyaloka there is neither bereavement, nor old age nor death.'],['SB 3.11','Brahmā\'s day is 1,000 cycles of the four yugas; his life is 100 years of such days and nights.']]},
 
 atala:{name:'Atala', deva:'अतल', gloss:'First of the lower worlds', eyebrow:'Lower world 1 of 7 · bila-svarga',
   facts:[['Depth','0 to 10,000 below Bhū-maṇḍala','VP 2.5'],['Ruler','Bala, son of Maya Dānava','SB 5.24.16']],
@@ -1469,6 +1493,26 @@ const siddhaAnchor = new THREE.Object3D(); siddhaGroup.add(siddhaAnchor);
 addLabel({id:'siddha', text:'Siddhas, Cāraṇas, Vidyādharas', cls:'c-soft', pri:40, anchor:siddhaAnchor});
 
 /* ------------------------------------------------------------------
+   BHUVARLOKA AND SVARLOKA: upper worlds 2 and 3, drawn as faint bands
+   around the planets (sky up to the Sun; heaven from the Sun to Dhruva)
+------------------------------------------------------------------- */
+const BAND_RS = 142;
+const BANDS = [
+  {id:'bhuvar', a:0,     b:100e3, hex:0x8E93B8, ang:-2.0, cls:'c-soft',  sub:'upper world 2 · the sky'},
+  {id:'svar',   a:100e3, b:3.8e6, hex:0xE0AE55, ang:-1.6, cls:'c-graha', sub:'upper world 3 · heaven'}
+];
+BANDS.forEach(w => {
+  const grp = manage(new THREE.Group(), 'graha', 'graha:'+w.id); scene.add(grp); w.grp = grp;
+  const wallM = cut(new THREE.MeshBasicMaterial({color:w.hex, transparent:true, opacity:.035, side:THREE.DoubleSide, depthWrite:false}));
+  wallM.userData.baseOp = .035; wallM.userData.selOp = .22; addHi(w.id, wallM);
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(1,1,1,160,1,true).translate(0,.5,0), wallM); grp.add(wall); pickable(wall, w.id, true);
+  const rimLo = ringLine(w.hex, .28, 160), rimHi = ringLine(w.hex, .28, 160); grp.add(rimLo); grp.add(rimHi);
+  w.wall = wall; w.rimLo = rimLo; w.rimHi = rimHi;
+  w.o = new THREE.Object3D(); grp.add(w.o);
+  addLabel({id:w.id, text:E[w.id].name, sub:w.sub, cls:w.cls, pri:76, anchor:w.o, lod:1});
+});
+
+/* ------------------------------------------------------------------
    HIGHER WORLDS
 ------------------------------------------------------------------- */
 const HIGHER = [
@@ -1717,11 +1761,11 @@ feat('ganga','Alakanandā into Bhārata-varṣa','The southern branch crosses He
 const rulerGroup = manage(new THREE.Group(), 'ruler', 'ruler'); scene.add(rulerGroup);
 const ZONES = [
   {key:'water', a:-249.9e6, b:-100e3, hex:0x2E8FA3, text:'Cosmic water', sub:'Garbhodaka fills the lower part', cls:'c-ocean', mid:-120e6},
-  {key:'low',   a:-100e3,   b:0,      hex:0xD0809F, text:'Lower worlds', sub:'7 jewel-lit realms, 70,000 deep', cls:'c-low', mid:-40e3},
-  {key:'disc',  a:-3e3,     b:3e3,    hex:0x7FB46A, text:'Earthly disc', sub:'Bhū-maṇḍala: islands and oceans', cls:'c-island', mid:0},
-  {key:'sky',   a:3e3,      b:100e3,  hex:0x8E93B8, text:'Sky', sub:'up to the Sun, 100,000', cls:'c-soft', mid:55e3},
-  {key:'plan',  a:100e3,    b:3.8e6,  hex:0xE0AE55, text:'Planets and stars', sub:'Sun to pole star, 3.8 million', cls:'c-graha', mid:1.3e6},
-  {key:'high',  a:13.8e6,   b:233.8e6,hex:0xA99BE0, text:'Higher worlds', sub:'Mahar to Satya, up to 234 million', cls:'c-high', mid:60e6}
+  {key:'low',   a:-100e3,   b:0,      hex:0xD0809F, text:'Lower worlds', sub:'7 jewel-lit realms, 70,000 deep', cls:'c-low', mid:-52e3},
+  {key:'disc',  a:-3e3,     b:3e3,    hex:0x7FB46A, text:'Bhūrloka', sub:'upper world 1 · the earthly disc', cls:'c-island', mid:-5e3},
+  {key:'sky',   a:3e3,      b:100e3,  hex:0x8E93B8, text:'Bhuvarloka', sub:'upper world 2 · the sky, up to the Sun', cls:'c-soft', mid:97e3},
+  {key:'plan',  a:100e3,    b:3.8e6,  hex:0xE0AE55, text:'Svarloka', sub:'upper world 3 · heaven, Sun to pole star', cls:'c-graha', mid:1.3e6},
+  {key:'high',  a:13.8e6,   b:233.8e6,hex:0xA99BE0, text:'Mahar to Satya', sub:'upper worlds 4–7, up to 234 million', cls:'c-high', mid:60e6}
 ];
 const RULER_X = -262;
 ZONES.forEach(z => {
@@ -1739,7 +1783,7 @@ LABELS[LABELS.length-1].el.title = 'Drag the ruler to move up or down';
 const TICKS = [...[0,1,2,3,4,5,6,7].map(k => ({y:-k*10e3, hex:0xE7A6C1})), ...HIGHER.map(w => ({y:w.h, hex:w.hex}))].map(tk => {
   const m = new THREE.Mesh(new THREE.BoxGeometry(7,.5,.5), new THREE.MeshBasicMaterial({color:tk.hex})); rulerGroup.add(m); tk.mesh = m; return tk; });
 const CALL = [
-  {text:'Sun to pole star', sub:'all the planets fit in this thin layer, 3.8 M high'},
+  {text:'Svarloka, Sun to pole star', sub:'all the planets fit in this thin layer, 3.8 M high'},
   {text:'Seven islands and oceans', sub:'only the inner fifth of the disc'},
   {text:'Golden land', sub:'the widest band, 83.9 M wide'}
 ].map(c => { const a=new THREE.Object3D(); scene.add(a); addLabel({text:c.text, sub:c.sub, cls:'zone c-gold', pri:98, trueOnly:true, anchor:a, lod:0}); return a; });
@@ -1818,6 +1862,11 @@ function applyScale(){
   sapt.position.set(0, Yh(2.5e6), -36*k); sapt.scale.setScalar(lerp(1,.3,t));
   dhruva.position.set(0, Yh(3.8e6), 0); dhruva.scale.setScalar(lerp(1,.2,t)); sisu.scale.setScalar(lerp(1,.5,t));
   siddhaRing.scale.set(64*k,1,64*k); siddhaRing.position.y=Yh(80e3); siddhaAnchor.position.set(Math.sin(-2.2)*64*k, Yh(80e3), Math.cos(-2.2)*64*k);
+  const brs = BAND_RS*k;
+  BANDS.forEach(w => { const ya = w.a ? Yh(w.a) : hI, yb = Yh(w.b);
+    w.wall.scale.set(brs, Math.max(yb-ya, .001), brs); w.wall.position.y = ya;
+    w.rimLo.scale.set(brs,1,brs); w.rimLo.position.y = ya; w.rimHi.scale.set(brs,1,brs); w.rimHi.position.y = yb;
+    w.o.position.set(Math.sin(w.ang)*brs, lerp(ya, yb, .55), Math.cos(w.ang)*brs); });
   HIGHER.forEach(w => { w.grp.position.y = Yh(w.h); const th = lerp(7, .6, t); w.wall.scale.set(w.r, th, w.r); w.rimTop.scale.set(w.r,1,w.r); w.rimTop.position.y = th; });
   // Lower worlds
   const rlow = R(25.35e6), ds = rlow/LOW_R_S;
@@ -1940,6 +1989,8 @@ function clustersFor(id){
   if (id==='ganga') return ['bhu','graha','shell','ganga'];
   if (BHU_IDS.has(id)) return ['bhu','shell'];
   if (GRAHA_IDS.has(id)) return ['graha','shell'];
+  if (id==='bhuvar') return ['bhu','graha','shell'];
+  if (id==='svar') return ['graha','shell'];
   if (HIGHER.some(w=>w.id===id)) return ['high:'+id,'shell'];
   if (LOWER.includes(id)) return ['low:'+id,'shell'];
   if (id==='naraka') return ['deep:naraka','deep:water','shell'];
@@ -1999,6 +2050,8 @@ function behindDisc(p){
 function contextIds(id){
   if (LOWER.includes(id) || ['naraka','ananta','garbhodaka'].includes(id)) return new Set([...LOWER,'naraka','ananta']);
   if (HIGHER.some(w=>w.id===id)) return new Set(HIGHER.map(w=>w.id));
+  if (id==='bhuvar') return new Set(['bhuvar','svar','surya','rahu','siddha']);
+  if (id==='svar') return new Set(['bhuvar','svar','candra','sukra','budha','angaraka','brhaspati','sani','naksatra','saptarsi','dhruva']);
   if (VARSA_IDS.includes(id) || ['jambu','meru','bharata'].includes(id)) return new Set([...VARSA_IDS,'bharata','meru','jambu']);
   if (RING_BY_ID[id] || ['manasottara','lokaloka'].includes(id)) return new Set(RINGS.map(r=>r.id));
   if (GRAHA_IDS.has(id) || id==='surya') return new Set([...GRAHAS.map(b=>b.id),'naksatra','saptarsi','dhruva']);
@@ -2074,6 +2127,8 @@ function spotRoots(id){
   if (id==='saptarsi') return [sapt];
   if (id==='dhruva' || id==='sisumara') return [dhruva];
   if (id==='siddha') return [siddhaGroup];
+  if (id==='bhuvar') return [BANDS[0].grp, siddhaGroup, ...GRAHAS.filter(b=>b.h<=100e3).flatMap(b=>[b.mesh, b.orbit])];
+  if (id==='svar') return [BANDS[1].grp, nak, nakLine, sapt, dhruva, ...GRAHAS.filter(b=>b.h>100e3).flatMap(b=>[b.mesh, b.orbit])];
   const hw = HIGHER.find(w=>w.id===id); if (hw) return [hw.grp];
   const lw = lowerObjs.find(o=>o.id===id); if (lw) return [lw.grp];
   if (id==='naraka') return [narakaGroup];
@@ -2117,7 +2172,7 @@ function guardSolid(){
   if (dd < r && dd > 1e-6){ camera.position.copy(gC).add(off.multiplyScalar(r/dd)); }
 }
 const frus = new THREE.Frustum(), frusM = new THREE.Matrix4();
-const WIDE = new Set(['manasottara','lokaloka','naksatra','ganga','siddha','garbhodaka','sisumara','saptarsi','bhumandala','karana']);
+const WIDE = new Set(['bhuvar','svar','manasottara','lokaloka','naksatra','ganga','siddha','garbhodaka','sisumara','saptarsi','bhumandala','karana']);
 let inViewT = 0, lostShown = false, selSphereT = 0;
 function selSphere(now){
   if (now - selSphereT < 300 && gSphere.radius > 0) return gSphere;
@@ -2197,9 +2252,11 @@ function trailFor(id){
   if (id==='jambu') return [U, B, ['Jambūdvīpa',null]];
   if (['meru','bharata',...VARSA_IDS].includes(id)) return [U, B, J, me];
   if (RING_BY_ID[id] || ['manasottara','lokaloka'].includes(id)) return [U, B, me];
-  if (id==='sisumara') return [U, ['Planets and stars',null], ['Dhruvaloka','dhruva'], me];
-  if (GRAHA_IDS.has(id) || id==='surya') return [U, ['Planets and stars',null], me];
-  if (HIGHER.some(w=>w.id===id)) return [U, ['Higher worlds',null], me];
+  if (id==='bhuvar' || id==='svar') return [U, me];
+  if (id==='sisumara') return [U, ['Svarloka','svar'], ['Dhruvaloka','dhruva'], me];
+  if (['surya','rahu','siddha'].includes(id)) return [U, ['Bhuvarloka','bhuvar'], me];
+  if (GRAHA_IDS.has(id)) return [U, ['Svarloka','svar'], me];
+  if (HIGHER.some(w=>w.id===id)) return [U, ['Upper worlds 4–7',null], me];
   if (LOWER.includes(id) || ['naraka','ananta','garbhodaka'].includes(id)) return [U, ['Below Bhū-maṇḍala',null], me];
   return [U, me];
 }
@@ -2235,6 +2292,8 @@ function focusFor(id){
   if (g) return {p:g.mesh.position.clone(), d:lerp(30,4,t), dir:DIR_SIDE};
   const hw = HIGHER.find(w=>w.id===id);
   if (hw) return {p:v.set(0,Yh(hw.h),0), d:hw.r*2.6, dir:DIR_SIDE};
+  const bw = BANDS.find(w=>w.id===id);
+  if (bw){ const ya = bw.a ? Yh(bw.a) : 0, yb = Yh(bw.b); return {p:v.set(0,(ya+yb)/2,0), d:Math.max(BAND_RS*orbitK()*2.5, (yb-ya)*2.2), dir:DIR_SIDE}; }
   const lw = LOWER.indexOf(id);
   if (lw>=0) return {p:v.set(0,Yh(-(lw+.5)*10e3),R(25.35e6)*.35), d:R(25.35e6)*1.15, dir:new THREE.Vector3(.18,.1,.98).normalize()};
   const js = lerp(1,1/240,t), hI=hIsland();
@@ -2373,11 +2432,11 @@ function exitExplore(){
 ------------------------------------------------------------------- */
 const LADDER = [
   {h:'The universe', items:[['overview','Brahmāṇḍa','⌀ 500 M',0xE0AE55],['ganga','Gaṅgā\'s descent','SB 5.17',0x7FD3DC],['karana','Beyond the shell','Kāraṇa',0xC9A24A]]},
-  {h:'Higher worlds', band:0xA99BE0, chip:'VP 2.7', items:[['satya','Satyaloka','233.8 M',0xF2CB74],['tapa','Tapoloka','113.8 M',0xD08FBC],['jana','Janaloka','33.8 M',0xB894E0],['mahar','Maharloka','13.8 M',0x9D8FE0]]},
-  {h:'Svar · Sun to Dhruva', band:0xE0AE55, chip:'VP 2.7', items:[['sisumara','Śiśumāra','figure',0x8FD0C9],['dhruva','Dhruvaloka','3.8 M',0xE3F3FF],['saptarsi','Seven sages','2.5 M',0xE7DBFF],['sani','Śani · Saturn','1.4 M',0x9A93B8],['brhaspati','Bṛhaspati · Jupiter','1.2 M',0xE8B85C],['angaraka','Aṅgāraka · Mars','1.0 M',0xD9563D],['budha','Budha · Mercury','800 k',0x9ED6C8],['sukra','Śukra · Venus','600 k',0xFFF0C8],['naksatra','28 Nakṣatras','400 k',0xDCE8FF],['candra','Candra · Moon','200 k',0xE6E9F2],['surya','Sūrya · Sun','100 k',0xFFD27A]]},
-  {h:'Bhuvar · up to the Sun', band:0x8E93B8, chip:'VP 2.7', items:[['rahu','Rāhu','90 k',0x7078A0],['siddha','Siddhas, Cāraṇas…','80 k',0xB9B6CC]]},
-  {h:'Bhūr · Bhū-maṇḍala', band:0x7FB46A, items:[['bhumandala','Bhū-maṇḍala','0',0x6C8F4E],['meru','Mount Meru','84 k tall',0xD9A441],['bharata','Bhārata-varṣa','we are here',0x7FE3D4],['manasottara','Mānasottara','Sun\'s track',0xE8B85C],['lokaloka','Lokāloka','edge of light',0x7A80A8]], varsas:true, rings:true},
-  {h:'Below Bhū-maṇḍala', band:0xD0809F, items:[['atala','Atala','−10 k',LOWER_HEX[0]],['vitala','Vitala','−20 k',LOWER_HEX[1]],['sutala','Sutala','−30 k',LOWER_HEX[2]],['talatala','Talātala','−40 k',LOWER_HEX[3]],['mahatala','Mahātala','−50 k',LOWER_HEX[4]],['rasatala','Rasātala','−60 k',LOWER_HEX[5]],['patala','Pātāla','−70 k',LOWER_HEX[6]],['naraka','Naraka · Pitṛloka','south',0xB0503A],['ananta','Ananta Śeṣa','−100 k',0xF3F1EA],['garbhodaka','Garbhodaka','below',0x1C7485]]}
+  {h:'Upper 4–7 · Mahar to Satya', band:0xA99BE0, chip:'VP 2.7', items:[['satya','Satyaloka','233.8 M',0xF2CB74],['tapa','Tapoloka','113.8 M',0xD08FBC],['jana','Janaloka','33.8 M',0xB894E0],['mahar','Maharloka','13.8 M',0x9D8FE0]]},
+  {h:'Upper 3 · Svar · heaven', band:0xE0AE55, chip:'VP 2.7', items:[['svar','Svarloka','to 3.8 M',0xE0AE55],['sisumara','Śiśumāra','figure',0x8FD0C9],['dhruva','Dhruvaloka','3.8 M',0xE3F3FF],['saptarsi','Seven sages','2.5 M',0xE7DBFF],['sani','Śani · Saturn','1.4 M',0x9A93B8],['brhaspati','Bṛhaspati · Jupiter','1.2 M',0xE8B85C],['angaraka','Aṅgāraka · Mars','1.0 M',0xD9563D],['budha','Budha · Mercury','800 k',0x9ED6C8],['sukra','Śukra · Venus','600 k',0xFFF0C8],['naksatra','28 Nakṣatras','400 k',0xDCE8FF],['candra','Candra · Moon','200 k',0xE6E9F2]]},
+  {h:'Upper 2 · Bhuvar · sky', band:0x8E93B8, chip:'VP 2.7', items:[['bhuvar','Bhuvarloka','to 100 k',0x8E93B8],['surya','Sūrya · Sun','100 k',0xFFD27A],['rahu','Rāhu','90 k',0x7078A0],['siddha','Siddhas, Cāraṇas…','80 k',0xB9B6CC]]},
+  {h:'Upper 1 · Bhūr · earth', band:0x7FB46A, items:[['bhumandala','Bhū-maṇḍala','0',0x6C8F4E],['meru','Mount Meru','84 k tall',0xD9A441],['bharata','Bhārata-varṣa','we are here',0x7FE3D4],['manasottara','Mānasottara','Sun\'s track',0xE8B85C],['lokaloka','Lokāloka','edge of light',0x7A80A8]], varsas:true, rings:true},
+  {h:'Lower 1–7 · below the disc', band:0xD0809F, items:[['atala','Atala','−10 k',LOWER_HEX[0]],['vitala','Vitala','−20 k',LOWER_HEX[1]],['sutala','Sutala','−30 k',LOWER_HEX[2]],['talatala','Talātala','−40 k',LOWER_HEX[3]],['mahatala','Mahātala','−50 k',LOWER_HEX[4]],['rasatala','Rasātala','−60 k',LOWER_HEX[5]],['patala','Pātāla','−70 k',LOWER_HEX[6]],['naraka','Naraka · Pitṛloka','south',0xB0503A],['ananta','Ananta Śeṣa','−100 k',0xF3F1EA],['garbhodaka','Garbhodaka','below',0x1C7485]]}
 ];
 const hexCss = h => '#' + h.toString(16).padStart(6,'0');
 (() => {
@@ -2561,7 +2620,7 @@ document.addEventListener('click', e => { const m=$('#more'); if (m.classList.co
 function leaveFocus(){ if (!focusId) return; focusId=null; applyDim(); updateCut(); refreshVisibility(); updateTrail(); }
 function flyCustom(fn){ if (T !== modeTarget){ pendingFly = () => flyView(fn()); return; } flyView(fn()); }
 const TOUR = [
-  {id:'overview', title:'The whole universe', text:'Canto 5 describes the universe as a closed sphere, 500 million yojanas across. The coloured bar on the left names its layers, from the cosmic water at the bottom to the higher worlds at the top. A slice is cut away so you can see inside. Drag to turn it; scroll or pinch to zoom.',
+  {id:'overview', title:'The whole universe', text:'Canto 5 describes the universe as a closed sphere, 500 million yojanas across. The coloured bar on the left names its layers, from the cosmic water at the bottom up through the seven upper worlds. A slice is cut away so you can see inside. Drag to turn it; scroll or pinch to zoom.',
    go(){ leaveFocus(); setMode(0); setTimeMode('year'); select('overview', true); }},
   {id:'bhumandala', title:'Bhū-maṇḍala, the earthly disc', text:'Across the middle lies Bhū-maṇḍala: seven ring-shaped islands, each surrounded by its own ocean, of salt water, sugarcane juice, liquor, ghee, milk, yogurt and sweet water. Each island is twice as wide as the one before it, and each ocean is as wide as the island it surrounds.',
    go(){ leaveFocus(); setMode(0); setTimeMode('year'); select('bhumandala', true); }},
@@ -2571,13 +2630,13 @@ const TOUR = [
    go(){ setMode(0); setTimeMode('year'); explore('bharata'); }},
   {id:'surya', title:'The Sun, day and night', text:'The Sun rides a one-wheeled chariot around Meru, above the ring mountain Mānasottara. As it moves, the side of the disc facing it has day and the far side has night. Sunlight stops at the Lokāloka mountain near the edge.',
    go(){ leaveFocus(); setMode(0); setTimeMode('day'); select('surya', false); flyCustom(() => ({p:new THREE.Vector3(0,0,0), d:R(125e6)*2.25, dir:new THREE.Vector3(.12,.9,.42).normalize()})); }},
-  {id:'naksatra', title:'The planets and stars', text:'Above the Sun, in order, are the Moon, the 28 lunar mansions, Venus, Mercury, Mars, Jupiter, Saturn and the seven sages. Each moves at its own pace against the stars: the Moon circles in a month, Saturn in thirty years.',
+  {id:'naksatra', title:'Svarloka: the planets and stars', text:'The Sun moves in the sky between earth and heaven. Above it is Svarloka, the heaven of the demigods. In it, in order, are the Moon, the 28 lunar mansions, Venus, Mercury, Mars, Jupiter, Saturn and the seven sages. Each moves at its own pace against the stars: the Moon circles in a month, Saturn in thirty years.',
    go(){ leaveFocus(); setMode(0); setTimeMode('year'); select('naksatra', false); flyCustom(() => ({p:new THREE.Vector3(0,62,0), d:300, dir:new THREE.Vector3(.62,.2,.76).normalize()})); }},
   {id:'dhruva', title:'Dhruvaloka, the pole star', text:'At the top of this stack is Dhruvaloka, Lord Viṣṇu\'s abode within the universe. Every planet and star is tied to it by ropes of wind, shown in teal, and circles it. Some yogīs picture all the stars as one form of the Lord, the Śiśumāra, with Dhruvaloka at the tip of its tail.',
    go(){ leaveFocus(); setMode(0); setTimeMode('year'); select('dhruva', true); }},
   {id:'ganga', title:'The Gaṅgā\'s descent', text:'The Gaṅgā enters where Lord Vāmana\'s toe pierced the shell. It flows down to Dhruvaloka, the seven sages and the Moon, lands on Meru\'s summit, and divides into four rivers. One of them, the Alakanandā, flows south through Bhārata-varṣa.',
    go(){ setMode(0); setTimeMode('year'); explore('ganga'); }},
-  {id:'satya', title:'The higher worlds', text:'Far above are four higher worlds: Maharloka, Janaloka, Tapoloka and, highest of all, Satyaloka, the abode of Lord Brahmā, where there is no old age, death or grief.',
+  {id:'satya', title:'The seven upper worlds', text:'The disc, the sky up to the Sun and the heaven up to Dhruvaloka are the first three of the seven upper worlds: Bhūr, Bhuvar and Svar. Far above them are the other four: Maharloka, Janaloka, Tapoloka and, highest of all, Satyaloka, the abode of Lord Brahmā, where there is no old age, death or grief.',
    go(){ leaveFocus(); setMode(0); setTimeMode('year'); select('satya', false); flyCustom(() => ({p:new THREE.Vector3(0,184,0), d:185, dir:new THREE.Vector3(.58,.28,.76).normalize()})); }},
   {id:'sutala', title:'The lower worlds', text:'Below the disc are seven lower worlds, from Atala down to Pātāla. No sunlight reaches them; gems on the hoods of great serpents light them. Bali Mahārāja lives in Sutala, where Lord Vāmana stands at his door.',
    go(){ setMode(0); setTimeMode('year'); explore('sutala'); }},
