@@ -21,7 +21,7 @@ An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrī
 
 - **Rotate / Pan** tools at the bottom left. Hold Space for a temporary hand tool.
 - Drag the **height ruler** or use **Shift + scroll** to move up and down without zooming. **Page Up / Page Down** step one tier at a time.
-- Click anything to spotlight it. Double-click or use **Explore inside** to go in. **Esc** goes back.
+- Click anything to spotlight it. Double-click or use **Explore inside** to go in. **Back** (the arrow in the navigation tools, **Esc** or **Backspace**) returns to exactly the view you came from, one step at a time; **Whole universe** leaves completely.
 - **Panels** lets you show or hide each panel on its own. **Notes & sources** lists the references and the places where the texts differ.
 - Press **/** to find any world, island or planet by name; diacritics are optional (`sisumara` finds Śiśumāra).
 - Links open on a place: add its id after `#`, for example `…/bhagavata-cosmos/#sutala` or `#meru`. The address follows what you select.

@@ -184,6 +184,10 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 @media (max-width: 1180px){ #navtools .tl{display:none} }
 #focus-back{border:0;border-radius:9px;background:var(--gold);color:#1b1404;font-weight:700;font-size:13px;padding:7px 12px;cursor:pointer;white-space:nowrap}
 #focus-back:hover{background:var(--gold-hi)}
+#focusbar .vb{border:1px solid rgba(217,164,65,.55);border-radius:9px;background:rgba(217,164,65,.12);color:var(--gold-hi);font-weight:700;font-size:13px;padding:6px 11px;cursor:pointer;white-space:nowrap}
+#focusbar .vb:hover{background:rgba(217,164,65,.22)}
+#navtools button:disabled{opacity:.35;cursor:default;background:none}
+#nav-back:not(:disabled){color:var(--gold-hi)}
 
 #tour{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 74px);z-index:19;width:min(560px,calc(100% - 32px));padding:14px 18px 12px}
 .tour-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -362,6 +366,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   #navtools{left:auto;right:8px;top:var(--top,104px);bottom:auto;flex-direction:column;padding:3px}
   #navtools .seg{flex-direction:column}
   #focusbar{right:58px}
+  #view-back-bar{display:none!important}
   #lost{max-width:calc(100% - 74px)}
 }
 @media (prefers-reduced-motion: reduce){#ladder{transition:none}}
@@ -413,7 +418,8 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   <div id="focusbar" class="panel" hidden>
     <span class="kicker" id="focus-kind">Viewing</span>
     <nav id="crumbs" aria-label="Where you are"></nav>
-    <button id="focus-back" type="button" hidden>← Whole universe</button>
+    <button id="view-back-bar" class="vb" type="button" hidden title="Back to the view you came from (Esc)">← Back</button>
+    <button id="focus-back" type="button" hidden title="Leave and see the whole universe">Whole universe</button>
   </div>
   <button id="lost" class="panel" type="button" hidden><span id="lost-arrow" aria-hidden="true">↑</span><span><b id="lost-name"></b> is out of view</span><em>Bring it back</em></button>
 
@@ -470,6 +476,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
       <button type="button" id="tool-rotate" aria-pressed="true" title="Rotate: drag turns the model (R)"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 5.2A5.6 5.6 0 1 0 13.6 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13.8 1.8v3.8H10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="tl">Rotate</span></button>
       <button type="button" id="tool-pan" aria-pressed="false" title="Pan: drag moves the view without zooming (P, or hold Space)"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 8.5V3.6a1.1 1.1 0 0 1 2.2 0V8m0-.5V2.6a1.1 1.1 0 0 1 2.2 0V8m0-.3V3.4a1.1 1.1 0 0 1 2.2 0V9.5c0 2.8-1.8 4.9-4.6 4.9-1.9 0-3-.9-4-2.4L1.6 9.2a1.1 1.1 0 0 1 1.8-1.2L5 9.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="tl">Pan</span></button>
     </div>
+    <button type="button" class="nb" id="nav-back" disabled title="Back to the previous view (Esc or Backspace)"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M9.6 3.2 4.8 8l4.8 4.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.4 8h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="tl">Back</span></button>
     <button type="button" class="nb" id="nav-frame" title="Frame the selected item (F)"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.8 5.4V1.8h3.6M10.6 1.8h3.6v3.6M14.2 10.6v3.6h-3.6M5.4 14.2H1.8v-3.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg><span class="tl">Frame</span></button>
     <button type="button" class="nb" id="nav-home" title="Reset the view (Home)"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 7.6 8 2.4l6 5.2M3.8 6.4v7.2h8.4V6.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="tl">Reset</span></button>
   </div>
@@ -523,7 +530,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
         <p><b>True proportions</b> draws radii and heights on one linear scale, 1 unit to 1,000,000 yojanas. The seven islands shrink to the inner fifth of the disc, the golden land becomes the widest band, and every planet from the Sun to Dhruvaloka sits within 3.8 million yojanas of the disc.</p>
         <p><b>Cutaway</b> removes the quarter of the large layers nearest you, so you can see the lower worlds and the water inside. The missing quarter turns with you as you move around the model. Nothing in the text is being removed; it only lets you see inside. It is off while you explore a single world.</p>
         <p><b>Moving around.</b> Use the Rotate and Pan buttons at the bottom left. In Pan, dragging moves the view without turning or zooming; holding Space pans too. Drag the coloured height ruler, use Shift + scroll or PageUp/PageDown to glide up and down the universe. Scrolling zooms toward whatever is under the mouse. Arrow keys pan, F frames the selected item, Home resets the view. Press / to find any world, island or planet by name; diacritics are optional. The address follows what you select, so you can share a link that opens on that place.</p>
-        <p><b>Spotlight.</b> Clicking anything dims the rest of the model and draws your choice bright and whole on top (the cutaway never slices it), with a trail at the top showing where you are. A selected planet is followed as it moves. If you zoom or pan so far that your choice leaves the screen, a “Bring it back” button appears. Clicking empty space or dragging never clears your choice; press Esc or pick “Universe” in the trail.</p>
+        <p><b>Spotlight.</b> Clicking anything dims the rest of the model and draws your choice bright and whole on top (the cutaway never slices it), with a trail at the top showing where you are. A selected planet is followed as it moves. If you zoom or pan so far that your choice leaves the screen, a “Bring it back” button appears. Clicking empty space or dragging never clears your choice. <b>Back</b> (the arrow in the navigation tools, or Esc or Backspace) returns to exactly the view you came from, one step at a time, including the zoom, angle and whatever you had selected. <b>Whole universe</b> leaves completely.</p>
         <p><b>Layers</b> shows or hides parts of the model itself. <b>Panels</b> shows or hides each panel of the page separately, so you can clear the view. <b>Drone</b> plays a soft tanpura-style sound in the background.</p>
         <p><b>Symbols.</b> Trees, lotuses, cities, rivers and serpents inside each world are symbols placed where the text mentions them. They are not to scale, and where the text doesn't say where something is, the placement is only illustrative.</p>
 
@@ -626,10 +633,11 @@ overview:{name:'Brahmāṇḍa', deva:'ब्रह्माण्ड', gloss:'T
   drawn:'The coverings are shown as one thin glowing shell. The faint specks far outside stand for the other universes. Pick any tier on the left, or click anything in the scene.'},
 
 bhumandala:{name:'Bhū-maṇḍala', deva:'भूमण्डल', gloss:'The great disc of islands and oceans', eyebrow:'Bhūrloka · upper world 1 of 7',
-  facts:[['Place among the seven','first, Bhūrloka','SB 2.5.38'],['Outer edge','as far as sunlight and moonlight reach: Lokāloka','VP 2.7'],['Upper limit','as high as large birds fly','SB 5.24.6'],['Meru to Lokāloka','125,000,000 yojanas','SB 5.20.38'],['Islands','7, each ringed by an ocean as wide as itself','SB 5.20'],['Outer shore of 7th ocean','25,350,000','calc'],['Mānasottara from Meru','15,750,000','calc']],
-  body:'Śukadeva compares Bhū-maṇḍala to a lotus. Jambūdvīpa is the whorl at the centre, and six ring-shaped islands surround it, each separated from the next by an ocean. Past the seventh ocean is a band of inhabited land, then a mirror-like land of gold, then the Lokāloka mountain, which marks the limit of sunlight. Bhū-maṇḍala is Bhūrloka, the first of the seven upper worlds and the lowest of the three that are destroyed at the end of Brahmā\'s day.',
+  facts:[['Place among the seven','first, Bhūrloka','SB 2.5.38'],['Bhūrloka is','the disc inside Lokāloka, as far as sunlight and moonlight reach','VP 2.7'],['Outside Bhūrloka','Aloka-varṣa, the unlit land beyond Lokāloka','SB 5.20.42'],['Upper limit','as high as large birds fly','SB 5.24.6'],['Meru to Lokāloka','125,000,000 yojanas','SB 5.20.38'],['Islands','7, each ringed by an ocean as wide as itself','SB 5.20'],['Outer shore of 7th ocean','25,350,000','calc'],['Mānasottara from Meru','15,750,000','calc']],
+  body:'Śukadeva compares Bhū-maṇḍala to a lotus. Jambūdvīpa is the whorl at the centre, and six ring-shaped islands surround it, each separated from the next by an ocean. Past the seventh ocean is a band of inhabited land, then a mirror-like land of gold, then the Lokāloka mountain, which marks the limit of sunlight. The part of Bhū-maṇḍala inside Lokāloka, as far as sunlight and moonlight reach, is Bhūrloka, the first of the seven upper worlds and the lowest of the three that are destroyed at the end of Brahmā\'s day. Its own upward reach is only as high as large birds fly; above that is Bhuvarloka. Aloka-varṣa, the dark land outside Lokāloka, belongs to the disc but not to Bhūrloka.',
   refs:[['SB 2.5.38','The planetary systems up to the earthly stratum are situated in the legs of the universal form.'],['SB 5.24.6','The earth\'s upper limit is as high as swans, hawks, eagles and other large birds can fly.'],['SB 5.16.5','Bhū-maṇḍala resembles a lotus flower, and its seven islands resemble the whorl.'],
         ['SB 5.1.31','The rims of Mahārāja Priyavrata\'s chariot wheels left seven impressions that became the seven oceans.']],
+  note:'The name is used in two ways. In the list of seven upper worlds (SB 2.5.38–39), Bhūrloka is this disc. When the fourteen worlds are grouped into three, as in Śrīla Prabhupāda\'s purport to 2.5.38, the lower worlds are counted with Bhūrloka too.',
   interp:'Richard L. Thompson (Sadāpūta Dāsa), in Vedic Cosmography and Astronomy, reads Bhū-maṇḍala as a map of the plane in which the Sun and planets move. This is his reading, not a statement in the text.',
   drawn:'In Schematic each ring grows by one step per doubling of its real width. Switch to True proportions to see the real widths: the seven islands and oceans fill only the inner fifth of the disc.'},
 
@@ -1151,29 +1159,93 @@ function makeLotus(r, hexOut, hexIn){
   return g;
 }
 function makeCity(hex, n, spread, h){
-  // Pavilions (chhatris) with gold domes around a central temple spire, merged for speed
-  const body=[], gold=[], M=new THREE.Matrix4();
-  const put=(arr, geo, x, y, z)=>{ geo.applyMatrix4(M.makeTranslation(x,y,z)); arr.push(geo); };
+  // A temple city: a Nāgara-style shikhara with its hall, chhatri pavilions around it,
+  // and, for the larger cities, a wall with four gateway towers. Merged for speed.
+  const body=[], gold=[], M=new THREE.Matrix4(), Q=new THREE.Quaternion(), V=new THREE.Vector3(), Sc=new THREE.Vector3(1,1,1), Y=new THREE.Vector3(0,1,0);
+  const put=(arr, geo, x, y, z, ry=0)=>{ M.compose(V.set(x,y,z), Q.setFromAxisAngle(Y, ry), Sc); geo.applyMatrix4(M); arr.push(geo); };
+  const shikhara = s => {   // curvilinear spire in seven tiers, ribbed by its eight faces
+    const pts=[], T=7;
+    for (let k=0;k<=T;k++){ const f=k/T, r=s*.46*(1-Math.pow(f,1.5)*.8), y=s*(.95+f*1.55);
+      pts.push(new THREE.Vector2(r, y)); if (k<T) pts.push(new THREE.Vector2(r*.88, y+s*.05)); }
+    pts.push(new THREE.Vector2(.0001, s*2.52));
+    return new THREE.LatheGeometry(pts, 8);
+  };
   for (let i=0;i<n;i++){
     const a=i*2.399, rr = i===0 ? 0 : spread*Math.sqrt(i/n), px=Math.sin(a)*rr, pz=Math.cos(a)*rr;
     const s = h*(i===0 ? 1.25 : .55+((i*7)%5)*.1);
-    put(body, new THREE.BoxGeometry(s*1.2, s*.2, s*1.2), px, s*.1, pz);
     if (i===0){
-      put(body, new THREE.BoxGeometry(s*.8, s*.7, s*.8), px, s*.55, pz);
-      put(gold, new THREE.CylinderGeometry(s*.08, s*.42, s*1.5, 8), px, s*.9+s*.75, pz);
-      put(gold, new THREE.SphereGeometry(s*.12, 10, 8), px, s*2.5, pz);
+      put(body, new THREE.BoxGeometry(s*1.7, s*.14, s*1.7), px, s*.07, pz);           // stepped plinth
+      put(body, new THREE.BoxGeometry(s*1.35, s*.14, s*1.35), px, s*.21, pz);
+      put(body, new THREE.BoxGeometry(s*.86, s*.68, s*.86), px, s*.62, pz);           // sanctum
+      put(body, shikhara(s), px, 0, pz, Math.PI/8);
+      const am = new THREE.TorusGeometry(s*.13, s*.055, 6, 16); am.rotateX(Math.PI/2); put(gold, am, px, s*2.52, pz);   // āmalaka
+      put(gold, new THREE.SphereGeometry(s*.075, 10, 8), px, s*2.62, pz);              // kalaśa
+      put(gold, new THREE.ConeGeometry(s*.03, s*.22, 6), px, s*2.77, pz);
+      put(body, new THREE.BoxGeometry(s*.72, s*.5, s*.6), px, s*.53, pz+s*.72);       // hall in front
+      const roof = new THREE.ConeGeometry(s*.55, s*.42, 4); roof.rotateY(Math.PI/4); put(body, roof, px, s*.99, pz+s*.72);
+      put(gold, new THREE.SphereGeometry(s*.05, 8, 6), px, s*1.22, pz+s*.72);
     } else {
-      for (const [cx,cz] of [[-1,-1],[-1,1],[1,-1],[1,1]]) put(body, new THREE.CylinderGeometry(s*.06, s*.06, s*.6, 6), px+cx*s*.42, s*.5, pz+cz*s*.42);
-      put(body, new THREE.BoxGeometry(s*1.05, s*.1, s*1.05), px, s*.85, pz);
-      put(gold, new THREE.SphereGeometry(s*.42, 14, 8, 0, Math.PI*2, 0, Math.PI/2), px, s*.9, pz);
-      put(gold, new THREE.ConeGeometry(s*.06, s*.3, 6), px, s*1.47, pz);
+      put(body, new THREE.BoxGeometry(s*1.2, s*.2, s*1.2), px, s*.1, pz);
+      for (const [cx,cz] of [[-1,-1],[-1,1],[1,-1],[1,1]]) put(body, new THREE.CylinderGeometry(s*.055, s*.065, s*.6, 6), px+cx*s*.42, s*.5, pz+cz*s*.42);
+      put(body, new THREE.BoxGeometry(s*1.18, s*.07, s*1.18), px, s*.83, pz);          // chhajja (eave)
+      put(body, new THREE.BoxGeometry(s*.95, s*.08, s*.95), px, s*.89, pz);
+      put(gold, new THREE.SphereGeometry(s*.42, 14, 8, 0, Math.PI*2, 0, Math.PI/2), px, s*.93, pz);
+      put(gold, new THREE.ConeGeometry(s*.05, s*.32, 6), px, s*1.49, pz);
     }
+  }
+  if (n >= 7){   // city wall with four gateway towers (gopuras) at the quarters
+    const R = spread*1.18 + h*.8, wallH = h*.5, segs = 28;
+    for (let k=0;k<segs;k++){ const a=(k+.5)/segs*Math.PI*2; if (k % 7 === 3) continue;
+      put(body, new THREE.BoxGeometry(2*Math.PI*R/segs*1.02, wallH, h*.16), Math.sin(a)*R, wallH/2, Math.cos(a)*R, a); }
+    for (let q=0;q<4;q++){ const a=(q*7+3.5)/segs*Math.PI*2, gx=Math.sin(a)*R, gz=Math.cos(a)*R;
+      const tw = new THREE.CylinderGeometry(h*.26, h*.42, h*1.25, 4, 1); tw.rotateY(Math.PI/4); put(body, tw, gx, h*.62, gz, a);
+      const crest = new THREE.CylinderGeometry(h*.05, h*.05, h*.5, 6); crest.rotateZ(Math.PI/2); put(gold, crest, gx, h*1.3, gz, a); }
   }
   const BGU = THREE.BufferGeometryUtils;
   const g = new THREE.Group();
-  const stone = col(hex).lerp(col(0xE8D9B8), .3);
-  g.add(new THREE.Mesh(BGU.mergeBufferGeometries(body), new THREE.MeshStandardMaterial({color:stone, roughness:.7, emissive:stone.clone().multiplyScalar(.18)})));
-  g.add(new THREE.Mesh(BGU.mergeBufferGeometries(gold), gild(0xE2B458,.45,{metalness:.35})));
+  // Sandstone tinted toward the city's colour, kept well below the glow threshold so carved edges read
+  const stone = col(hex).lerp(col(0xB9A47C), .55).multiplyScalar(.72);
+  g.add(new THREE.Mesh(BGU.mergeBufferGeometries(body), new THREE.MeshStandardMaterial({color:stone, roughness:.78, flatShading:true, emissive:stone.clone().multiplyScalar(.05)})));
+  g.add(new THREE.Mesh(BGU.mergeBufferGeometries(gold), gild(0xC9973F,.12,{metalness:.55, roughness:.38})));
+  return g;
+}
+function makeHorse(mat, phase){
+  // A galloping horse: torso, chest and haunch, arched neck with mane, tapered head, legs in stride
+  const parts=[], M=new THREE.Matrix4(), Q=new THREE.Quaternion(), E3=new THREE.Euler(), V=new THREE.Vector3(), S=new THREE.Vector3();
+  const add=(geo, x,y,z, rx=0,ry=0,rz=0, sx=1,sy=1,sz=1)=>{ M.compose(V.set(x,y,z), Q.setFromEuler(E3.set(rx,ry,rz)), S.set(sx,sy,sz)); geo.applyMatrix4(M); parts.push(geo); };
+  add(new THREE.SphereGeometry(.42,16,10), 0,0,0, 0,0,0, 1.5,.6,.52);
+  add(new THREE.SphereGeometry(.3,14,10), .42,.05,0, 0,0,0, 1,1.08,.9);
+  add(new THREE.SphereGeometry(.31,14,10), -.45,.04,0, 0,0,0, 1,1,.92);
+  add(new THREE.CylinderGeometry(.11,.19,.62,10), .64,.37,0, 0,0,-.72);
+  add(new THREE.CylinderGeometry(.06,.115,.44,10), .93,.58,0, 0,0,-2.05);
+  add(new THREE.ConeGeometry(.025,.08,5), .84,.8,.04, 0,0,-.35); add(new THREE.ConeGeometry(.025,.08,5), .84,.8,-.04, 0,0,-.35);
+  add(new THREE.BoxGeometry(.035,.56,.03), .55,.52,0, 0,0,-.72);                     // mane
+  add(new THREE.ConeGeometry(.07,.55,6), -.78,-.05,0, 0,0,-2.3);                      // tail
+  const sw = Math.sin(phase)*.25;
+  [[.42,.12,-.62+sw],[.42,-.12,-.4-sw],[-.45,.12,.5-sw],[-.45,-.12,.3+sw]].forEach(([x,z,r]) => {
+    add(new THREE.CylinderGeometry(.05,.038,.66,6), x+Math.sin(r)*.3, -.36, z, 0,0,r); });
+  const g = new THREE.Mesh(THREE.BufferGeometryUtils.mergeBufferGeometries(parts), mat);
+  return g;
+}
+function makeElephant(skin, ivory, cloth, goldM){
+  // One of the elephants of the quarters: heavy body, fanned ears, curling trunk and tusks,
+  // a crimson caparison with a gold border, and a gold crown
+  const g=new THREE.Group(), sk=[], iv=[], cl=[], au=[], M=new THREE.Matrix4(), Q=new THREE.Quaternion(), E3=new THREE.Euler(), V=new THREE.Vector3(), S=new THREE.Vector3();
+  const add=(arr, geo, x,y,z, rx=0,ry=0,rz=0, sx=1,sy=1,sz=1)=>{ M.compose(V.set(x,y,z), Q.setFromEuler(E3.set(rx,ry,rz)), S.set(sx,sy,sz)); geo.applyMatrix4(M); arr.push(geo); };
+  add(sk, new THREE.SphereGeometry(1.2,20,14), 0,0,0, 0,0,0, 1.35,.95,.95);
+  add(sk, new THREE.SphereGeometry(.72,18,12), 1.42,.42,0);
+  [1,-1].forEach(sd => add(sk, new THREE.SphereGeometry(.6,14,10), 1.2,.45,sd*.62, 0,sd*.35,0, .12,1,.85));
+  const tr = new THREE.CatmullRomCurve3([new THREE.Vector3(1.98,.32,0), new THREE.Vector3(2.2,-.15,0), new THREE.Vector3(2.24,-.7,0), new THREE.Vector3(2.1,-1.1,0), new THREE.Vector3(2.3,-1.22,0)]);
+  sk.push(new THREE.TubeGeometry(tr, 24, .15, 8, false));
+  [1,-1].forEach(sd => add(iv, new THREE.ConeGeometry(.075,.7,8), 2.12,-.12,sd*.24, sd*.15,0,-2.0));
+  [[.72,.44],[.72,-.44],[-.72,.44],[-.72,-.44]].forEach(([x,z]) => add(sk, new THREE.CylinderGeometry(.25,.22,1.05,10), x,-.98,z));
+  add(sk, new THREE.CylinderGeometry(.04,.02,.8,5), -1.6,-.2,0, 0,0,.45);
+  add(cl, new THREE.BoxGeometry(1.55,.08,1.62), 0,1.0,0);
+  [1,-1].forEach(sd => add(cl, new THREE.BoxGeometry(1.45,.7,.05), 0,.65,sd*.96));
+  [1,-1].forEach(sd => add(au, new THREE.BoxGeometry(1.5,.07,.06), 0,.3,sd*.98));
+  add(au, new THREE.CylinderGeometry(.16,.3,.3,8), 1.5,1.12,0); add(au, new THREE.ConeGeometry(.12,.32,8), 1.5,1.42,0);
+  const BGU = THREE.BufferGeometryUtils;
+  [[sk,skin],[iv,ivory],[cl,cloth],[au,goldM]].forEach(([arr,m]) => { const me=new THREE.Mesh(BGU.mergeBufferGeometries(arr), m); g.add(me); });
   return g;
 }
 function makeGarden(h, bloom, n=5){
@@ -1587,14 +1659,13 @@ lokaMat.userData.baseEm = lokaMat.emissive.clone();
 const loka = new THREE.Mesh(new THREE.CylinderGeometry(1,1,1,256,1,true).translate(0,.5,0), lokaMat);
 bhuGroup.add(loka); pickable(loka,'lokaloka',true); addHi('lokaloka', lokaMat);
 const lokaTop = ringLine(0xD9A441, .75, 256); bhuGroup.add(lokaTop);
+const ELE_M = [stdMat(0x8C877C,{roughness:.78}), stdMat(0xC4BBA4,{roughness:.35}), stdMat(0x7A2228,{roughness:.95}), gild(0xC9973F,.15,{metalness:.5})];
+ELE_M.forEach(m => { m.emissive.multiplyScalar(.4); m.userData.baseEm = m.emissive.clone(); });
 const elephants = [['Ṛṣabha',0],['Puṣkaracūḍa',Math.PI/2],['Vāmana',Math.PI],['Aparājita',-Math.PI/2]].map(([n,a])=>{
   const g=new THREE.Group(); bhuGroup.add(g);
-  const body=new THREE.Mesh(new THREE.SphereGeometry(1.2,16,12), gild(0xE9E2D0,.2)); body.scale.set(1.3,.9,.9); g.add(body);
-  const head=new THREE.Mesh(new THREE.SphereGeometry(.65,12,10), body.material); head.position.set(1.45,.35,0); g.add(head);
-  const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.14,.2,1.1,8), body.material); trunk.position.set(1.95,-.2,0); trunk.rotation.z=.25; g.add(trunk);
-  for (const [lx,lz] of [[-.7,-.4],[-.7,.4],[.7,-.4],[.7,.4]]){ const l=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.9,8), body.material); l.position.set(lx,-.9,lz); g.add(l); }
-  const cap=new THREE.Mesh(new THREE.BoxGeometry(1.4,.12,1.3), gild(0xD9A441,.5)); cap.position.y=.95; g.add(cap);
-  g.children.forEach(c=>pickable(c,'lokaloka'));
+  g.add(makeElephant(...ELE_M));
+  g.traverse(o=>{ if (o.isMesh) pickable(o,'lokaloka'); });
+
   const o=anchorAt(g,0,2,0); addLabel({text:n, sub:'elephant of the quarters', cls:'c-gold', pri:34, only:['lokaloka'], anchor:o, lod:0});
   feat('lokaloka', n, 'One of the four elephants Brahmā placed on top of Lokāloka to maintain the planetary systems (5.20.39).', o, 12);
   return {g,a};
@@ -1645,13 +1716,10 @@ const chariotF = {};
   for (let i=0;i<6;i++){ const arc=new THREE.Mesh(new THREE.TorusGeometry(WR,.14,8,24,Math.PI/3), gild(i%2?0xF2CB74:0xC98A2E,.5)); arc.rotation.z=i*Math.PI/3; wheelSpin.add(arc); pickable(arc,'surya'); }
   for (let i=0;i<12;i++){ const a=i/12*Math.PI*2; const sp=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,WR,6), gild(0xF7DE9A,.45)); sp.position.set(Math.cos(a)*WR/2, Math.sin(a)*WR/2, 0); sp.rotation.z=a-Math.PI/2; wheelSpin.add(sp); }
   [[-.26,0xE8B85C],[0,0xF7E2A8],[.26,0xE8B85C]].forEach(([z,hex])=>{ const h=new THREE.Mesh(new THREE.CylinderGeometry(.34,.34,.24,20), gild(hex,.5)); h.rotation.x=Math.PI/2; h.position.z=z; wheelSpin.add(h); });
-  const horseMat = gild(0xA49C8A,.08);
+  const horseMat = gild(0x9E9480,.05,{roughness:.5});
   for (let i=0;i<7;i++){
-    const z=(i-3)*.42, x=4.1+Math.abs(i-3)*.12;
-    const hg=new THREE.Group(); hg.position.set(x,-.9,z);
-    const body=new THREE.Mesh(new THREE.SphereGeometry(.42,12,8), horseMat); body.scale.set(1.5,.75,.6); hg.add(body);
-    const neck=new THREE.Mesh(new THREE.CylinderGeometry(.1,.16,.6,8), horseMat); neck.position.set(.55,.35,0); neck.rotation.z=-.7; hg.add(neck);
-    const head=new THREE.Mesh(new THREE.SphereGeometry(.16,10,8), horseMat); head.scale.set(1.6,.9,.9); head.position.set(.82,.58,0); hg.add(head);
+    const z=(i-3)*.64, x=4.1+Math.abs(i-3)*.32 + (i%2)*.22;   // a fanned team of seven, abreast
+    const hg=makeHorse(horseMat, i*1.7); hg.position.set(x,-.9,z); pickable(hg,'surya');
     chariot.add(hg);
     const rein=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(x-.5,-.9,z)]), new THREE.LineBasicMaterial({color:0xE8B85C, transparent:true, opacity:.6}));
     chariot.add(rein);
@@ -2225,7 +2293,7 @@ function applyScale(){
   const rl = R(125e6), hl = Yh(4.3e6);
   loka.scale.set(rl, hl, rl); lokaTop.scale.set(rl,1,rl); lokaTop.position.y = hl;
   lokaAnchor.position.set(Math.sin(-.25)*rl, hl, Math.cos(-.25)*rl);
-  elephants.forEach(e => { e.g.position.set(Math.sin(e.a)*rl, hl+lerp(1.9,.3,t), Math.cos(e.a)*rl); e.g.rotation.y = e.a + Math.PI/2; e.g.scale.setScalar(lerp(1,.3,t)); });
+  elephants.forEach(e => { e.g.position.set(Math.sin(e.a)*rl, hl+lerp(1.9,.3,t), Math.cos(e.a)*rl); e.g.rotation.y = e.a - Math.PI/2;   /* each faces outward, toward the quarter it guards */ e.g.scale.setScalar(lerp(1,.3,t)); });
   // Planets
   const k = orbitK();
   GRAHAS.forEach(b => { b.orbit.scale.set(b.rs*k,1,b.rs*k); b.orbit.position.y=Yh(b.h); b.mesh.scale.setScalar(lerp(1,.28,t)); });
@@ -2677,6 +2745,7 @@ function updateTrail(){
   bar.hidden = false;
   $('#focus-kind').textContent = focusId ? 'Exploring' : 'Viewing';
   $('#focus-back').hidden = !focusId;
+  syncBack();
   const cr = $('#crumbs'); cr.innerHTML = '';
   const t = trailFor(sel);
   t.forEach(([label,id],k) => {
@@ -2684,7 +2753,7 @@ function updateTrail(){
     const last = k === t.length-1;
     const el = document.createElement(id && !last ? 'button' : 'span');
     el.textContent = label; if (last) el.className = 'here';
-    if (id && !last){ el.type='button'; el.addEventListener('click', () => { if (id==='overview'){ if (focusId) exitExplore(); else { setSel('overview'); flyTo('overview'); } } else select(id, true); }); }
+    if (id && !last){ el.type='button'; el.addEventListener('click', () => { if (id==='overview'){ if (focusId) exitExplore(); else { pushView(); setSel('overview'); flyTo('overview'); } } else select(id, true); }); }
     cr.appendChild(el);
   });
 }
@@ -2765,6 +2834,7 @@ function flyView(f){
 function flyTo(id){ if (T !== modeTarget){ pendingFly = () => flyTo(id); return; } flyView(focusFor(id)); }
 function flyExplore(id){ if (T !== modeTarget){ pendingFly = () => flyExplore(id); return; } flyView(exploreView(id)); }
 function flyFeature(f){
+  pushView();
   const p = new THREE.Vector3(); f.anchor.getWorldPosition(p);
   const s = new THREE.Vector3(); f.anchor.getWorldScale(s);
   const dir = camera.position.clone().sub(controls.target).normalize();
@@ -2977,6 +3047,39 @@ function xsMount(){
     xsBuilt = true;
   }
 }
+/* ------------------------------------------------------------------
+   VIEW HISTORY: every jump (select, explore, a "Go" in Look closer,
+   a breadcrumb, Reset) first saves the exact view it leaves. Back
+   returns to it; Whole universe still leaves completely.
+------------------------------------------------------------------- */
+const VIEW_STACK = []; let viewRestoring = false;
+function viewNow(){ return {sel, focusId, mode:modeTarget, p:camera.position.clone(), t:controls.target.clone()}; }
+function pushView(){
+  if (viewRestoring || tourI >= 0 || !sel) return;
+  const v = viewNow(), top = VIEW_STACK[VIEW_STACK.length-1];
+  if (top && top.sel === v.sel && top.focusId === v.focusId && top.mode === v.mode &&
+      top.p.distanceTo(v.p) + top.t.distanceTo(v.t) < .01*Math.max(1, v.p.distanceTo(v.t))) return;
+  VIEW_STACK.push(v); if (VIEW_STACK.length > 50) VIEW_STACK.shift();
+  syncBack();
+}
+function syncBack(){
+  const n = VIEW_STACK.length, b = $('#nav-back'), bb = $('#view-back-bar');
+  if (b){ b.disabled = !n; const prev = n && VIEW_STACK[n-1]; b.title = n ? `Back to ${prev.sel && E[prev.sel] && prev.sel!=='overview' ? E[prev.sel].name : 'the previous view'} (Esc or Backspace)` : 'Back to the previous view (Esc or Backspace)'; }
+  if (bb) bb.hidden = !n;
+}
+function goBack(){
+  const v = VIEW_STACK.pop(); syncBack();
+  if (!v) return false;
+  viewRestoring = true;
+  if (v.focusId !== focusId){ focusId = v.focusId; applyDim(); updateCut(); }
+  setSel(v.sel || 'overview');
+  if (focusId && LOWER.includes(focusId)) (HILITE[focusId]||[]).forEach(m => { if (m.userData.baseOp!==undefined) m.opacity = .95; });
+  refreshVisibility(); updateTrail();
+  const camTo = () => flyView({p:v.t.clone(), dir:v.p.clone().sub(v.t).normalize(), d:v.p.distanceTo(v.t)});
+  if (v.mode !== modeTarget){ setMode(v.mode); if (T === modeTarget) camTo(); else pendingFly = camTo; } else camTo();
+  viewRestoring = false;
+  return true;
+}
 function setSel(id){
   hashSet(id);
   if (sel) setGlow(sel, false);
@@ -2989,6 +3092,7 @@ function setSel(id){
 }
 function select(id, fly){
   if (!E[id]) return;
+  if (id !== sel || fly) pushView();
   if (focusId && id !== focusId && id !== 'overview'){ explore(id); return; }
   if (focusId && id === 'overview'){ exitExplore(); return; }
   setSel(id);
@@ -2997,6 +3101,7 @@ function select(id, fly){
 }
 function explore(id, noFly){
   if (!E[id] || id==='overview') return;
+  pushView();
   focusId = id; setSel(id);
   if (LOWER.includes(id)) (HILITE[id]||[]).forEach(m => { if (m.userData.baseOp!==undefined) m.opacity = .95; });
   applyDim(); updateCut();
@@ -3006,6 +3111,7 @@ function explore(id, noFly){
 }
 function exitExplore(){
   if (!focusId) return;
+  pushView();
   focusId = null; applyDim(); updateCut(); refreshVisibility();
   if (sel) showInspector(sel);
   flyTo('overview'); setSel('overview');
@@ -3160,14 +3266,21 @@ $('#notes-close').addEventListener('click', () => { $('#notes').hidden=true; });
 $('#notes').addEventListener('click', e => { if (e.target.id==='notes') $('#notes').hidden=true; });
 $('#i-explore').addEventListener('click', () => { if (sel) explore(sel); });
 $('#focus-back').addEventListener('click', exitExplore);
+$('#view-back-bar').addEventListener('click', goBack);
+$('#nav-back').addEventListener('click', goBack);
 document.addEventListener('keydown', e => {
   if (e.key!=='Escape') return;
   if (!$('#notes').hidden){ $('#notes').hidden=true; return; }
   if (!$('#layers').hidden || !$('#panels').hidden){ $('#layers').hidden=true; $('#panels').hidden=true; $('#btn-layers').classList.remove('on'); $('#btn-panels').classList.remove('on'); return; }
   if ($('#ladder').classList.contains('open')){ $('#ladder').classList.remove('open'); return; }
   if (tourI >= 0 && !focusId){ tourEnd(); return; }
+  if (goBack()) return;                              // Esc steps back one view at a time
   if (focusId){ exitExplore(); return; }
-  if (sel && sel !== 'overview') setSel('overview');
+  if (sel && sel !== 'overview'){ pushView(); setSel('overview'); }
+});
+document.addEventListener('keydown', e => {
+  const t = e.target; if (t && t.closest && t.closest('input,textarea,select')) return;
+  if (e.key === 'Backspace' || (e.altKey && e.key === 'ArrowLeft')){ e.preventDefault(); goBack(); }
 });
 $('#btn-map').addEventListener('click', () => $('#ladder').classList.add('open'));
 $('#ladder-close').addEventListener('click', () => $('#ladder').classList.remove('open'));
@@ -3392,7 +3505,7 @@ $('#nav-frame').addEventListener('click', frameSel);
 $('#lost').addEventListener('click', frameSel);
 $('#nav-home').addEventListener('click', resetView);
 function frameSel(){ if (focusId) flyExplore(focusId); else if (sel) flyTo(sel); }
-function resetView(){ if (focusId) exitExplore(); else { setSel('overview'); flyTo('overview'); } }
+function resetView(){ if (focusId) exitExplore(); else { pushView(); setSel('overview'); flyTo('overview'); } }
 // Shift + scroll glides up and down instead of zooming
 const zP = new THREE.Vector3(), zPlane = new THREE.Plane(), zN = new THREE.Vector3();
 function zoomPoint(clientX, clientY){
