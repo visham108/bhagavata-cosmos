@@ -236,6 +236,60 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 #notes .links{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px}
 #notes-close{border:1px solid var(--panel-edge);background:none;color:var(--ivory);border-radius:9px;padding:6px 12px;cursor:pointer;font-weight:600}
 
+
+/* Cross-section of the three worlds (inspector) */
+.xsec{margin:14px 0 0;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:radial-gradient(130% 80% at 62% 78%,rgba(242,203,116,.07),transparent 62%),linear-gradient(180deg,rgba(6,8,20,.75),rgba(9,11,25,.55))}
+.xs-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px 0}
+.xs-head .kicker{font-size:10px;color:var(--faint)}
+.xs-svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.xs-svg text{font-family:var(--body);fill:var(--ivory)}
+.xs-svg .xs-name{font-family:var(--display);font-size:17px}
+.xs-svg .xs-deva{font-family:var(--display);font-size:11.5px;fill:var(--gold-hi);opacity:.8}
+.xs-svg .xs-cap{font-size:7.6px;letter-spacing:.16em;font-weight:600;fill:var(--muted)}
+.xs-svg .xs-tag{font-size:7.8px;letter-spacing:.12em;font-weight:700}
+.xs-svg .xs-lbl{font-size:10px;fill:#E6DCC4}
+.xs-svg .xs-note{font-size:8.6px;font-style:italic;fill:var(--muted)}
+.xs-svg [data-id],.xs-svg [data-b]{cursor:pointer;outline:none}
+.xs-band{opacity:.62;transition:opacity .3s ease}
+.xsec.has-sel .xs-band{opacity:.3}
+.xs-w.on .xs-band{opacity:1}
+.xs-w:hover .xs-band,.xs-w:focus-visible .xs-band{opacity:.92}
+.xs-w .xs-edge{opacity:0;transition:opacity .3s ease}
+.xs-w.on .xs-edge{opacity:1}
+.xs-w.on .xs-focus{stroke:var(--gold-hi);stroke-width:1.2}
+.xs-bd .xs-line{transition:stroke-width .2s ease,opacity .2s ease}
+.xs-bd:hover .xs-line,.xs-bd:focus-visible .xs-line{stroke-width:2.2}
+.xs-m circle.dot{transition:r .2s ease}
+.xs-m:hover circle.dot,.xs-m:focus-visible circle.dot{r:4.6}
+.xs-m .xs-lbl{transition:fill .2s ease,opacity .2s ease;opacity:.78}
+.xs-m.in .xs-lbl{opacity:1}
+.xs-m.sel .xs-lbl{fill:var(--gold-hi);font-weight:600}
+.xs-m.sel circle.ring{opacity:1}
+.xs-m circle.ring{opacity:0;transition:opacity .2s ease}
+.xs-m:hover .xs-lbl,.xs-m:focus-visible .xs-lbl{opacity:1;fill:#fff}
+.xs-svg :focus-visible{outline:none}
+.xs-svg [data-id]:focus-visible .xs-band,.xs-svg [data-id]:focus-visible .xs-focus{stroke:var(--gold-hi);stroke-width:1.2}
+.xs-capbox{padding:10px 12px 12px;border-top:1px solid var(--rule);min-height:96px}
+.xs-capbox .xs-t{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.xs-capbox b{font-family:var(--display);font-weight:400;font-size:17px;color:var(--ivory)}
+.xs-capbox small{font-size:11.5px;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.xs-capbox p{margin:4px 0 0;font-size:12.5px;line-height:1.5;color:#D8D0BE}
+.xs-src{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
+.xs-in{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.xs-in span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);align-self:center;margin-right:2px}
+.xs-in button{border:1px solid var(--rule);background:rgba(237,228,207,.04);color:var(--ivory);border-radius:999px;font-size:11.5px;padding:2px 9px;cursor:pointer}
+.xs-in button:hover,.xs-in button:focus-visible{border-color:rgba(217,164,65,.6);background:rgba(217,164,65,.1)}
+@keyframes xsRise{from{transform:scaleY(.0)}to{transform:scaleY(1)}}
+@keyframes xsDraw{from{stroke-dashoffset:280}to{stroke-dashoffset:0}}
+@keyframes xsFade{from{opacity:0}to{opacity:1}}
+@keyframes xsPulse{0%,100%{opacity:.82}50%{opacity:1}}
+.xsec.play .xs-rise{transform-box:fill-box;transform-origin:50% 100%;animation:xsRise .9s cubic-bezier(.2,.7,.2,1) both}
+.xsec.play .xs-rise.d2{animation-delay:.12s}
+.xsec.play .xs-line{stroke-dasharray:280;animation:xsDraw 1.1s .35s cubic-bezier(.3,.6,.2,1) both}
+.xsec.play .xs-late{animation:xsFade .7s .7s ease both}
+.xs-glow{animation:xsPulse 5s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.xsec.play .xs-rise,.xsec.play .xs-line,.xsec.play .xs-late,.xs-glow{animation:none}}
+
 @media (max-width: 899px){
   #topbar{left:8px;right:8px;top:calc(env(safe-area-inset-top,0px) + 8px)}
   .brand{padding:7px 12px 7px 10px}
@@ -356,6 +410,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
       <button class="x ins-x" type="button" data-hide="inspector" aria-label="Hide details panel">×</button>
     </div>
     <div class="ins-scroll">
+      <div class="xsec" id="i-xsec" hidden></div>
       <dl class="facts" id="i-facts"></dl>
       <p id="i-body"></p>
       <div class="sec" id="i-feat-wrap"><h3>Look closer</h3><div class="feats" id="i-feat"></div></div>
@@ -453,7 +508,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
           <li><b>Jambūdvīpa's width.</b> The BBT translation of 5.16.5 reads "one million yojanas"; 5.16.7 and 5.20.2 give 100,000, which every other figure depends on.</li>
           <li><b>Brahmapurī.</b> The BBT translation of 5.16.28 gives ten million yojanas a side, which cannot fit on Meru's 32,000-yojana summit. The chapter summary gives 10,000.</li>
           <li><b>The Sun's orbit.</b> Mānasottara lies 15,750,000 yojanas from Meru's centre by the widths in SB 5.20, a circle of about 98,960,000 yojanas. SB 5.21.19 gives the orbit as 95,100,000.</li>
-          <li><b>The seven upper worlds.</b> SB 2.5.38–39 names all seven, Bhūr, Bhuvar, Svar, Mahar, Jana, Tapa and Satya, placing them from the legs to the head of the universal form. SB 5.21.2–3 gives the order of the first three: the earthly sphere below, heaven above, and between them the sky called antarikṣa, with the Sun in its midst (also 5.20.43). Canto 5 gives no heights for where one world ends and the next begins. The boundaries drawn here, Bhuvar up to the Sun and Svar from the Sun to Dhruvaloka, and the heights of Mahar-, Jana-, Tapo- and Satyaloka, come from the Viṣṇu Purāṇa 2.7. SB 5.24.5–6 also uses the words in a narrower sense: the earth reaches as high as large birds fly, and antarikṣa as high as wind blows and clouds float. Which three worlds are destroyed at the end of Brahmā's day, and who moves where, comes from SB 3.11.29–30.</li>
+          <li><b>The seven upper worlds.</b> SB 2.5.38–39 names all seven, Bhūr, Bhuvar, Svar, Mahar, Jana, Tapa and Satya, placing them from the legs to the head of the universal form. SB 5.21.2–3 gives the order of the first three: the earthly sphere below, heaven above, and between them the sky called antarikṣa, with the Sun in its midst (also 5.20.43). SB 5.20.37 makes Lokāloka the outer border of the first three, so they share one width; the Viṣṇu Purāṇa agrees that Bhuvar is as broad as Bhūr. Canto 5 gives no heights for where one world ends and the next begins. The boundaries drawn here, Bhuvar up to the Sun and Svar from the Sun to Dhruvaloka, and the heights of Mahar-, Jana-, Tapo- and Satyaloka, come from the Viṣṇu Purāṇa 2.7. SB 5.24.5–6 also uses the words in a narrower sense: the earth reaches as high as large birds fly, and antarikṣa as high as wind blows and clouds float. Which three worlds are destroyed at the end of Brahmā's day, and who moves where, comes from SB 3.11.29–30.</li>
           <li><b>Lower worlds and water.</b> The depth of each lower world (10,000 yojanas) is from the Viṣṇu Purāṇa 2.5. Canto 5 gives no depth for the Garbhodaka water; Prabhupāda's purports describe the lower half of the universe as filled with it.</li>
           <li><b>The Sītā.</b> The BBT translation of 5.17.6 says the Sītā reaches the salt ocean "in the west", though it flows east through Gandhamādana and Bhadrāśva. The model draws it reaching the eastern shore.</li>
           <li><b>Interpretations.</b> Linking our planet with Bhārata-varṣa comes from Prabhupāda's purports. Reading Bhū-maṇḍala as the plane of the planets' orbits comes from Richard L. Thompson (Sadāpūta Dāsa). Both are marked as interpretations wherever they appear.</li>
@@ -527,7 +582,7 @@ overview:{name:'Brahmāṇḍa', deva:'ब्रह्माण्ड', gloss:'T
   drawn:'The coverings are shown as one thin glowing shell. The faint specks far outside stand for the other universes. Pick any tier on the left, or click anything in the scene.'},
 
 bhumandala:{name:'Bhū-maṇḍala', deva:'भूमण्डल', gloss:'The great disc of islands and oceans', eyebrow:'Bhūrloka · upper world 1 of 7',
-  facts:[['Place among the seven','first, Bhūrloka','SB 2.5.38'],['Upper limit','as high as large birds fly','SB 5.24.6'],['Meru to Lokāloka','125,000,000 yojanas','SB 5.20.38'],['Islands','7, each ringed by an ocean as wide as itself','SB 5.20'],['Outer shore of 7th ocean','25,350,000','calc'],['Mānasottara from Meru','15,750,000','calc']],
+  facts:[['Place among the seven','first, Bhūrloka','SB 2.5.38'],['Outer edge','as far as sunlight and moonlight reach: Lokāloka','VP 2.7'],['Upper limit','as high as large birds fly','SB 5.24.6'],['Meru to Lokāloka','125,000,000 yojanas','SB 5.20.38'],['Islands','7, each ringed by an ocean as wide as itself','SB 5.20'],['Outer shore of 7th ocean','25,350,000','calc'],['Mānasottara from Meru','15,750,000','calc']],
   body:'Śukadeva compares Bhū-maṇḍala to a lotus. Jambūdvīpa is the whorl at the centre, and six ring-shaped islands surround it, each separated from the next by an ocean. Past the seventh ocean is a band of inhabited land, then a mirror-like land of gold, then the Lokāloka mountain, which marks the limit of sunlight. Bhū-maṇḍala is Bhūrloka, the first of the seven upper worlds and the lowest of the three that are destroyed at the end of Brahmā\'s day.',
   refs:[['SB 2.5.38','The planetary systems up to the earthly stratum are situated in the legs of the universal form.'],['SB 5.24.6','The earth\'s upper limit is as high as swans, hawks, eagles and other large birds can fly.'],['SB 5.16.5','Bhū-maṇḍala resembles a lotus flower, and its seven islands resemble the whorl.'],
         ['SB 5.1.31','The rims of Mahārāja Priyavrata\'s chariot wheels left seven impressions that became the seven oceans.']],
@@ -627,11 +682,11 @@ kancani:{name:'Kāñcanī-bhūmi', deva:'काञ्चनी भूमि', gl
   body:'Beyond the inhabited band the land is made of gold and reflects light like a mirror. Anything that falls on it can never be seen again, so every living being has left it.',
   refs:[['SB 5.20.35','Any physical article that falls on that land can never be perceived again. All living entities have abandoned it.']],
   drawn:'Its width is Lokāloka\'s distance from Meru less everything inside it. In True proportions it is the widest band on the disc.'},
-lokaloka:{name:'Lokāloka', deva:'लोकालोक', gloss:'The mountain between light and darkness', eyebrow:'Edge of the lit world',
-  facts:[['Distance from Meru','125,000,000 yojanas','SB 5.20.38'],['Height','higher than Dhruvaloka','SB 5.20.37'],['On its top','four elephants set by Brahmā','SB 5.20.39']],
-  body:'Lokāloka separates the lands that receive sunlight from those that don\'t. It is so high that the rays of every luminary, from the Sun up to Dhruvaloka, stop at it. On its top stand four elephants, Ṛṣabha, Puṣkaracūḍa, Vāmana and Aparājita, and the Lord manifests Himself there to support them and the demigods.',
-  refs:[['SB 5.20.37','Because it is extremely high, extending even higher than Dhruvaloka, it blocks the rays of the luminaries.'],['SB 5.20.40','The Lord manifests Himself on top of the mountain.']],
-  drawn:'No height is given, so the wall is drawn just above Dhruvaloka.'},
+lokaloka:{name:'Lokāloka', deva:'लोकालोक', gloss:'The mountain between light and darkness', eyebrow:'Border of the three worlds',
+  facts:[['Role','outer border of the three worlds','SB 5.20.37'],['Distance from Meru','125,000,000 yojanas','SB 5.20.38'],['Height','higher than Dhruvaloka','SB 5.20.37'],['On its top','four elephants set by Brahmā','SB 5.20.39']],
+  body:'Lokāloka is the wall around the three worlds, Bhūr, Bhuvar and Svar. It separates the lands that receive sunlight from those that don\'t. It is so high that the rays of every luminary, from the Sun up to Dhruvaloka, stop at it. On its top stand four elephants, Ṛṣabha, Puṣkaracūḍa, Vāmana and Aparājita, and the Lord manifests Himself there to support them and the demigods.',
+  refs:[['SB 5.20.37','By the Lord\'s will Lokāloka is set as the outer border of Bhūrloka, Bhuvarloka and Svarloka.'],['SB 5.20.37','Because it is extremely high, extending even higher than Dhruvaloka, it blocks the rays of the luminaries.'],['SB 5.20.40','The Lord manifests Himself on top of the mountain.']],
+  drawn:'No height is given, so the wall is drawn just above Dhruvaloka. Inside it, Bhuvar and Svar are drawn as two stacked bands of the same width, with a glowing plate at each boundary.'},
 aloka:{name:'Aloka-varṣa', deva:'अलोकवर्ष', gloss:'The unlit land outside Lokāloka', eyebrow:'Beyond the lit world',
   facts:[['Width','125,000,000 yojanas','SB 5.20.42']],
   body:'Outside Lokāloka is a dark land as broad as everything inside the mountain. Beyond it is the destination of those who seek liberation, beyond the modes of nature. Kṛṣṇa took Arjuna through this region to bring back the brāhmaṇa\'s sons.',
@@ -706,7 +761,7 @@ sisumara:{name:'Śiśumāra-cakra', deva:'शिशुमारचक्र', gl
   drawn:'A figure for meditation, drawn as a coiled line of stars hanging from Dhruvaloka. It is not a separate object in space.'},
 
 bhuvar:{name:'Bhuvarloka', deva:'भुवर्लोक', gloss:'Antarikṣa, the sky between earth and heaven', eyebrow:'Upper world 2 of 7',
-  facts:[['Place among the seven','second, at the navel of the universal form','SB 2.5.38'],['Lies between','the earthly sphere and the heavenly sphere','SB 5.21.2'],['The Sun','travels in its midst','SB 5.21.3'],['Upper edge','the Sun, 100,000 yojanas up','VP 2.7'],['End of Brahmā\'s day','one of the three worlds burned and flooded','SB 3.11.29–32']],
+  facts:[['Lower boundary','the surface of Bhū-maṇḍala','VP 2.7'],['Upper boundary','the Sun, 100,000 yojanas up','VP 2.7'],['Outer boundary','Lokāloka, as wide as Bhūrloka','SB 5.20.37'],['Place among the seven','second, at the navel of the universal form','SB 2.5.38'],['Lies between','the earthly sphere and the heavenly sphere','SB 5.21.2'],['The Sun','travels in its midst','SB 5.21.3'],['End of Brahmā\'s day','one of the three worlds burned and flooded','SB 3.11.29–32']],
   body:'Śukadeva compares the universe to a grain split into two halves: the earthly sphere below and the heavenly sphere above, joined by the sky called antarikṣa. The Sun moves in the middle of this sky, and it is by the Sun that the sky, heaven, the earth and the lower worlds are told apart. Below the Sun by 10,000 yojanas is Rāhu; below Rāhu are the Siddhas, Cāraṇas and Vidyādharas; and below them, as far up as wind blows and clouds float, are the places of the Yakṣas, Rākṣasas and ghosts.',
   refs:[['SB 2.5.38','The middle planetary systems, beginning from Bhuvarloka, are situated in the navel of the universal form.'],
         ['SB 5.21.2','Between the earthly sphere and the heavenly sphere is the sky called antarikṣa, touching the top of the one and the bottom of the other.'],
@@ -715,9 +770,9 @@ bhuvar:{name:'Bhuvarloka', deva:'भुवर्लोक', gloss:'Antarikṣa, 
         ['SB 5.20.45','Because of the Sun we can tell apart the sky, the heavenly planets, this world and the lower planets.'],
         ['SB 5.24.4–5','Below Rāhu are the Siddhas, Cāraṇas and Vidyādharas; below them, in antarikṣa, the Yakṣas and Rākṣasas, as far up as wind and clouds reach.']],
   note:'The Bhāgavatam places the Sun inside antarikṣa, between earth and heaven, but gives no height where heaven begins. The Viṣṇu Purāṇa (2.7) supplies it: Bhuvar reaches up to the Sun, and Svar begins there. In 5.24.5 the word antarikṣa is also used more narrowly, for the windy sky below the Siddhas.',
-  drawn:'A faint band from the disc up to the Sun\'s height, with the Sun on its top edge. Its width is drawn to take in the planets\' orbits; the text gives none.'},
+  drawn:'A band from the disc up to the Sun\'s height, as wide as the space inside Lokāloka. The gold plate on top marks the boundary with Svar.'},
 svar:{name:'Svarloka', deva:'स्वर्लोक', gloss:'Svarga, the heavenly planets of the demigods', eyebrow:'Upper world 3 of 7',
-  facts:[['Place among the seven','third, at the chest of the universal form','SB 2.5.38'],['Residents','the demigods','SB 2.5.38'],['Lies','above antarikṣa, the upper half of the grain','SB 5.21.2'],['Extent','from the Sun to Dhruvaloka','VP 2.7'],['Height of that span','about 3,700,000 yojanas','calc'],['End of Brahmā\'s day','the highest of the three worlds that burn','SB 3.11.29–30']],
+  facts:[['Lower boundary','the Sun, 100,000 yojanas up','VP 2.7'],['Upper boundary','Dhruvaloka, about 3,800,000 up','VP 2.7'],['Outer boundary','Lokāloka, which rises above Dhruvaloka','SB 5.20.37'],['Height of that span','about 3,700,000 yojanas','calc'],['Place among the seven','third, at the chest of the universal form','SB 2.5.38'],['Residents','the demigods','SB 2.5.38'],['Lies','above antarikṣa, the upper half of the grain','SB 5.21.2'],['End of Brahmā\'s day','the highest of the three worlds that burn','SB 3.11.29–30']],
   body:'Svarloka is the heavenly sphere, the upper of the two halves Śukadeva compares to a split grain, with antarikṣa between it and the earth. The Bhāgavatam names it as the realm of the demigods. Taking the Viṣṇu Purāṇa\'s boundary, it holds the luminaries Canto 5 places above the Sun: the Moon, the nakṣatras, Venus, Mercury, Mars, Jupiter, Saturn, the seven sages and Dhruvaloka. With Bhūr and Bhuvar it makes up the three worlds that go dark and burn at the end of Brahmā\'s day; the sages of Maharloka, just above, move up to Janaloka to escape the heat.',
   refs:[['SB 2.5.38','The still higher planetary systems, home of the demigods and of great sages, are situated in the chest of the universal form.'],
         ['SB 5.21.2','The size of the upper part of the universe is known from the lower part, as one half of a split grain shows the size of the other.'],
@@ -725,7 +780,18 @@ svar:{name:'Svarloka', deva:'स्वर्लोक', gloss:'Svarga, the heave
         ['SB 3.11.29–30','At Brahmā\'s night the three worlds, Bhūḥ, Bhuvaḥ and Svaḥ, go dark, and fire from Saṅkarṣaṇa\'s mouth rages through them.'],
         ['VP 2.7','Svarloka extends from the Sun up to Dhruva.']],
   note:'Canto 5 gives the height of each planet above the Sun, but not where heaven begins or ends. The boundary from the Sun to Dhruvaloka is the Viṣṇu Purāṇa\'s. The Viṣṇu Purāṇa makes that span 1,400,000 yojanas; by the Bhāgavatam\'s spacing of the planets it is about 3,700,000, which is what is drawn.',
-  drawn:'A faint band from the Sun\'s height up to Dhruvaloka, wide enough to take in the planets\' orbits; the text gives no width. Indra\'s city Devadhānī is drawn on Mānasottara, where 5.21.7 places it.'},
+  drawn:'A band from the Sun\'s height up to Dhruvaloka, as wide as the space inside Lokāloka, with a pale plate at the top boundary. Indra\'s city Devadhānī is drawn on Mānasottara, where 5.21.7 places it.'},
+
+trailokya:{name:'Trailokya', deva:'त्रैलोक्य', gloss:'Bhūr, Bhuvar and Svar: the three worlds inside Lokāloka', eyebrow:'Upper worlds 1 to 3',
+  facts:[['Outer border','Lokāloka','SB 5.20.37'],['Floor','Bhū-maṇḍala, out to where sunlight reaches','VP 2.7'],['Bhūr to Bhuvar','the earth\'s surface','VP 2.7'],['Bhuvar to Svar','the Sun, 100,000 yojanas','VP 2.7'],['Roof','Dhruvaloka, about 3,800,000','calc'],['Width','the same for all three','VP 2.7'],['End of Brahmā\'s day','dark, burned and flooded','SB 3.11.29–32']],
+  body:'The first three of the seven upper worlds form one enclosed space. Bhūrloka is the disc, as far as sunlight and moonlight reach. Bhuvarloka is the sky above it, just as wide, up to the Sun. Svarloka runs from the Sun up to Dhruvaloka. Lokāloka stands around all three as their outer border and rises higher than Dhruvaloka, so the light of the Sun, Moon and stars stays inside. These are the three worlds that go dark, burn and fill with water at the end of Brahmā\'s day; Maharloka and the worlds above are outside them.',
+  refs:[['SB 5.20.37','Lokāloka is set as the outer border of the three worlds, Bhūr, Bhuvar and Svar, and rises higher than Dhruvaloka.'],
+        ['SB 5.20.34','Lokāloka divides the lands lit by the Sun from the lands it does not light.'],
+        ['VP 2.7','Bhūrloka reaches as far as the Sun and Moon give light; Bhuvarloka has the same breadth and rises to the Sun; Svarloka runs from the Sun to Dhruva.'],
+        ['SB 3.11.29–30','At Brahmā\'s night the three worlds, Bhūḥ, Bhuvaḥ and Svaḥ, go dark, and Saṅkarṣaṇa\'s fire rages through them.'],
+        ['VP 2.7','The three are called transitory: they are renewed with each day of Brahmā.']],
+  note:'The outer border is the Bhāgavatam\'s; the heights where one world gives way to the next are the Viṣṇu Purāṇa\'s. The Viṣṇu Purāṇa puts Dhruva 1,400,000 yojanas above the Sun; by the Bhāgavatam\'s spacing of the planets it is about 3,700,000, which is what is drawn.',
+  drawn:'Bhuvar and Svar are drawn as two stacked bands that fill the space inside Lokāloka. The gold plate at the Sun\'s height and the pale plate at Dhruvaloka\'s height are the boundaries. The cross-section in this panel shows the same layout flat.'},
 
 mahar:{name:'Maharloka', deva:'महर्लोक', gloss:'World of the great sages', eyebrow:'Upper world 4 of 7',
   facts:[['Place among the seven','fourth, at the chest of the universal form','SB 2.5.38'],['Above Dhruvaloka','10,000,000 yojanas','VP 2.7'],['Residents','sages such as Bhṛgu','SB 3.11.30']],
@@ -1493,24 +1559,73 @@ const siddhaAnchor = new THREE.Object3D(); siddhaGroup.add(siddhaAnchor);
 addLabel({id:'siddha', text:'Siddhas, Cāraṇas, Vidyādharas', cls:'c-soft', pri:40, anchor:siddhaAnchor});
 
 /* ------------------------------------------------------------------
-   BHUVARLOKA AND SVARLOKA: upper worlds 2 and 3, drawn as faint bands
-   around the planets (sky up to the Sun; heaven from the Sun to Dhruva)
+   TRAILOKYA: Bhūr, Bhuvar and Svar fill the space inside Lokāloka
+   (SB 5.20.37). Bhuvar runs from the disc to the Sun, Svar from the
+   Sun to Dhruva (VP 2.7). Each is a veil of light inside the wall,
+   and each boundary is a plate engraved like an astrolabe.
 ------------------------------------------------------------------- */
-const BAND_RS = 142;
+function veilTex(){   // alpha ramp: bright at both edges of a band, faint in the middle
+  const c=document.createElement('canvas'); c.width=4; c.height=256; const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,256);
+  g.addColorStop(0,'#fff'); g.addColorStop(.06,'#8a8a8a'); g.addColorStop(.3,'#2e2e2e'); g.addColorStop(.7,'#2e2e2e'); g.addColorStop(.94,'#8a8a8a'); g.addColorStop(1,'#fff');
+  x.fillStyle=g; x.fillRect(0,0,4,256); return new THREE.CanvasTexture(c);
+}
+function plateTex(hex){   // a boundary plate: faint fill, fine engraved rings, ticks at the rim
+  const N=1024, c=document.createElement('canvas'); c.width=c.height=N; const x=c.getContext('2d'); const cc=col(hex), h=N/2;
+  const rgb=`${Math.round(cc.r*255)},${Math.round(cc.g*255)},${Math.round(cc.b*255)}`;
+  const g=x.createRadialGradient(h,h,0,h,h,h);
+  g.addColorStop(0,`rgba(${rgb},.16)`); g.addColorStop(.55,`rgba(${rgb},.07)`); g.addColorStop(.9,`rgba(${rgb},.16)`); g.addColorStop(.985,`rgba(${rgb},.55)`); g.addColorStop(1,`rgba(${rgb},0)`);
+  x.fillStyle=g; x.fillRect(0,0,N,N);
+  x.strokeStyle=`rgba(${rgb},.22)`; x.lineWidth=1.2;
+  for (let k=1;k<12;k++){ x.beginPath(); x.arc(h,h,h*k/12.4,0,Math.PI*2); x.stroke(); }
+  x.strokeStyle=`rgba(${rgb},.5)`; x.lineWidth=1.6;
+  for (let k=0;k<108;k++){ const a=k/108*Math.PI*2, l = k%9===0 ? .05 : .022; x.beginPath(); x.moveTo(h+Math.cos(a)*h*.955, h+Math.sin(a)*h*.955); x.lineTo(h+Math.cos(a)*h*(.955-l), h+Math.sin(a)*h*(.955-l)); x.stroke(); }
+  x.strokeStyle=`rgba(${rgb},.9)`; x.lineWidth=3; x.beginPath(); x.arc(h,h,h*.97,0,Math.PI*2); x.stroke();
+  const t=new THREE.CanvasTexture(c); t.anisotropy=4; return t;
+}
+const VEIL = veilTex();
+const TRI_IDS = ['trailokya','bhuvar','svar'];
+const TRI_R = () => R(125e6)*.99;
 const BANDS = [
-  {id:'bhuvar', a:0,     b:100e3, hex:0x8E93B8, ang:-2.0, cls:'c-soft',  sub:'upper world 2 · the sky'},
-  {id:'svar',   a:100e3, b:3.8e6, hex:0xE0AE55, ang:-1.6, cls:'c-graha', sub:'upper world 3 · heaven'}
+  {id:'bhuvar', a:0,     b:100e3, hex:0x9BA3D6, ang:-2.3, cls:'c-soft',  sub:'upper world 2 · from the disc to the Sun'},
+  {id:'svar',   a:100e3, b:3.8e6, hex:0xE8B85C, ang:-2.0, cls:'c-graha', sub:'upper world 3 · from the Sun to Dhruvaloka'}
 ];
 BANDS.forEach(w => {
   const grp = manage(new THREE.Group(), 'graha', 'graha:'+w.id); scene.add(grp); w.grp = grp;
-  const wallM = cut(new THREE.MeshBasicMaterial({color:w.hex, transparent:true, opacity:.035, side:THREE.DoubleSide, depthWrite:false}));
-  wallM.userData.baseOp = .035; wallM.userData.selOp = .22; addHi(w.id, wallM);
-  const wall = new THREE.Mesh(new THREE.CylinderGeometry(1,1,1,160,1,true).translate(0,.5,0), wallM); grp.add(wall); pickable(wall, w.id, true);
-  const rimLo = ringLine(w.hex, .28, 160), rimHi = ringLine(w.hex, .28, 160); grp.add(rimLo); grp.add(rimHi);
-  w.wall = wall; w.rimLo = rimLo; w.rimHi = rimHi;
+  const wallM = cut(new THREE.MeshBasicMaterial({color:w.hex, alphaMap:VEIL, transparent:true, opacity:.06, side:THREE.DoubleSide, depthWrite:false}));
+  wallM.userData.baseOp = .06; wallM.userData.selOp = .34; addHi(w.id, wallM); addHi('trailokya', wallM);
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(1,1,1,192,1,true).translate(0,.5,0), wallM); grp.add(wall); pickable(wall, w.id, true);
+  w.wall = wall;
   w.o = new THREE.Object3D(); grp.add(w.o);
-  addLabel({id:w.id, text:E[w.id].name, sub:w.sub, cls:w.cls, pri:76, anchor:w.o, lod:1});
+  addLabel({id:w.id, text:E[w.id].name, sub:w.sub, cls:w.cls, pri:77, anchor:w.o, lod:1});
 });
+// Boundary plates: the Sun's height (Bhuvar | Svar) and Dhruvaloka's height (top of Svar)
+const PLATES = [
+  {key:'sun',    h:100e3, hex:0xF2CB74, ids:['bhuvar','svar','trailokya'], ang:-2.62,
+   text:'Bhuvar ends · Svar begins', sub:'the Sun\'s height, 100,000 yojanas (VP 2.7)'},
+  {key:'dhruva', h:3.8e6, hex:0xCFE3FF, ids:['svar','trailokya'], ang:-2.62,
+   text:'Svar ends', sub:'Dhruvaloka\'s height, about 3,800,000 yojanas'}
+];
+PLATES.forEach(pl => {
+  const grp = manage(new THREE.Group(), 'graha', 'graha:plate'); scene.add(grp); pl.grp = grp;
+  const m = cut(new THREE.MeshBasicMaterial({map:plateTex(pl.hex), transparent:true, opacity:.14, side:THREE.DoubleSide, depthWrite:false}));
+  m.userData.baseOp = .14; m.userData.selOp = .85; pl.ids.forEach(id => addHi(id, m));
+  pl.disc = new THREE.Mesh(new THREE.CircleGeometry(1, 192).rotateX(-Math.PI/2), m); grp.add(pl.disc);
+  pl.rim = ringLine(pl.hex, .55, 256); grp.add(pl.rim);
+  pl.o = new THREE.Object3D(); grp.add(pl.o);
+  addLabel({text:pl.text, sub:pl.sub, cls:'c-gold feat', pri:48, only:pl.ids, anchor:pl.o, lod:0});
+});
+const triBorderA = new THREE.Object3D(); scene.add(triBorderA);
+addLabel({text:'Outer border: Lokāloka', sub:'the wall around the three worlds (SB 5.20.37)', cls:'c-soft feat', pri:47, only:TRI_IDS, anchor:triBorderA, lod:0});
+// What falls inside each world, as places to fly to
+feat('bhuvar','Siddhas, Cāraṇas, Vidyādharas','20,000 yojanas below the Sun, above the windy sky of the Yakṣas (5.24.4–5).', siddhaAnchor, 40);
+feat('bhuvar','Rāhu','10,000 yojanas below the Sun (5.24.1).', GRAHAS[0].mesh, 14);
+feat('bhuvar','Sūrya, on the upper boundary','The Sun moves in the midst of antarikṣa (5.21.3); the Viṣṇu Purāṇa ends Bhuvar at its height.', SUN.mesh, 14);
+[['candra','Candra, the Moon','200,000 above the disc'],['sukra','Śukra, Venus','600,000'],['budha','Budha, Mercury','800,000'],['angaraka','Aṅgāraka, Mars','1,000,000'],['brhaspati','Bṛhaspati, Jupiter','1,200,000'],['sani','Śani, Saturn','1,400,000']]
+  .forEach(([id,n,h]) => feat('svar', n, h+' (SB 5.22).', GRAHAS.find(b=>b.id===id).mesh, 14));
+feat('svar','28 Nakṣatras','400,000 above the disc (5.22.11).', nakAnchor, 40);
+feat('svar','Seven sages','2,500,000 above the disc (5.22.17).', sapt, 22);
+feat('svar','Dhruvaloka, on the upper boundary','Svar ends here (VP 2.7).', dhruva, 34);
 
 /* ------------------------------------------------------------------
    HIGHER WORLDS
@@ -1862,11 +1977,13 @@ function applyScale(){
   sapt.position.set(0, Yh(2.5e6), -36*k); sapt.scale.setScalar(lerp(1,.3,t));
   dhruva.position.set(0, Yh(3.8e6), 0); dhruva.scale.setScalar(lerp(1,.2,t)); sisu.scale.setScalar(lerp(1,.5,t));
   siddhaRing.scale.set(64*k,1,64*k); siddhaRing.position.y=Yh(80e3); siddhaAnchor.position.set(Math.sin(-2.2)*64*k, Yh(80e3), Math.cos(-2.2)*64*k);
-  const brs = BAND_RS*k;
+  const trR = TRI_R();
   BANDS.forEach(w => { const ya = w.a ? Yh(w.a) : hI, yb = Yh(w.b);
-    w.wall.scale.set(brs, Math.max(yb-ya, .001), brs); w.wall.position.y = ya;
-    w.rimLo.scale.set(brs,1,brs); w.rimLo.position.y = ya; w.rimHi.scale.set(brs,1,brs); w.rimHi.position.y = yb;
-    w.o.position.set(Math.sin(w.ang)*brs, lerp(ya, yb, .55), Math.cos(w.ang)*brs); });
+    w.wall.scale.set(trR, Math.max(yb-ya, .001), trR); w.wall.position.y = ya;
+    w.o.position.set(Math.sin(w.ang)*trR, lerp(ya, yb, w.id==='svar' ? .78 : .5), Math.cos(w.ang)*trR); });
+  PLATES.forEach(pl => { const y = Yh(pl.h); pl.disc.scale.set(trR,1,trR); pl.disc.position.y = y; pl.rim.scale.set(trR,1,trR); pl.rim.position.y = y;
+    pl.o.position.set(Math.sin(pl.ang)*trR, y, Math.cos(pl.ang)*trR); });
+  triBorderA.position.set(Math.sin(-1.15)*R(125e6), Yh(1.6e6), Math.cos(-1.15)*R(125e6));
   HIGHER.forEach(w => { w.grp.position.y = Yh(w.h); const th = lerp(7, .6, t); w.wall.scale.set(w.r, th, w.r); w.rimTop.scale.set(w.r,1,w.r); w.rimTop.position.y = th; });
   // Lower worlds
   const rlow = R(25.35e6), ds = rlow/LOW_R_S;
@@ -1989,6 +2106,7 @@ function clustersFor(id){
   if (id==='ganga') return ['bhu','graha','shell','ganga'];
   if (BHU_IDS.has(id)) return ['bhu','shell'];
   if (GRAHA_IDS.has(id)) return ['graha','shell'];
+  if (id==='trailokya') return ['bhu','graha','shell'];
   if (id==='bhuvar') return ['bhu','graha','shell'];
   if (id==='svar') return ['graha','shell'];
   if (HIGHER.some(w=>w.id===id)) return ['high:'+id,'shell'];
@@ -2050,6 +2168,7 @@ function behindDisc(p){
 function contextIds(id){
   if (LOWER.includes(id) || ['naraka','ananta','garbhodaka'].includes(id)) return new Set([...LOWER,'naraka','ananta']);
   if (HIGHER.some(w=>w.id===id)) return new Set(HIGHER.map(w=>w.id));
+  if (id==='trailokya') return new Set(['bhuvar','svar','lokaloka','bhumandala','surya','dhruva']);
   if (id==='bhuvar') return new Set(['bhuvar','svar','surya','rahu','siddha']);
   if (id==='svar') return new Set(['bhuvar','svar','candra','sukra','budha','angaraka','brhaspati','sani','naksatra','saptarsi','dhruva']);
   if (VARSA_IDS.includes(id) || ['jambu','meru','bharata'].includes(id)) return new Set([...VARSA_IDS,'bharata','meru','jambu']);
@@ -2127,8 +2246,9 @@ function spotRoots(id){
   if (id==='saptarsi') return [sapt];
   if (id==='dhruva' || id==='sisumara') return [dhruva];
   if (id==='siddha') return [siddhaGroup];
-  if (id==='bhuvar') return [BANDS[0].grp, siddhaGroup, ...GRAHAS.filter(b=>b.h<=100e3).flatMap(b=>[b.mesh, b.orbit])];
-  if (id==='svar') return [BANDS[1].grp, nak, nakLine, sapt, dhruva, ...GRAHAS.filter(b=>b.h>100e3).flatMap(b=>[b.mesh, b.orbit])];
+  if (id==='trailokya') return [...BANDS.map(w=>w.grp), ...PLATES.map(p=>p.grp), loka, lokaTop, SUN.mesh, dhruva];
+  if (id==='bhuvar') return [BANDS[0].grp, PLATES[0].grp, siddhaGroup, ...GRAHAS.filter(b=>b.h<=100e3).flatMap(b=>[b.mesh, b.orbit])];
+  if (id==='svar') return [BANDS[1].grp, PLATES[0].grp, PLATES[1].grp, nak, nakLine, sapt, dhruva, ...GRAHAS.filter(b=>b.h>100e3).flatMap(b=>[b.mesh, b.orbit])];
   const hw = HIGHER.find(w=>w.id===id); if (hw) return [hw.grp];
   const lw = lowerObjs.find(o=>o.id===id); if (lw) return [lw.grp];
   if (id==='naraka') return [narakaGroup];
@@ -2172,7 +2292,7 @@ function guardSolid(){
   if (dd < r && dd > 1e-6){ camera.position.copy(gC).add(off.multiplyScalar(r/dd)); }
 }
 const frus = new THREE.Frustum(), frusM = new THREE.Matrix4();
-const WIDE = new Set(['bhuvar','svar','manasottara','lokaloka','naksatra','ganga','siddha','garbhodaka','sisumara','saptarsi','bhumandala','karana']);
+const WIDE = new Set(['trailokya','bhuvar','svar','manasottara','lokaloka','naksatra','ganga','siddha','garbhodaka','sisumara','saptarsi','bhumandala','karana']);
 let inViewT = 0, lostShown = false, selSphereT = 0;
 function selSphere(now){
   if (now - selSphereT < 300 && gSphere.radius > 0) return gSphere;
@@ -2248,11 +2368,12 @@ function renderScene(dt){
 ------------------------------------------------------------------- */
 function trailFor(id){
   const U = ['Universe','overview'], B = ['Bhū-maṇḍala','bhumandala'], J = ['Jambūdvīpa','jambu'], me = [E[id] ? E[id].name : id, null];
-  if (id==='bhumandala') return [U, ['Bhū-maṇḍala',null]];
+  if (id==='bhumandala') return [U, ['Trailokya','trailokya'], ['Bhū-maṇḍala',null]];
   if (id==='jambu') return [U, B, ['Jambūdvīpa',null]];
   if (['meru','bharata',...VARSA_IDS].includes(id)) return [U, B, J, me];
   if (RING_BY_ID[id] || ['manasottara','lokaloka'].includes(id)) return [U, B, me];
-  if (id==='bhuvar' || id==='svar') return [U, me];
+  if (id==='trailokya') return [U, me];
+  if (id==='bhuvar' || id==='svar') return [U, ['Trailokya','trailokya'], me];
   if (id==='sisumara') return [U, ['Svarloka','svar'], ['Dhruvaloka','dhruva'], me];
   if (['surya','rahu','siddha'].includes(id)) return [U, ['Bhuvarloka','bhuvar'], me];
   if (GRAHA_IDS.has(id)) return [U, ['Svarloka','svar'], me];
@@ -2293,7 +2414,8 @@ function focusFor(id){
   const hw = HIGHER.find(w=>w.id===id);
   if (hw) return {p:v.set(0,Yh(hw.h),0), d:hw.r*2.6, dir:DIR_SIDE};
   const bw = BANDS.find(w=>w.id===id);
-  if (bw){ const ya = bw.a ? Yh(bw.a) : 0, yb = Yh(bw.b); return {p:v.set(0,(ya+yb)/2,0), d:Math.max(BAND_RS*orbitK()*2.5, (yb-ya)*2.2), dir:DIR_SIDE}; }
+  if (bw){ const ya = bw.a ? Yh(bw.a) : 0, yb = Yh(bw.b); return {p:v.set(0,(ya+yb)/2,0), d:Math.max(TRI_R()*(bw.id==='svar'?2.35:2.15), (yb-ya)*2.2), dir:new THREE.Vector3(.5,.3,.81).normalize()}; }
+  if (id==='trailokya') return {p:v.set(0,Yh(3.8e6)*.45,0), d:TRI_R()*2.55, dir:new THREE.Vector3(.5,.26,.83).normalize()};
   const lw = LOWER.indexOf(id);
   if (lw>=0) return {p:v.set(0,Yh(-(lw+.5)*10e3),R(25.35e6)*.35), d:R(25.35e6)*1.15, dir:new THREE.Vector3(.18,.1,.98).normalize()};
   const js = lerp(1,1/240,t), hI=hIsland();
@@ -2370,6 +2492,7 @@ const chipOf = src => {
 };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function fillBox(q, text){ const el=$(q); el.hidden = !text; if (text) el.querySelector('p').textContent = text; }
+let xsPrevWorld = null;
 function showInspector(id){
   const e = E[id]; if (!e) return;
   $('#i-eyebrow').textContent = focusId===id ? 'Exploring · ' + (e.eyebrow||'') : (e.eyebrow || '');
@@ -2379,6 +2502,11 @@ function showInspector(id){
   $('#i-explore').hidden = id==='overview' || focusId===id;
   $('#i-facts').innerHTML = (e.facts||[]).map(([l,v,s]) => `<dt>${esc(l)}</dt><dd><span>${esc(v)}</span>${chipOf(s)}</dd>`).join('');
   $('#i-body').textContent = e.body || '';
+  { const xs = $('#i-xsec'), show = XS_SHOW.has(id) || (XS_SHOW.has(xsPrevWorld) && XS_WORLD[id]);
+    if (show){ const fresh = xs.hidden; xsMount(); xs.hidden = false; xsSync(id);
+      if (fresh && !reduceMotion){ xs.classList.remove('play'); void xs.offsetWidth; xs.classList.add('play'); } }
+    else xs.hidden = true;
+    if (XS_SHOW.has(id)) xsPrevWorld = id; else if (!show) xsPrevWorld = null; }
   const fs = FEAT[id] || [];
   $('#i-feat-wrap').hidden = !fs.length;
   const fw = $('#i-feat'); fw.innerHTML = '';
@@ -2393,6 +2521,170 @@ function showInspector(id){
   if (T > .5 && id==='ananta') drawn = 'Hidden in True proportions: no size for Ananta can be drawn on this scale.';
   fillBox('#i-drawn', drawn);
   $('.ins-scroll').scrollTop = 0;
+}
+
+/* ------------------------------------------------------------------
+   CROSS-SECTION of the three worlds, drawn in the details panel.
+   Half a section through the universe: Meru's axis on the left,
+   Lokāloka on the right, heights on the model's schematic scale.
+------------------------------------------------------------------- */
+const XS_SHOW = new Set(['trailokya','bhumandala','bhuvar','svar','lokaloka']);
+const XS = {base:392, k:2.4, ax:30, lx:300};
+const xsY = h => XS.base - interp(Y_ANCH, h)*XS.k;
+const xsXs = rs => XS.ax + rs/205*(XS.lx-XS.ax);           // from a schematic radius
+const xsXr = r => xsXs(interp(R_ANCH, r));                   // from yojanas
+const XS_WORLD = {bhumandala:'bhumandala', jambu:'bhumandala', meru:'bhumandala', manasottara:'bhumandala',
+  siddha:'bhuvar', rahu:'bhuvar', surya:'bhuvar', candra:'svar', naksatra:'svar', sukra:'svar', budha:'svar', angaraka:'svar', brhaspati:'svar', sani:'svar', saptarsi:'svar', dhruva:'svar'};
+const XS_INFO = {
+  trailokya:{t:'Trailokya', s:'Upper worlds 1 to 3', d:'Bhūr, Bhuvar and Svar share one width and sit inside Lokāloka. Hover or tap a layer, a boundary or a body to see where it falls.', src:['SB 5.20.37','VP 2.7'], inside:['bhumandala','bhuvar','svar','lokaloka']},
+  bhumandala:{t:'Bhūrloka', s:'Upper world 1 of 7 · the surface', d:'The earthly disc with its islands and oceans, out to where sunlight and moonlight reach, which is Lokāloka. Upward, the earth\'s own reach ends where large birds stop flying.', src:['VP 2.7','SB 5.20.34','SB 5.24.6'], inside:['jambu','meru','manasottara','lokaloka']},
+  bhuvar:{t:'Bhuvarloka', s:'Upper world 2 of 7 · 0 to 100,000 yojanas', d:'Antarikṣa, the sky between earth and heaven. It is as wide as Bhūrloka and rises from the disc to the Sun, which moves in its midst.', src:['VP 2.7','SB 5.21.2–3'], inside:['siddha','rahu','surya']},
+  svar:{t:'Svarloka', s:'Upper world 3 of 7 · 100,000 to about 3,800,000', d:'Heaven, the realm of the demigods. It runs from the Sun up to Dhruvaloka and is as wide as the worlds below it.', src:['VP 2.7','SB 2.5.38'], inside:['candra','naksatra','sukra','budha','angaraka','brhaspati','sani','saptarsi','dhruva']},
+  lokaloka:{t:'Lokāloka', s:'Outer border of the three worlds', d:'The mountain around Bhūr, Bhuvar and Svar. It rises higher than Dhruvaloka, so the light of every luminary stops at it.', src:['SB 5.20.37'], inside:['bhumandala','bhuvar','svar']},
+  aloka:{t:'Aloka-varṣa', s:'Outside Lokāloka', d:'The unlit land beyond the mountain, as broad as everything inside it. It is outside the three worlds.', src:['SB 5.20.42']},
+  mahar:{t:'Maharloka', s:'Upper world 4 of 7 · about 13,800,000', d:'The first world beyond the three, 10,000,000 yojanas above Dhruvaloka. The fire at the end of Brahmā\'s day does not reach it, though its sages move up to Janaloka to escape the heat.', src:['VP 2.7','SB 3.11.30']},
+  'b:base':{t:'Bhūr gives way to Bhuvar', s:'The surface of Bhū-maṇḍala', d:'Bhuvar rises from the earth\'s surface. In 5.24.6 the earth\'s own reach ends where swans, hawks and eagles stop flying.', src:['VP 2.7','SB 5.24.6']},
+  'b:sun':{t:'Bhuvar gives way to Svar', s:'The Sun\'s height · 100,000 yojanas', d:'The Viṣṇu Purāṇa draws this line at the Sun. The Bhāgavatam places the Sun in the midst of antarikṣa, between earth and heaven, and gives no height for the line itself.', src:['VP 2.7','SB 5.21.3']},
+  'b:dhruva':{t:'Svar ends', s:'Dhruvaloka · about 3,800,000 yojanas', d:'Heaven reaches up to the pole star. The height adds the Bhāgavatam\'s gaps between the planets to the Sun\'s height; the Viṣṇu Purāṇa\'s spacing would put it at 1,500,000.', src:['VP 2.7','SB 5.22–23']},
+  'b:loka':{t:'The roof of the three worlds', s:'Lokāloka rises above Dhruvaloka', d:'No height is given for Lokāloka, only that it stands higher than Dhruvaloka. Above it, the next world is Maharloka, 10,000,000 yojanas higher.', src:['SB 5.20.37','VP 2.7']}
+};
+const XS_MEMBERS = [
+  ['siddha',   xsXs(64),       80e3,  'Siddhas', 'L'],
+  ['rahu',     xsXs(131),      90e3,  'Rāhu', 'L'],
+  ['surya',    xsXs(SUN_R_S),  100e3, 'Sūrya · Sun', 'L'],
+  ['candra',   xsXs(126),      200e3, 'Candra · Moon', 'L'],
+  ['naksatra', xsXs(118),      400e3, '28 Nakṣatras', 'L'],
+  ['sukra',    xsXs(110),      600e3, 'Śukra · Venus', 'L'],
+  ['budha',    xsXs(102),      800e3, 'Budha · Mercury', 'L'],
+  ['angaraka', xsXs(94),       1e6,   'Aṅgāraka · Mars', 'L'],
+  ['brhaspati',xsXs(86),       1.2e6, 'Bṛhaspati · Jupiter', 'L'],
+  ['sani',     xsXs(78),       1.4e6, 'Śani · Saturn', 'L'],
+  ['saptarsi', xsXs(36),       2.5e6, 'Seven sages', 'R'],
+  ['dhruva',   XS.ax,          3.8e6, 'Dhruvaloka', 'R']
+];
+function xsSVG(){
+  const B=XS.base, ax=XS.ax, lx=XS.lx, yS=xsY(100e3), yD=xsY(3.8e6), yL=xsY(4.3e6), yM=xsY(13.8e6), yMeru=xsY(84e3);
+  const f = n => n.toFixed(1);
+  const sunX = xsXs(SUN_R_S);
+  let o = `<svg class="xs-svg" viewBox="0 0 340 438" role="group" aria-label="Cross-section of the three worlds: Bhūr, Bhuvar and Svar inside Lokāloka">
+  <defs>
+    <linearGradient id="xsgS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8B85C" stop-opacity=".42"/><stop offset=".12" stop-color="#E8B85C" stop-opacity=".16"/><stop offset=".85" stop-color="#E8B85C" stop-opacity=".1"/><stop offset="1" stop-color="#E8B85C" stop-opacity=".3"/></linearGradient>
+    <linearGradient id="xsgB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9BA3D6" stop-opacity=".45"/><stop offset=".3" stop-color="#9BA3D6" stop-opacity=".16"/><stop offset="1" stop-color="#9BA3D6" stop-opacity=".3"/></linearGradient>
+    <linearGradient id="xsgW" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6A6F8E"/><stop offset=".45" stop-color="#454A66"/><stop offset="1" stop-color="#23263A"/></linearGradient>
+    <linearGradient id="xsgP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FB46A" stop-opacity=".5"/><stop offset="1" stop-color="#7FB46A" stop-opacity=".12"/></linearGradient>
+    <radialGradient id="xsgSun" gradientUnits="userSpaceOnUse" cx="${f(sunX)}" cy="${f(yS)}" r="300"><stop offset="0" stop-color="#FFE3A3" stop-opacity=".42"/><stop offset=".18" stop-color="#FFD27A" stop-opacity=".14"/><stop offset=".6" stop-color="#FFD27A" stop-opacity=".04"/><stop offset="1" stop-color="#FFD27A" stop-opacity="0"/></radialGradient>
+    <clipPath id="xscLit"><rect x="${ax}" y="${f(yL)}" width="${lx-ax}" height="${f(B-yL)}"/></clipPath>
+    <pattern id="xspDark" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#05060D"/><line x1="0" y1="0" x2="0" y2="5" stroke="#EDE4CF" stroke-opacity=".07" stroke-width="1"/></pattern>
+    <filter id="xsfGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+  // Maharloka above a scale break
+  o += `<g class="xs-w xs-late" data-id="mahar" tabindex="0" role="button" aria-label="Maharloka">
+    <rect x="${ax}" y="${f(yM-14)}" width="${lx-ax}" height="22" fill="#9D8FE0" fill-opacity="0" class="xs-focus"/>
+    <line x1="${ax}" y1="${f(yM)}" x2="${lx}" y2="${f(yM)}" stroke="#9D8FE0" stroke-opacity=".7" stroke-dasharray="2 4"/>
+    <text class="xs-name" x="${ax+6}" y="${f(yM-5)}" style="font-size:13px;fill:#CBBAF4">Maharloka</text>
+    <text class="xs-tag" x="${lx-4}" y="${f(yM-5)}" text-anchor="end" style="fill:#B8ACEA">10,000,000 ABOVE DHRUVA</text></g>`;
+  const yBr = (yM + yL)/2 + 2;
+  o += `<path d="M ${ax-6} ${f(yBr)} q 6 -5 12 0 t 12 0 t 12 0 t 12 0" fill="none" stroke="#74769C" stroke-opacity=".7" stroke-width="1"/>
+    <text class="xs-cap" x="${ax+56}" y="${f(yBr+3)}">SCALE BREAK</text>`;
+  // Aloka beyond the wall
+  o += `<g data-id="aloka" tabindex="0" role="button" aria-label="Aloka-varṣa, beyond Lokāloka"><rect x="${lx+12}" y="${f(yL-6)}" width="${340-lx-12}" height="${f(B+18-yL+6)}" fill="url(#xspDark)"/></g>`;
+  // Bands
+  o += `<g class="xs-w" data-id="svar" tabindex="0" role="button" aria-label="Svarloka">
+    <rect class="xs-band xs-rise d2" x="${ax}" y="${f(yD)}" width="${lx-ax}" height="${f(yS-yD)}" fill="url(#xsgS)"/>
+    <rect class="xs-edge" x="${ax+.5}" y="${f(yD+.5)}" width="${lx-ax-1}" height="${f(yS-yD-1)}" fill="none" stroke="#F2CB74" stroke-opacity=".55"/></g>`;
+  o += `<g class="xs-w" data-id="bhuvar" tabindex="0" role="button" aria-label="Bhuvarloka">
+    <rect class="xs-band xs-rise" x="${ax}" y="${f(yS)}" width="${lx-ax}" height="${f(B-yS)}" fill="url(#xsgB)"/>
+    <rect class="xs-edge" x="${ax+.5}" y="${f(yS+.5)}" width="${lx-ax-1}" height="${f(B-yS-1)}" fill="none" stroke="#B9C0EE" stroke-opacity=".6"/></g>`;
+  // Sunlight, which fills the three worlds and stops at Lokāloka
+  o += `<rect class="xs-glow" x="${ax}" y="${f(yL)}" width="${lx-ax}" height="${f(B-yL)}" fill="url(#xsgSun)" clip-path="url(#xscLit)" pointer-events="none"/>`;
+  // World names, set in the open right-hand part of each band
+  const nameBlock = (yc, cap, nm, dv) => `<g class="xs-late" pointer-events="none"><text class="xs-cap" x="${lx-8}" y="${f(yc-14)}" text-anchor="end">${cap}</text><text class="xs-name" x="${lx-8}" y="${f(yc+3)}" text-anchor="end">${nm}</text><text class="xs-deva" x="${lx-8}" y="${f(yc+17)}" text-anchor="end" lang="sa">${dv}</text></g>`;
+  o += nameBlock((yD+yS)/2+4, 'UPPER WORLD 3 OF 7', 'Svarloka', 'स्वर्लोक');
+  o += nameBlock(B-28, 'UPPER WORLD 2 OF 7', 'Bhuvarloka', 'भुवर्लोक');
+  o += `<text class="xs-note xs-late" x="${ax+8}" y="${f(B-6)}" pointer-events="none">antarikṣa: wind, clouds, Yakṣas</text>`;
+  // Pole axis from Meru to Dhruvaloka
+  o += `<line x1="${ax}" y1="${f(yMeru)}" x2="${ax}" y2="${f(yD)}" stroke="#7FE3D4" stroke-opacity=".28" stroke-dasharray="1.5 3.5"/>`;
+  // Boundaries
+  const bLine = (key, y, color, tag, extra='') => `<g class="xs-bd" data-b="${key}" tabindex="0" role="button" aria-label="${tag}">
+    <line x1="${ax}" y1="${f(y)}" x2="${lx}" y2="${f(y)}" stroke="transparent" stroke-width="12"/>
+    <line class="xs-line" x1="${ax}" y1="${f(y)}" x2="${lx}" y2="${f(y)}" stroke="${color}" stroke-width="1.3" filter="url(#xsfGlow)"/>
+    <text class="xs-tag xs-late" x="${lx-6}" y="${f(y-5)}" text-anchor="end" style="fill:${color}">${tag}</text>${extra}</g>`;
+  o += bLine('dhruva', yD, '#CFE3FF', 'SVAR ENDS · ≈ 3,800,000');
+  o += bLine('sun', yS, '#F2CB74', 'BHUVAR | SVAR · 100,000');
+  // Lokāloka: the wall around all three
+  o += `<g class="xs-w" data-id="lokaloka" tabindex="0" role="button" aria-label="Lokāloka">
+    <rect class="xs-focus" x="${lx}" y="${f(yL)}" width="12" height="${f(B-yL)}" fill="url(#xsgW)"/>
+    <line x1="${lx-1}" y1="${f(yL)}" x2="${lx+13}" y2="${f(yL)}" stroke="#D9A441" stroke-width="1.6"/>
+    <ellipse cx="${lx+4}" cy="${f(yL-2.4)}" rx="2.6" ry="1.6" fill="#E9E2D0"/><ellipse cx="${lx+9}" cy="${f(yL-2.4)}" rx="2.6" ry="1.6" fill="#E9E2D0"/>
+    <text class="xs-cap" transform="translate(${lx+8.6} ${f((yL+B)/2)}) rotate(-90)" text-anchor="middle" style="fill:#EDE4CF;font-size:7.4px;letter-spacing:.4em">LOKĀLOKA</text></g>`;
+  o += `<g class="xs-bd" data-b="loka" tabindex="0" role="button" aria-label="Top of Lokāloka"><line x1="${lx-30}" y1="${f(yL)}" x2="${lx+14}" y2="${f(yL)}" stroke="transparent" stroke-width="10"/></g>`;
+  // Bhūr: the disc, with its rings drawn on the schematic scale
+  o += `<g class="xs-w" data-id="bhumandala" tabindex="0" role="button" aria-label="Bhūrloka, the earthly disc">
+    <rect class="xs-band" x="${ax}" y="${B}" width="${lx-ax}" height="18" fill="url(#xsgP)"/>`;
+  RINGS.filter(r => r.id!=='aloka').forEach(r => { const x0=xsXr(r.rIn), x1=xsXr(r.rOut);
+    o += `<rect x="${f(x0)}" y="${B+1.5}" width="${f(Math.max(x1-x0,.6))}" height="3.6" fill="#${r.hex.toString(16).padStart(6,'0')}" pointer-events="none"/>`; });
+  o += `<text class="xs-cap" x="${ax+6}" y="${B+14}" style="fill:#AFD493">BHŪRLOKA · UPPER WORLD 1 OF 7</text>
+    <rect class="xs-edge" x="${ax+.5}" y="${B+.5}" width="${lx-ax-1}" height="17" fill="none" stroke="#AFD493" stroke-opacity=".7"/></g>`;
+  o += bLine('base', B, '#AFD493', '');
+  // Mānasottara under the Sun's track, and Meru on the axis
+  o += `<g data-id="manasottara" tabindex="0" role="button" aria-label="Mānasottara"><path d="M ${f(sunX-4)} ${B} L ${f(sunX)} ${B-4.5} L ${f(sunX+4)} ${B} Z" fill="#E8B85C"/><line x1="${f(sunX)}" y1="${B-4.5}" x2="${f(sunX)}" y2="${f(yS)}" stroke="#E8B85C" stroke-opacity=".18" stroke-dasharray="1 3"/></g>`;
+  o += `<g data-id="meru" tabindex="0" role="button" aria-label="Mount Meru"><path d="M ${ax} ${B} L ${ax+3.5} ${B} L ${ax+7} ${f(yMeru)} L ${ax} ${f(yMeru)} Z" fill="#D9A441"/><text class="xs-lbl" x="${ax+11}" y="${f(yMeru+3)}" style="font-size:9px;fill:#F2CB74">Meru</text></g>`;
+  // Lower worlds, below the disc
+  for (let i=0;i<7;i++) o += `<line x1="${ax}" y1="${B+21+i*2.1}" x2="${lx}" y2="${B+21+i*2.1}" stroke="${hexCss(LOWER_HEX[i])}" stroke-opacity=".32"/>`;
+  o += `<text class="xs-cap" x="${ax+6}" y="${B+43}">LOWER WORLDS BELOW</text>`;
+  // Bodies inside the worlds
+  XS_MEMBERS.forEach(([id,x,h,label,side]) => {
+    const y = xsY(h), sun = id==='surya', L = side==='L';
+    const dot = sun ? `<circle cx="${f(x)}" cy="${f(y)}" r="7" fill="#FFD27A" fill-opacity=".25" class="xs-glow"/><circle class="dot" cx="${f(x)}" cy="${f(y)}" r="4" fill="#FFF1C4"/>`
+                    : `<circle class="dot" cx="${f(x)}" cy="${f(y)}" r="2.8" fill="${id==='rahu'?'#8a8fb8':'#F4EEDC'}"/>`;
+    o += `<g class="xs-m" data-id="${id}" tabindex="0" role="button" aria-label="${label}">
+      <circle class="ring" cx="${f(x)}" cy="${f(y)}" r="6.5" fill="none" stroke="#F2CB74" stroke-width="1"/>${dot}
+      <text class="xs-lbl" x="${f(L ? x-7 : x+7)}" y="${f(y+3.4)}" text-anchor="${L?'end':'start'}">${esc(label)}</text></g>`;
+  });
+  return o + '</svg>';
+}
+let xsBuilt = false, xsHover = null;
+function xsCaption(key){
+  const box = $('#xs-cap'); if (!box) return;
+  const inf = XS_INFO[key];
+  let t, s, d, src = [], inside = [];
+  if (inf){ ({t, s, d} = inf); src = inf.src || []; inside = inf.inside || []; }
+  else if (E[key]){ const e = E[key], w = XS_WORLD[key];
+    t = e.name; s = w ? 'Inside ' + XS_INFO[w].t : (e.gloss || ''); d = e.gloss || '';
+    const f0 = (e.facts||[])[0]; if (f0) { d = `${f0[0]}: ${f0[1]}.`; src = f0[2] ? [f0[2]] : []; }
+    if (e.gloss) d = e.gloss + '. ' + d;
+  } else return;
+  box.innerHTML = `<div class="xs-t"><b>${esc(t)}</b><small>${esc(s||'')}</small></div><p>${esc(d||'')}</p>`
+    + (src.length ? `<div class="xs-src">${src.map(chipOf).join('')}</div>` : '')
+    + (inside.length ? `<div class="xs-in"><span>${key==='lokaloka'||key==='trailokya' ? 'Encloses' : 'Inside'}</span>${inside.map(id => `<button type="button" data-go-x="${id}">${esc(E[id] ? E[id].name : id)}</button>`).join('')}</div>` : '');
+}
+function xsSync(id){
+  const wrap = $('#i-xsec'); if (!wrap || !xsBuilt) return;
+  const tri = id === 'trailokya';
+  wrap.classList.toggle('has-sel', !tri && XS_SHOW.has(id));
+  wrap.querySelectorAll('.xs-w').forEach(g => g.classList.toggle('on', g.dataset.id === id || (tri && ['bhumandala','bhuvar','svar'].includes(g.dataset.id))));
+  const world = XS_WORLD[id] ? XS_WORLD[id] : id;
+  wrap.querySelectorAll('.xs-m').forEach(g => { g.classList.toggle('sel', g.dataset.id === id); g.classList.toggle('in', XS_WORLD[g.dataset.id] === world || tri); });
+  xsHover = null; xsCaption(id);
+}
+function xsMount(){
+  const wrap = $('#i-xsec');
+  if (!xsBuilt){
+    wrap.innerHTML = `<div class="xs-head"><span class="kicker">Cross-section · Meru to Lokāloka</span>${chipOf('SB 5.20.37')}</div>${xsSVG()}<div class="xs-capbox" id="xs-cap" aria-live="polite"></div>`;
+    const keyOf = el => { const n = el.closest('[data-id],[data-b]'); if (!n || !wrap.contains(n)) return null; return n.dataset.id || ('b:' + n.dataset.b); };
+    wrap.addEventListener('pointerover', e => { const k = keyOf(e.target); if (k && k !== xsHover){ xsHover = k; xsCaption(k); } });
+    wrap.addEventListener('pointerleave', () => { if (xsHover){ xsHover = null; xsCaption(sel); } });
+    wrap.addEventListener('focusin', e => { const k = keyOf(e.target); if (k){ xsHover = k; xsCaption(k); } });
+    const act = e => {
+      const chip = e.target.closest('[data-go-x]'); if (chip){ select(chip.dataset.goX, true); return; }
+      const k = keyOf(e.target); if (!k) return;
+      if (k.startsWith('b:')){ xsHover = k; xsCaption(k); return; }   // boundaries explain themselves in place
+      if (E[k] && k !== sel) select(k, true);
+    };
+    wrap.addEventListener('click', act);
+    wrap.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('[role=button]')){ e.preventDefault(); act(e); } });
+    xsBuilt = true;
+  }
 }
 function setSel(id){
   if (sel) setGlow(sel, false);
@@ -2433,6 +2725,7 @@ function exitExplore(){
 const LADDER = [
   {h:'The universe', items:[['overview','Brahmāṇḍa','⌀ 500 M',0xE0AE55],['ganga','Gaṅgā\'s descent','SB 5.17',0x7FD3DC],['karana','Beyond the shell','Kāraṇa',0xC9A24A]]},
   {h:'Upper 4–7 · Mahar to Satya', band:0xA99BE0, chip:'VP 2.7', items:[['satya','Satyaloka','233.8 M',0xF2CB74],['tapa','Tapoloka','113.8 M',0xD08FBC],['jana','Janaloka','33.8 M',0xB894E0],['mahar','Maharloka','13.8 M',0x9D8FE0]]},
+  {h:'Upper 1–3 · Trailokya', band:0xD9C08A, chip:'SB 5.20.37', items:[['trailokya','Trailokya, the three worlds','inside Lokāloka',0xD9C08A]]},
   {h:'Upper 3 · Svar · heaven', band:0xE0AE55, chip:'VP 2.7', items:[['svar','Svarloka','to 3.8 M',0xE0AE55],['sisumara','Śiśumāra','figure',0x8FD0C9],['dhruva','Dhruvaloka','3.8 M',0xE3F3FF],['saptarsi','Seven sages','2.5 M',0xE7DBFF],['sani','Śani · Saturn','1.4 M',0x9A93B8],['brhaspati','Bṛhaspati · Jupiter','1.2 M',0xE8B85C],['angaraka','Aṅgāraka · Mars','1.0 M',0xD9563D],['budha','Budha · Mercury','800 k',0x9ED6C8],['sukra','Śukra · Venus','600 k',0xFFF0C8],['naksatra','28 Nakṣatras','400 k',0xDCE8FF],['candra','Candra · Moon','200 k',0xE6E9F2]]},
   {h:'Upper 2 · Bhuvar · sky', band:0x8E93B8, chip:'VP 2.7', items:[['bhuvar','Bhuvarloka','to 100 k',0x8E93B8],['surya','Sūrya · Sun','100 k',0xFFD27A],['rahu','Rāhu','90 k',0x7078A0],['siddha','Siddhas, Cāraṇas…','80 k',0xB9B6CC]]},
   {h:'Upper 1 · Bhūr · earth', band:0x7FB46A, items:[['bhumandala','Bhū-maṇḍala','0',0x6C8F4E],['meru','Mount Meru','84 k tall',0xD9A441],['bharata','Bhārata-varṣa','we are here',0x7FE3D4],['manasottara','Mānasottara','Sun\'s track',0xE8B85C],['lokaloka','Lokāloka','edge of light',0x7A80A8]], varsas:true, rings:true},
