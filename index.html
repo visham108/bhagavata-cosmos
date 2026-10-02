@@ -187,6 +187,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 #tour-next:hover{background:var(--gold-hi)}
 .btn.tour{background:rgba(217,164,65,.16);border-color:rgba(217,164,65,.55);color:var(--gold-hi)}
 #btn-more{display:none}
+.only-phone{display:none!important}
 .more{display:contents}
 .seg .short{display:none}
 #i-live{margin:8px 0 0;padding:6px 10px;border-radius:8px;background:rgba(217,164,65,.09);border:1px solid rgba(217,164,65,.25);font-size:12.5px;color:var(--gold-hi);font-variant-numeric:tabular-nums}
@@ -335,6 +336,21 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   #lost{top:calc(var(--top,104px) + 96px);max-width:calc(100% - 16px);font-size:12.5px}
 }
 @media (max-width: 480px){#speed-out{display:none} #clock{padding-left:8px}}
+@media (max-width: 600px){
+  .brand{padding:6px 12px 6px 8px;gap:9px}
+  .brand svg{width:26px;height:26px}
+  .brand h1{font-size:17px}
+  .row{gap:6px;flex-wrap:nowrap}
+  .btn{padding:6px 10px;font-size:12.5px}
+  .seg button{padding:5px 10px;font-size:12.5px}
+  .seg .short{display:none}
+  #btn-here{display:none}
+  .only-phone{display:inline-flex!important}
+  #navtools{left:auto;right:8px;top:var(--top,104px);bottom:auto;flex-direction:column;padding:3px}
+  #navtools .seg{flex-direction:column}
+  #focusbar{right:58px}
+  #lost{max-width:calc(100% - 74px)}
+}
 @media (prefers-reduced-motion: reduce){#ladder{transition:none}}
 </style>
 
@@ -369,6 +385,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
         <button class="btn here" id="btn-here" type="button">Where are we?</button>
         <button class="btn" id="btn-more" type="button" aria-expanded="false">More</button>
         <div class="more" id="more">
+          <button class="btn here only-phone" id="btn-here-m" type="button">Where are we?</button>
           <button class="btn" id="btn-cut" type="button" aria-pressed="true" title="Cut a slice out of the model to see the layers inside">Cutaway</button>
           <button class="btn" id="btn-panels" type="button" aria-expanded="false" title="Show or hide each panel">Panels</button>
           <button class="btn" id="btn-layers" type="button" aria-expanded="false" title="Show or hide parts of the model">Layers</button>
@@ -537,6 +554,11 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/BufferGeometryUtils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 <script>
 (() => {
 'use strict';
@@ -607,7 +629,7 @@ meru:{name:'Sumeru', deva:'सुमेरु', gloss:'The golden mountain at th
         ['SB 5.16.28–29','Brahmapurī, called Śātakaumbhī, is on the summit, with the eight governors\' cities around it.'],
         ['SB 5.21.13','One end of the Sun chariot\'s axle rests on the summit of Sumeru.']],
   note:'The BBT translation of 5.16.28 gives Brahmapurī as ten million yojanas a side, which cannot fit on a 32,000-yojana summit. The chapter summary gives 10,000, which is what is drawn.',
-  drawn:'The text does not assign the four belt mountains to directions. They are placed by where their rivers flow (5.16.17–24): Mandara east, Merumandara south, Supārśva west, Kumuda north.'},
+  drawn:'The text does not assign the four belt mountains to directions. They are placed by where their rivers flow (5.16.17–24): Mandara east, Merumandara south, Supārśva west, Kumuda north. The seven terraces and the spires of Brahmapurī and the governors\' cities are illustrative: the text gives the cities\' sides, not their heights.'},
 
 bharata:{name:'Bhārata-varṣa', deva:'भारतवर्ष', gloss:'The southern varṣa of Jambūdvīpa', eyebrow:'Where we are',
   facts:[['Position','south of the Himālaya range','SB 5.16.9'],['Length','9,000 yojanas','SB 5.16.6']],
@@ -934,11 +956,16 @@ function featLabel(id, name, anchor, cls){ addLabel({text:name, cls:(cls||'c-gol
    RENDERER / SCENE
 ------------------------------------------------------------------- */
 const canvas = $('#scene');
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:'high-performance'});
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false, powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
 renderer.setClearColor(0x000000, 0);
 renderer.localClippingEnabled = true;
 const scene = new THREE.Scene();
+// The sky behind everything: the same radial deep-indigo the page uses, drawn into the scene so the glow pass can work on it
+const SKY = (() => { const c=document.createElement('canvas'); c.width=c.height=512; const x=c.getContext('2d');
+  const g=x.createRadialGradient(256,215,0,256,256,330); g.addColorStop(0,'#161B3C'); g.addColorStop(.48,'#0B0E22'); g.addColorStop(1,'#04050C');
+  x.fillStyle=g; x.fillRect(0,0,512,512); return new THREE.CanvasTexture(c); })();
+scene.background = SKY;
 const camera = new THREE.PerspectiveCamera(42, 1, 0.05, 8000);
 camera.position.set(250, 170, 440);
 const controls = new THREE.OrbitControls(camera, canvas);
@@ -969,7 +996,43 @@ function stdMat(hex, o={}){
   m.userData.baseEm = m.emissive.clone();
   return m;
 }
-function gild(hex, em=.28, o={}){ const c=col(hex); const m=new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.45, metalness:.2, emissive:c.clone().multiplyScalar(em)}, o)); m.userData.baseEm=m.emissive.clone(); return m; }
+// A soft studio sky for reflections on gold: indigo above, a warm horizon, dark below
+const ENV = (() => { try {
+  const c=document.createElement('canvas'); c.width=512; c.height=256; const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,256); g.addColorStop(0,'#1B2048'); g.addColorStop(.4,'#3B3763'); g.addColorStop(.5,'#FFD58A'); g.addColorStop(.57,'#6B4A2A'); g.addColorStop(1,'#07080F');
+  x.fillStyle=g; x.fillRect(0,0,512,256);
+  [[90,62,46],[300,44,38],[440,78,30]].forEach(([px,py,r])=>{ const rg=x.createRadialGradient(px,py,0,px,py,r); rg.addColorStop(0,'rgba(255,244,220,.95)'); rg.addColorStop(1,'rgba(255,244,220,0)'); x.fillStyle=rg; x.fillRect(px-r,py-r,2*r,2*r); });
+  const t=new THREE.CanvasTexture(c); t.mapping=THREE.EquirectangularReflectionMapping;
+  const pm=new THREE.PMREMGenerator(renderer); const e=pm.fromEquirectangular(t).texture; pm.dispose(); t.dispose(); return e;
+} catch(_) { return null; } })();
+function gild(hex, em=.28, o={}){ const c=col(hex); const m=new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.45, metalness:.2, emissive:c.clone().multiplyScalar(em)}, o)); m.userData.baseEm=m.emissive.clone(); if (ENV){ m.envMap=ENV; m.envMapIntensity=.85; } return m; }
+// Simple smooth noise for shaping terrain (sum of sines; deterministic)
+const wob = (x, s=0) => .5*Math.sin(x*1.7+s) + .3*Math.sin(x*3.9+s*2.3) + .2*Math.sin(x*8.3+s*4.1);
+/* A mountain range: a ridge that tapers to its crest, with peaks of varying height that never exceed h */
+function ridgeGeo(len, h, w, seed){
+  const g = new THREE.BoxGeometry(len, h, w, 160, 7, 2), p = g.attributes.position;
+  for (let i=0;i<p.count;i++){
+    const x=p.getX(i), y=p.getY(i), z=p.getZ(i), t=(y + h/2)/h, u=x/len*10;
+    const crest = .72 + .28*(.5 + .5*wob(u, seed));                       // 0.72–1.0 of the stated height
+    const ends = Math.min(1, (len/2 - Math.abs(x)) / (len*.06));          // ranges taper into the ground at their ends
+    p.setY(i, -h/2 + t*h*crest*(.35 + .65*ends));
+    const gully = Math.sign(z) * w * .16 * (1 - t) * Math.max(0, wob(u*3.3, seed+5));   // spurs and gullies down the flanks
+    p.setZ(i, z*(1 - .82*t) + gully + Math.sin(u*2.1+seed)*w*.08*t);
+  }
+  g.computeVertexNormals(); return g;
+}
+function shadeByHeight(g, low, high, snow){   // vertex colours from foot to crest, optionally snow on the highest peaks
+  const p=g.attributes.position, n=p.count, cA=col(low), cB=col(high), cS=col(0xF4F2EC), cc=[]; g.computeBoundingBox();
+  const y0=g.boundingBox.min.y, y1=g.boundingBox.max.y;
+  for (let i=0;i<n;i++){ const t=(p.getY(i)-y0)/(y1-y0||1); const c=cA.clone().lerp(cB, Math.min(1,t*1.2)); if (snow && t>.8) c.lerp(cS, Math.min(1,(t-.8)/.12)); cc.push(c.r,c.g,c.b); }
+  g.setAttribute('color', new THREE.Float32BufferAttribute(cc,3)); return g;
+}
+function craggyCone(r, h, seed){
+  const g = new THREE.ConeGeometry(r, h, 30, 9), p = g.attributes.position;
+  for (let i=0;i<p.count;i++){ const x=p.getX(i), y=p.getY(i), z=p.getZ(i), t=(y + h/2)/h; if (t > .995) continue;
+    const a=Math.atan2(z,x), k = 1 + .16*wob(a*2.2 + t*3, seed)*(1-t*.4); p.setX(i, x*k); p.setZ(i, z*k); p.setY(i, y + .05*h*wob(a*3+seed, seed)*(1-t)); }
+  g.computeVertexNormals(); return g;
+}
 function circleGeo(n=128){ const p=[]; for(let i=0;i<n;i++){const a=i/n*Math.PI*2; p.push(Math.sin(a),0,Math.cos(a));} const g=new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(p,3)); return g; }
 function ringLine(hex, opacity=.5, n=128, doCut=true){ const m=new THREE.LineBasicMaterial({color:hex, transparent:true, opacity, depthWrite:false}); if (doCut) cut(m); return new THREE.LineLoop(circleGeo(n), m); }
 function annulusGeo(seg=160){
@@ -1035,19 +1098,27 @@ function flowMat(n){
     vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
     fragmentShader:`uniform float uTime; uniform float uN; uniform vec3 uA; uniform vec3 uB; varying vec2 vUv;
       void main(){ float s=fract(vUv.x*uN - uTime*.55); float b=smoothstep(0.,.18,s)*smoothstep(1.,.45,s); float e=.7+.3*sin(vUv.y*6.2832);
-      gl_FragColor=vec4(mix(uA,uB,b)*e, .5+.45*b); }`,
+      gl_FragColor=vec4(mix(uA,uB,b)*e*.78, .42+.4*b); }`,
     transparent:true, depthWrite:false, blending:THREE.AdditiveBlending });
   FLOW_MATS.push(m); return m;
 }
 
 /* Small symbol builders */
+const TREE_GEO = {lobe: new THREE.IcosahedronGeometry(1, 1), trunk: new THREE.CylinderGeometry(.6, 1, 1, 9), tier: new THREE.ConeGeometry(1, 1, 11, 1)};
 function makeTree(canopyHex, h, shape){
-  const g=new THREE.Group();
-  const trunk=new THREE.Mesh(new THREE.CylinderGeometry(h*.05,h*.08,h*.5,8), gild(0x6b4a2a,.12)); trunk.position.y=h*.25; g.add(trunk);
-  let can;
-  if (shape==='cone') can=new THREE.Mesh(new THREE.ConeGeometry(h*.26,h*.72,14), gild(canopyHex,.32));
-  else { can=new THREE.Mesh(new THREE.SphereGeometry(h*.32,18,12), gild(canopyHex,.32)); can.scale.y=.82; }
-  can.position.y = shape==='cone' ? h*.82 : h*.72; g.add(can); return g;
+  // A tapered trunk with two boughs, and a canopy of faceted lobes in three tones of the leaf colour
+  const g=new THREE.Group(), bark=gild(0x5E4128,.12,{roughness:.8, flatShading:true});
+  const trunk=new THREE.Mesh(TREE_GEO.trunk, bark); trunk.scale.set(h*.07,h*.56,h*.07); trunk.position.y=h*.28; g.add(trunk);
+  [[-1,.42],[1,.5]].forEach(([sd,y]) => { const b=new THREE.Mesh(TREE_GEO.trunk, bark); b.scale.set(h*.03,h*.26,h*.03); b.position.set(sd*h*.07, h*y, 0); b.rotation.z = -sd*.75; g.add(b); });
+  const base = col(canopyHex), tones = [base.clone().multiplyScalar(.78), base, base.clone().lerp(col(0xFFF4D6), .22)];
+  const mats = tones.map(c => { const m=gild(c.getHex(),.22,{roughness:.66, flatShading:true}); m.envMapIntensity=.25; return m; });
+  if (shape==='cone'){
+    [[.3,.3,.42],[.22,.26,.62],[.14,.22,.8]].forEach(([r,hh,y],k) => { const c=new THREE.Mesh(TREE_GEO.tier, mats[k]); c.scale.set(h*r,h*hh,h*r); c.position.y=h*y; g.add(c); });
+    return g;
+  }
+  [[0,.76,0,.24,1],[-.15,.68,.06,.19,0],[.15,.69,-.05,.2,0],[.03,.66,.17,.17,2],[-.04,.88,-.06,.16,2],[.1,.82,.12,.15,1]].forEach(([x,y,z,r,k]) => {
+    const l=new THREE.Mesh(TREE_GEO.lobe, mats[k]); l.scale.set(h*r, h*r*.86, h*r); l.position.set(h*x, h*y, h*z); l.rotation.set(x*7, z*5, y*3); g.add(l); });
+  return g;
 }
 function makeLotus(r, hexOut, hexIn){
   const g=new THREE.Group();
@@ -1164,20 +1235,20 @@ const shellEq = manage(ringLine(0xD9A441, .18, 192), 'shell', 'shell'); scene.ad
 ------------------------------------------------------------------- */
 const bhuGroup = manage(new THREE.Group(), 'bhu', 'bhu'); scene.add(bhuGroup);
 const RINGS = [
-  {id:'jambu',   rIn:0,      rOut:50e3,    hex:0x4F7A4A, kind:'island'},
-  {id:'lavana',  rIn:50e3,   rOut:150e3,   hex:0x2F6680, kind:'ocean', short:'Salt'},
-  {id:'plaksa',  rIn:150e3,  rOut:350e3,   hex:0x6D8448, kind:'island'},
-  {id:'iksu',    rIn:350e3,  rOut:550e3,   hex:0x8E9A5A, kind:'ocean', short:'Sugarcane juice'},
-  {id:'salmali', rIn:550e3,  rOut:950e3,   hex:0x587552, kind:'island'},
-  {id:'sura',    rIn:950e3,  rOut:1.35e6,  hex:0x6B3446, kind:'ocean', short:'Liquor'},
-  {id:'kusa',    rIn:1.35e6, rOut:2.15e6,  hex:0x7C8D4A, kind:'island'},
-  {id:'ghrta',   rIn:2.15e6, rOut:2.95e6,  hex:0xC69A4A, kind:'ocean', short:'Ghee'},
-  {id:'kraunca', rIn:2.95e6, rOut:4.55e6,  hex:0x6F6A57, kind:'island'},
-  {id:'ksira',   rIn:4.55e6, rOut:6.15e6,  hex:0xD9D6CB, kind:'ocean', short:'Milk'},
-  {id:'saka',    rIn:6.15e6, rOut:9.35e6,  hex:0x4E6E5B, kind:'island'},
-  {id:'dadhi',   rIn:9.35e6, rOut:12.55e6, hex:0xC4B99C, kind:'ocean', short:'Churned yogurt'},
-  {id:'puskara', rIn:12.55e6,rOut:18.95e6, hex:0x6B7A55, kind:'island'},
-  {id:'svadu',   rIn:18.95e6,rOut:25.35e6, hex:0x3F8FA6, kind:'ocean', short:'Sweet water'},
+  {id:'jambu',   rIn:0,      rOut:50e3,    hex:0x557E52, kind:'island'},
+  {id:'lavana',  rIn:50e3,   rOut:150e3,   hex:0x235A70, kind:'ocean', short:'Salt'},
+  {id:'plaksa',  rIn:150e3,  rOut:350e3,   hex:0x6A8150, kind:'island'},
+  {id:'iksu',    rIn:350e3,  rOut:550e3,   hex:0x8C9B6B, kind:'ocean', short:'Sugarcane juice'},
+  {id:'salmali', rIn:550e3,  rOut:950e3,   hex:0x5A7558, kind:'island'},
+  {id:'sura',    rIn:950e3,  rOut:1.35e6,  hex:0x5B3046, kind:'ocean', short:'Liquor'},
+  {id:'kusa',    rIn:1.35e6, rOut:2.15e6,  hex:0x768754, kind:'island'},
+  {id:'ghrta',   rIn:2.15e6, rOut:2.95e6,  hex:0xB08A4E, kind:'ocean', short:'Ghee'},
+  {id:'kraunca', rIn:2.95e6, rOut:4.55e6,  hex:0x6E6A5C, kind:'island'},
+  {id:'ksira',   rIn:4.55e6, rOut:6.15e6,  hex:0xB2B0A6, kind:'ocean', short:'Milk'},
+  {id:'saka',    rIn:6.15e6, rOut:9.35e6,  hex:0x4F6D5E, kind:'island'},
+  {id:'dadhi',   rIn:9.35e6, rOut:12.55e6, hex:0xA69D84, kind:'ocean', short:'Churned yogurt'},
+  {id:'puskara', rIn:12.55e6,rOut:18.95e6, hex:0x67775A, kind:'island'},
+  {id:'svadu',   rIn:18.95e6,rOut:25.35e6, hex:0x387F98, kind:'ocean', short:'Sweet water'},
   {id:'tract',   rIn:25.35e6,rOut:41.1e6,  hex:0x5E6250, kind:'land'},
   {id:'kancani', rIn:41.1e6, rOut:125e6,   hex:0xB8913F, kind:'gold'},
   {id:'aloka',   rIn:125e6,  rOut:250e6,   hex:0x0C0D18, kind:'dark'}
@@ -1280,18 +1351,18 @@ const J = y => y*JK;
   const bg = new THREE.ShapeGeometry(sh); bg.rotateX(Math.PI/2);
   const bm = new THREE.Mesh(bg, stdMat(0xC49A4E, {roughness:.6}));
   bm.position.y=.05; jambuGroup.add(bm); pickable(bm,'bharata'); addHi('bharata', bm.material);
-  const rangeMat = stdMat(0x8E8468, {roughness:.9});
+  const rangeMat = stdMat(0xFFFFFF, {roughness:.88, flatShading:true, vertexColors:true}); rangeMat.emissive.setHex(0x080705); rangeMat.userData.baseEm = rangeMat.emissive.clone();
   let himAnchor=null;
-  [['Himālaya',40e3],['Hemakūṭa',29e3],['Niṣadha',18e3],['Nīla',-18e3],['Śveta',-29e3],['Śṛṅgavān',-40e3]].forEach(([n,z])=>{
+  [['Himālaya',40e3],['Hemakūṭa',29e3],['Niṣadha',18e3],['Nīla',-18e3],['Śveta',-29e3],['Śṛṅgavān',-40e3]].forEach(([n,z],i)=>{
     const len = 2*Math.sqrt(Math.max(0, 50e3*50e3 - z*z));
-    const m = new THREE.Mesh(new THREE.BoxGeometry(J(len)*.98, J(10e3), J(2e3)), rangeMat);
+    const m = new THREE.Mesh(shadeByHeight(ridgeGeo(J(len)*.98, J(10e3), J(2e3), i*1.9+.4), 0x40392D, n==='Śveta' ? 0xADA99F : (n==='Hemakūṭa' ? 0x9C7F46 : 0x75695A), n==='Himālaya'), rangeMat);
     m.position.set(0, J(10e3)/2, J(z)); jambuGroup.add(m); pickable(m,'jambu');
     const an = anchorAt(jambuGroup, J(len)*.3, J(10e3), J(z));
     if (n==='Himālaya') himAnchor = an;
     addLabel({text:n, cls:'c-soft', pri:30, only:['jambu','bharata'], anchor:an, lod:0});
   });
   [['Mālyavān',-18e3],['Gandhamādana',18e3]].forEach(([n,x])=>{
-    const m = new THREE.Mesh(new THREE.BoxGeometry(J(2e3), J(2e3), J(36e3)), rangeMat);
+    const m = new THREE.Mesh(shadeByHeight(ridgeGeo(J(36e3), J(2e3), J(2e3), x>0 ? 7.3 : 3.1).rotateY(Math.PI/2), 0x40392D, 0x75695A, false), rangeMat);
     m.position.set(J(x), J(2e3)/2, 0); jambuGroup.add(m); pickable(m,'jambu');
     addLabel({text:n, cls:'c-soft', pri:30, only:['jambu'], anchor:anchorAt(jambuGroup, J(x), J(2e3), J(-12e3)), lod:0});
   });
@@ -1301,10 +1372,25 @@ const J = y => y*JK;
     .forEach(([id,n,x,z])=>{ const v=VARSA.find(q=>q.id===id); addLabel({id, text:n, sub:'Lord as '+v.form.split(',')[0], cls:'c-island', pri:32, only:VONLY, anchor:anchorAt(jambuGroup, J(x), .25, J(z)), lod:0}); });
 
   // Meru
-  const meruMat = stdMat(0xD9A441, {roughness:.35, metalness:.35});
-  meruMat.emissive.setHex(0x3a2708); meruMat.userData.baseEm = meruMat.emissive.clone();
-  const meru = new THREE.Mesh(new THREE.CylinderGeometry(J(16e3), J(8e3), J(84e3), 48, 1), meruMat);
-  meru.position.y = J(84e3)/2; jambuGroup.add(meru); pickable(meru,'meru'); addHi('meru', meruMat);
+  const meruMat = stdMat(0xC08A2E, {roughness:.38, metalness:.45});
+  meruMat.emissive.setHex(0x221505); meruMat.userData.baseEm = meruMat.emissive.clone();
+  if (ENV){ meruMat.envMap = ENV; meruMat.envMapIntensity = .5; }
+  const meruGeo = (() => {
+    const pts=[new THREE.Vector2(0,0)], N=84;
+    for (let i=0;i<=N;i++){ const t=i/N, y=J(84e3)*t;
+      let r = J(8e3) + J(8e3)*Math.pow(t, 1.55);                                   // 16,000 wide at the base, 32,000 at the summit (5.16.7)
+      const step = (t*7) % 1; if (t < .995) r += J(.55e3) * Math.max(0, 1 - step/.12);   // seven terraces
+      pts.push(new THREE.Vector2(r, y)); }
+    pts.push(new THREE.Vector2(0, J(84e3)));
+    const g = new THREE.LatheGeometry(pts, 96), p = g.attributes.position;
+    for (let i=0;i<p.count;i++){ const x=p.getX(i), z=p.getZ(i), r=Math.hypot(x,z); if (r < 1e-6) continue;
+      const a=Math.atan2(z,x), k = 1 + .028*Math.cos(a*24); p.setX(i, x*k); p.setZ(i, z*k); }   // fluting
+    g.computeVertexNormals(); return g; })();
+  const meru = new THREE.Mesh(meruGeo, meruMat);
+  meru.position.y = 0; jambuGroup.add(meru); pickable(meru,'meru'); addHi('meru', meruMat);
+  { const bandM = gild(0xF0C978,.18,{metalness:.6, roughness:.3});
+    for (let k=1;k<=7;k++){ const t=k/7, r=J(8e3)+J(8e3)*Math.pow(t,1.55)+J(.5e3);
+      const band=new THREE.Mesh(new THREE.TorusGeometry(r, J(.16e3), 6, 96), bandM); band.rotation.x=Math.PI/2; band.position.y=J(84e3)*t - J(.1e3); jambuGroup.add(band); } }
   const meruGlow = new THREE.Sprite(new THREE.SpriteMaterial({map:warmGlow, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:.35}));
   meruGlow.scale.set(22,30,1); meruGlow.position.y=J(46e3); jambuGroup.add(meruGlow);
   const root = new THREE.Mesh(new THREE.CylinderGeometry(J(8e3), J(5e3), J(16e3), 32, 1, true),
@@ -1312,14 +1398,27 @@ const J = y => y*JK;
   root.position.y = -J(16e3)/2; jambuGroup.add(root);
   const rootA = anchorAt(jambuGroup, 0, -J(16e3), 0);
   // Brahmapurī
-  const bp = new THREE.Mesh(new THREE.BoxGeometry(J(10e3), J(1.2e3), J(10e3)), stdMat(0xFFF0C2, {roughness:.3, metalness:.3}));
-  bp.position.y = J(84e3)+J(0.6e3); jambuGroup.add(bp); pickable(bp,'meru');
-  for(let i=0;i<8;i++){ const a=i/8*Math.PI*2; const c=new THREE.Mesh(new THREE.BoxGeometry(J(2.5e3),J(0.8e3),J(2.5e3)), bp.material);
-    c.position.set(Math.sin(a)*J(12.5e3), J(84e3)+J(0.4e3), Math.cos(a)*J(12.5e3)); jambuGroup.add(c); }
-  const bpA = anchorAt(jambuGroup, 0, J(86e3), 0);
+  const stone = stdMat(0xDCCB9C, {roughness:.4, metalness:.25}); stone.emissive.setHex(0x120d04); stone.userData.baseEm = stone.emissive.clone(); if (ENV){ stone.envMap=ENV; stone.envMapIntensity=.35; }
+  const finial = gild(0xF2CB74,.55,{metalness:.6, roughness:.22});
+  const temple = (side, hgt) => {   // a square platform, a low wall with four gates, and a tiered spire with an amalaka and kalaśa
+    const t = new THREE.Group();
+    const base = new THREE.Mesh(new THREE.BoxGeometry(side, hgt*.12, side), stone); base.position.y = hgt*.06; t.add(base); pickable(base,'meru');
+    [[0,1],[0,-1],[1,0],[-1,0]].forEach(([dx,dz]) => { const along = dz!==0;
+      [-1,1].forEach(sd => { const w = new THREE.Mesh(new THREE.BoxGeometry(along ? side*.4 : side*.05, hgt*.12, along ? side*.05 : side*.4), stone);
+        w.position.set(dx*side*.47 + (along ? sd*side*.29 : 0), hgt*.18, dz*side*.47 + (along ? 0 : sd*side*.29)); t.add(w); }); });
+    let y = hgt*.12, s0 = side*.42;
+    for (let k=0;k<5;k++){ const hh = hgt*.13, sk = s0*(1 - k*.16);
+      const tier = new THREE.Mesh(new THREE.CylinderGeometry(sk*.62, sk*.72, hh, 4, 1), stone); tier.rotation.y = Math.PI/4; tier.position.y = y + hh/2; t.add(tier); y += hh; }
+    const am = new THREE.Mesh(new THREE.SphereGeometry(s0*.2, 16, 8), finial); am.scale.y = .45; am.position.y = y + s0*.05; t.add(am);
+    const ka = new THREE.Mesh(new THREE.ConeGeometry(s0*.06, s0*.28, 10), finial); ka.position.y = y + s0*.22; t.add(ka);
+    return t; };
+  const bp = temple(J(10e3), J(4.2e3)); bp.position.y = J(84e3); jambuGroup.add(bp);
+  for(let i=0;i<8;i++){ const a=i/8*Math.PI*2; const c=temple(J(2.5e3), J(1.6e3));   // each a quarter of Brahmapurī's size (5.16.29)
+    c.position.set(Math.sin(a)*J(12.5e3), J(84e3), Math.cos(a)*J(12.5e3)); jambuGroup.add(c); }
+  const bpA = anchorAt(jambuGroup, 0, J(89e3), 0);
   addLabel({text:'Brahmapurī', sub:'8 governors\' cities around it', cls:'c-gold', pri:40, only:['meru'], anchor:bpA, lod:0});
   // Belt mountains with their trees; rivers run into Ilāvṛta in each direction
-  const beltMat = stdMat(0xA87A34, {roughness:.7});
+  const beltMat = stdMat(0xA87A34, {roughness:.62, flatShading:true}); if (ENV){ beltMat.envMap=ENV; beltMat.envMapIntensity=.5; }
   const BELT = [
     ['Mandara',Math.PI/2,'Mango tree Devacūta',0xE3A33B,'Aruṇodā',0xE06C6C],
     ['Merumandara',0,'Jambū tree',0x7A4FA3,'Jambū-nadī',0x9B6FD0],
@@ -1327,7 +1426,7 @@ const J = y => y*JK;
     ['Kumuda',Math.PI,'Banyan Śatavalśa',0x3F7A4A,'Rivers of milk and more',0xF4F1E6]];
   const beltA = {};
   BELT.forEach(([n,a,tree,thex,river,rhex])=>{
-    const m = new THREE.Mesh(new THREE.ConeGeometry(J(3.4e3), J(10e3), 20), beltMat);
+    const m = new THREE.Mesh(craggyCone(J(3.4e3), J(10e3), a*3.1+1), beltMat);
     const bx=Math.sin(a)*J(12e3), bz=Math.cos(a)*J(12e3);
     m.position.set(bx, J(5e3), bz); jambuGroup.add(m); pickable(m,'meru');
     const t = makeTree(thex, J(4.5e3)); t.position.set(bx, J(10e3)-J(.4e3), bz); jambuGroup.add(t);
@@ -1347,7 +1446,7 @@ const J = y => y*JK;
     addLabel({text:river, cls:'c-ocean', pri:28, only:['meru','jambu'], anchor:anchorAt(jambuGroup, ux*J(16.5e3), .1, uz*J(16.5e3)), lod:0});
   });
   // Four lakes between the belt mountains (order of the lakes' positions is not stated)
-  const LAKES = [['Lake of milk',0xF3F0E4],['Lake of honey',0xE0A53A],['Lake of sugarcane juice',0xB9C46A],['Lake of pure water',0x5CB6CF]];
+  const LAKES = [['Lake of milk',0xD8D4C8],['Lake of honey',0xE0A53A],['Lake of sugarcane juice',0xB9C46A],['Lake of pure water',0x5CB6CF]];
   const lakeAs=[];
   LAKES.forEach(([n,hex],i)=>{ const a=Math.PI/4 + i*Math.PI/2; const lk=new THREE.Mesh(new THREE.CircleGeometry(J(2.6e3), 32).rotateX(-Math.PI/2), stdMat(hex,{roughness:.2, metalness:.1}));
     lk.position.set(Math.sin(a)*J(10.5e3), .07, Math.cos(a)*J(10.5e3)); jambuGroup.add(lk); pickable(lk,'jambu');
@@ -2094,7 +2193,7 @@ function applyScale(){
     (ICONS[id].peaks||[]).forEach(p => { const a=p.userData.a; p.position.set(Math.sin(a)*mid, hI+.65*s, Math.cos(a)*mid); p.scale.setScalar(s); }); });
   if (ICONS.puskara) { const r=RING_BY_ID.puskara, rr=lerp(R(r.rIn)+(R(r.rOut)-R(r.rIn))*.25, R(r.rIn)+(R(r.rOut)-R(r.rIn))*.25, t); ICONS.puskara.g.position.set(Math.sin(ICON_A)*rr, hI, Math.cos(ICON_A)*rr); }
   jambuLabelAnchor.position.set(-R(50e3)*.72, hI+.2, -R(50e3)*.72);
-  { const ru = R(68e3), su = lerp(1,.012,t); upaIsles.forEach(u => { u.g.position.set(Math.sin(u.a)*ru, .02, Math.cos(u.a)*ru); u.g.scale.setScalar(su); }); }
+  { const ru = R(68e3), su = lerp(1,.012,t); upaIsles.forEach(u => { u.g.position.set(Math.sin(u.a)*ru, .02, Math.cos(u.a)*ru); u.g.scale.setScalar(su*.6); }); }
   bhuAnchor.position.set(0, .2, -R(33e6));
   // Mānasottara
   const rm = R(15.75e6), hm = lerp(J(10e3), 0.01, t);
@@ -2495,7 +2594,30 @@ function checkInView(now){
     if (lost) $('#lost-name').textContent = E[sel] ? E[sel].name : 'Your selection';
   }
 }
+/* Glow: the scene is drawn into a multisampled target, then bright things (the Sun, Dhruvaloka, stars, gold edges) bloom.
+   Without WebGL 2 or the scripts, the scene is drawn directly as before. */
+let composer = null, bloomPass = null, frameDt = 0;
+(() => {
+  try {
+    if (!THREE.EffectComposer || !THREE.UnrealBloomPass || !renderer.capabilities.isWebGL2 || !THREE.WebGLMultisampleRenderTarget) return;
+    const w = Math.max(1, canvas.clientWidth), h = Math.max(1, canvas.clientHeight), pr = renderer.getPixelRatio();
+    const rt = new THREE.WebGLMultisampleRenderTarget(w*pr, h*pr, {format:THREE.RGBAFormat, minFilter:THREE.LinearFilter, magFilter:THREE.LinearFilter});
+    rt.samples = 4;
+    composer = new THREE.EffectComposer(renderer, rt);
+    const scenePass = new THREE.Pass(); scenePass.needsSwap = false;
+    scenePass.render = (r, writeBuffer, readBuffer) => { r.setRenderTarget(scenePass.renderToScreen ? null : readBuffer); drawScene(frameDt); };
+    composer.addPass(scenePass);
+    bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(w/2, h/2), .6, .5, .96);
+    const baseSize = bloomPass.setSize.bind(bloomPass);
+    bloomPass.setSize = (bw, bh) => baseSize(Math.max(1, Math.round(bw/2)), Math.max(1, Math.round(bh/2)));   // half resolution is plenty for a glow
+    composer.addPass(bloomPass);
+  } catch (err) { composer = null; }
+})();
 function renderScene(dt){
+  frameDt = dt;
+  if (composer) composer.render(dt); else drawScene(dt);
+}
+function drawScene(dt){
   spotLevel += ((spotOn ? 1 : 0) - spotLevel) * Math.min(1, dt*6);
   if (spotOn || spotLevel > .01){
     renderer.autoClear = false; renderer.clear();
@@ -2503,7 +2625,7 @@ function renderScene(dt){
     dimMat.opacity = .74*spotLevel; renderer.render(dimScene, dimCam);
     renderer.clearDepth(); camera.layers.set(SPOT_LAYER);
     const cx = clipX.constant, cz = clipZ.constant; clipX.constant = clipZ.constant = 1e6;   // never cut the selection
-    renderer.render(scene, camera);
+    scene.background = null; renderer.render(scene, camera); scene.background = SKY;          // the sky is already drawn
     clipX.constant = cx; clipZ.constant = cz;
     camera.layers.set(0); renderer.autoClear = true;
   } else renderer.render(scene, camera);
@@ -2957,6 +3079,7 @@ function setMode(m){
 }
 $('#mode-s').addEventListener('click', () => setMode(0));
 $('#mode-t').addEventListener('click', () => setMode(1));
+$('#btn-here-m').addEventListener('click', () => $('#btn-here').click());
 $('#btn-here').addEventListener('click', () => { if (modeTarget===1) setMode(0); if (focusId && focusId!=='bharata'){ explore('bharata'); } else select('bharata', true); });
 $('#btn-cut').addEventListener('click', e => { cutOn = !cutOn; e.currentTarget.setAttribute('aria-pressed', cutOn); updateCut();
   toast(focusId ? 'Cutaway applies to the whole-universe view. Leave Explore to see it.' : (cutOn ? 'Cutaway on: the quarter nearest you is removed to show the layers inside.' : 'Cutaway off: the model is whole.')); });
@@ -3304,6 +3427,7 @@ function resize(){
   syncTop();
   const w = canvas.clientWidth, h = canvas.clientHeight;
   renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
+  if (composer){ composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
   LABELS.forEach(L => { L.w = 0; });
 }
 window.addEventListener('resize', resize);
@@ -3346,6 +3470,11 @@ function frame(now){
   renderScene(dt);
   updateLabels();
 }
+const DOT = (() => { const c=document.createElement('canvas'); c.width=c.height=64; const x=c.getContext('2d');
+  const g=x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.45,'rgba(255,255,255,.95)'); g.addColorStop(.7,'rgba(255,255,255,.35)'); g.addColorStop(1,'rgba(255,255,255,0)');
+  x.fillStyle=g; x.fillRect(0,0,64,64); return new THREE.CanvasTexture(c); })();
+scene.traverse(o => { if (!o.isPoints) return; const m = o.material;
+  m.map = DOT; m.transparent = true; m.alphaTest = .02; m.depthWrite = false; m.size = m.size * 1.6; m.needsUpdate = true; });
 resize();
 applyScale();
 refreshVisibility();
