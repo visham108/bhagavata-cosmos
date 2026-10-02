@@ -493,7 +493,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
         <h3>Drawing choices that are not in the text</h3>
         <ol>
           <li>Islands are drawn slightly raised above the oceans so land and water read apart. The text gives no heights for them.</li>
-          <li>The four lakes around Meru are named in 5.16.13 but not placed; their positions are illustrative. The same holds for cities, trees and serpents inside each world, and the seven peaks on the middle islands.</li>
+          <li>The four lakes around Meru are named in 5.16.13 but not placed, and the four celestial gardens of 5.16.14 are named without directions; their positions are illustrative. So are the gardens and lotus lakes drawn in each varṣa (5.17.13) and in each lower world (5.24.8–10): the text says they are there, not where. The same holds for cities, trees and serpents inside each world, and the seven peaks on the middle islands.</li>
           <li>The nine varṣas are tinted different colours only so they can be told apart.</li>
           <li>The Gaṅgā's route between the stops named in 5.17.1–4, and where it enters the shell, are illustrative.</li>
           <li>In Day mode the Sun circles Meru once a day and the disc is shaded into a lit and a dark half, with light ending at Lokāloka (5.20.37, 5.21.8–9). Placing the Sun's northern course toward Meru and its southern course away from it is an interpretation.</li>
@@ -857,7 +857,7 @@ garbhodaka:{name:'Garbhodaka', deva:'गर्भोदक', gloss:'The water wi
 };
 ['plaksa','salmali','kusa','kraunca','saka'].forEach(id => { E[id].drawn = 'The tree or mountain and the seven small peaks are symbols, not to scale. The island has seven tracts, each with a mountain and a river; their layout isn\'t described, so the peaks are spaced evenly.'; });
 E.puskara.drawn = 'The golden lotus is a symbol, not to scale. The ring mountain is Mānasottara.';
-E.jambu.drawn += ' Lakes, rivers, trees and the smaller ranges are symbols, enlarged so they can be seen.';
+E.jambu.drawn += ' Lakes, gardens, rivers, trees and the smaller ranges are symbols, enlarged so they can be seen. The four celestial gardens and the varṣas\' gardens and lakes are named in the text without exact positions.';
 E.bharata.facts.push(['Worship','Nara-Nārāyaṇa, served by Nārada Muni and the residents','SB 5.19.9–10']);
 E.surya.facts.push(['Year','a northern and a southern course','SB 5.21.3–6'],['Day and night','opposite sides of Meru have opposite times','SB 5.21.8–9']);
 E.surya.drawn = 'The Sun is drawn above Mānasottara, with its axle as a gold line to Meru\'s summit. In Year mode it circles once a year against the stars and moves between its northern and southern courses. Switch the clock to Day to watch it circle Meru once a day, lighting half the disc. North is drawn as toward Meru, since Meru lies north of Bhārata-varṣa; placing the two courses this way is an interpretation.';
@@ -1076,6 +1076,28 @@ function makeCity(hex, n, spread, h){
   const stone = col(hex).lerp(col(0xE8D9B8), .3);
   g.add(new THREE.Mesh(BGU.mergeBufferGeometries(body), new THREE.MeshStandardMaterial({color:stone, roughness:.7, emissive:stone.clone().multiplyScalar(.18)})));
   g.add(new THREE.Mesh(BGU.mergeBufferGeometries(gold), gild(0xE2B458,.45,{metalness:.35})));
+  return g;
+}
+function makeGarden(h, bloom, n=5){
+  // A grove of flowering, fruiting trees with petals on the ground
+  const g=new THREE.Group(); const leaf=[0x3F8F55,0x4E9A4A,0x2F7A5E];
+  for (let i=0;i<n;i++){ const a=i*2.399, rr=i===0?0:h*.55*Math.sqrt(i/n);
+    const t=makeTree(leaf[i%3], h*(.8+((i*3)%3)*.12)); t.position.set(Math.sin(a)*rr,0,Math.cos(a)*rr); g.add(t);
+    for (let k=0;k<4;k++){ const b=new THREE.Mesh(new THREE.SphereGeometry(h*.05,8,6), new THREE.MeshBasicMaterial({color:k%2?bloom:0xFFB347})); const q=k*1.7+i;
+      b.position.set(Math.sin(a)*rr+Math.sin(q)*h*.27, h*(.62+.12*(k%3)), Math.cos(a)*rr+Math.cos(q)*h*.27); g.add(b); } }
+  const pts=[]; for (let k=0;k<40;k++){ const a=k*2.399, r=Math.sqrt(k/40)*h*.95; pts.push(Math.sin(a)*r, .02, Math.cos(a)*r); }
+  const pg=new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
+  g.add(new THREE.Points(pg, new THREE.PointsMaterial({color:bloom, size:2.2, sizeAttenuation:false})));
+  return g;
+}
+function makeLotusLake(r, hex=0x5CB6CF){
+  // Clear water with lotus pads and pink blooms
+  const g=new THREE.Group();
+  g.add(new THREE.Mesh(new THREE.CircleGeometry(r, 40).rotateX(-Math.PI/2), stdMat(hex,{roughness:.15, metalness:.15})));
+  const rim=new THREE.Mesh(new THREE.RingGeometry(r, r*1.08, 40).rotateX(-Math.PI/2), stdMat(0xC9B98A,{roughness:.9})); rim.position.y=.005; g.add(rim);
+  for (let k=0;k<7;k++){ const a=k*2.399, rr=Math.sqrt((k+.5)/7)*r*.75;
+    const pad=new THREE.Mesh(new THREE.CircleGeometry(r*.11, 14).rotateX(-Math.PI/2), new THREE.MeshBasicMaterial({color:0x3E8F5A})); pad.position.set(Math.sin(a)*rr,.01,Math.cos(a)*rr); g.add(pad);
+    if (k%2===0){ const fl=new THREE.Mesh(new THREE.ConeGeometry(r*.06, r*.09, 6), new THREE.MeshBasicMaterial({color:0xF4A6C8})); fl.position.set(Math.sin(a)*rr, r*.05, Math.cos(a)*rr); g.add(fl); } }
   return g;
 }
 function makeSerpent(hex, len, amp, hoods){
@@ -1303,6 +1325,14 @@ const J = y => y*JK;
     const bx=Math.sin(a)*J(12e3), bz=Math.cos(a)*J(12e3);
     m.position.set(bx, J(5e3), bz); jambuGroup.add(m); pickable(m,'meru');
     const t = makeTree(thex, J(4.5e3)); t.position.set(bx, J(10e3)-J(.4e3), bz); jambuGroup.add(t);
+    if (n==='Mandara' || n==='Merumandara'){   // mangoes as big as mountain peaks; jambū fruits as big as elephants
+      const h=J(4.5e3), fm=gild(n==='Mandara'?0xF2A531:0x5B2D82, n==='Mandara'?.45:.3);
+      for (let k=0;k<9;k++){ const a=k*2.399, up=.55+((k*37)%5)*.06, rr=.3*h*Math.sqrt(1-Math.pow((up-.72)/.32,2));
+        const fr=new THREE.Mesh(new THREE.SphereGeometry(h*(n==='Mandara'?.075:.065),12,10), fm); if (n==='Mandara') fr.scale.y=1.25;
+        fr.position.set(Math.sin(a)*(rr+h*.03), h*up, Math.cos(a)*(rr+h*.03)); t.add(fr); pickable(fr,'meru'); }
+      for (let k=0;k<3;k++){ const fr=new THREE.Mesh(new THREE.SphereGeometry(h*.08,12,10), fm); const a=k*2.1+.4;   // fallen fruit at the foot
+        fr.position.set(bx+Math.sin(a)*J(4.1e3), h*.08, bz+Math.cos(a)*J(4.1e3)); jambuGroup.add(fr); }
+    }
     const an = anchorAt(jambuGroup, bx, J(14e3), bz); beltA[n]=an;
     addLabel({text:n, sub:tree, cls:'c-gold', pri:38, only:['meru','jambu'], anchor:an, lod:0});
     const ux=Math.sin(a), uz=Math.cos(a), px=-uz, pz=ux;
@@ -1317,6 +1347,26 @@ const J = y => y*JK;
     lk.position.set(Math.sin(a)*J(10.5e3), .07, Math.cos(a)*J(10.5e3)); jambuGroup.add(lk); pickable(lk,'jambu');
     const an=anchorAt(jambuGroup, lk.position.x, .1, lk.position.z); lakeAs.push(an);
     addLabel({text:n, cls:'c-ocean', pri:26, only:['jambu'], anchor:an, lod:0}); });
+  // Four celestial gardens (5.16.14–15). The text names them but gives no directions; they are set
+  // on the diagonals, beyond the four lakes.
+  const GARDENS = ['Nandana','Caitraratha','Vaibhrājaka','Sarvatobhadra'];
+  const gardenAs=[];
+  GARDENS.forEach((n,i)=>{ const a=Math.PI/4 + i*Math.PI/2, gx=Math.sin(a)*J(14.6e3), gz=Math.cos(a)*J(14.6e3);
+    const g=makeGarden(J(1.5e3), [0xF4A6C8,0xF6E27A,0xFFFFFF,0xE58FD2][i]); g.position.set(gx,.06,gz); jambuGroup.add(g); g.traverse(o=>{ if (o.isMesh) pickable(o,'jambu'); });
+    const an=anchorAt(jambuGroup, gx, J(2.6e3), gz); gardenAs.push(an);
+    addLabel({text:n, sub:'garden of the demigods', cls:'c-island', pri:25, only:['jambu','meru'], anchor:an, lod:0}); });
+  feat('jambu','Four celestial gardens','Nandana, Caitraratha, Vaibhrājaka and Sarvatobhadra, where the demigods and their wives meet while Gandharvas sing (5.16.14–15). Their directions are not given.', gardenAs[0], 12);
+  feat('meru','Four celestial gardens','Nandana, Caitraratha, Vaibhrājaka and Sarvatobhadra lie around Meru with the four lakes (5.16.14–15).', gardenAs[1], 12);
+  // Gardens and lotus lakes in each varṣa other than Bhārata (5.17.13); Ilāvṛta's are the lakes and gardens above
+  const VG = {hari:[[-14e3,23.5e3],[14e3,23.5e3]], kimpurusa:[[-14e3,34.5e3],[14e3,34.5e3]], ramyaka:[[-14e3,-23.5e3],[14e3,-23.5e3]],
+    hiranmaya:[[-14e3,-34.5e3],[14e3,-34.5e3]], kuru:[[-11e3,-45.5e3],[11e3,-45.5e3]], ketumala:[[-40e3,-10e3],[-30e3,9e3]], bhadrasva:[[40e3,-10e3],[30e3,9e3]]};
+  Object.entries(VG).forEach(([id,[gp,lp]])=>{
+    const g=makeGarden(J(1.1e3), 0xF6C6DA, 3); g.position.set(J(gp[0]),.06,J(gp[1])); jambuGroup.add(g); g.traverse(o=>{ if (o.isMesh) pickable(o,id); });
+    const lk=makeLotusLake(J(2.1e3)); lk.position.set(J(lp[0]),.065,J(lp[1])); jambuGroup.add(lk); lk.traverse(o=>{ if (o.isMesh) pickable(o,id); });
+    const ga=anchorAt(jambuGroup, J(gp[0]), J(2e3), J(gp[1])), la=anchorAt(jambuGroup, J(lp[0]), .2, J(lp[1]));
+    featLabel(id,'Gardens of flowers and fruit',ga,'c-island'); featLabel(id,'Lake of new lotuses',la,'c-ocean');
+    feat(id,'Gardens and hermitages','Gardens full of flowers and fruits in season, and decorated hermitages (5.17.13).', ga, 8);
+    feat(id,'Lotus lake','A great lake of clear water with newly grown lotuses, between the ranges that border the varṣa (5.17.13).', la, 8); });
   // About twenty filament ranges around Meru's foot (5.16.26)
   const filMat = gild(0xC99A45,.2);
   for(let i=0;i<20;i++){ const a=(i+.5)/20*Math.PI*2; const f=new THREE.Mesh(new THREE.ConeGeometry(J(.7e3),J(3.2e3),6), filMat); f.position.set(Math.sin(a)*J(8.8e3), J(1.6e3), Math.cos(a)*J(8.8e3)); jambuGroup.add(f); }
@@ -1732,6 +1782,11 @@ const lowerObjs = LOWER.map((id,i) => {
     L(5,'Hiraṇya-pura', anchorAt(g,0,4.5,0), 'Home of the Hiraṇya-puravāsīs, with the Paṇis, Nivāta-kavacas and Kāleyas, sons of Diti and Danu (5.24.30).', 24); }
   { const g=at(6,-6,50); const v=makeSerpent(0x5FB7A6, 22, 3, 7); v.scale.setScalar(1.3); g.add(v);
     L(6,'Vāsuki and the Nāgas', anchorAt(g,14,5,0), 'Vāsuki heads serpents with up to a thousand hoods; their hood gems light all of bila-svarga (5.24.31).', 26); }
+  LOWER.forEach((id,i) => { const g=at(i,34,74);
+    const gd=makeGarden(5, [0xF4A6C8,0xFFD27A,0x9DB8FF,0xC9A7F0,0x7CF0B9,0xFF9A7A,0xF4A6C8][i], 5); gd.position.set(-9,0,0); g.add(gd);
+    const lk=makeLotusLake(6.5, 0x2C7F91); lk.position.set(7,.05,2); g.add(lk);
+    g.traverse(o=>{ if (o.isMesh) pickable(o,id); });
+    L(i,'Parks and lotus lakes', anchorAt(g,0,6,0), 'Gardens finer than those of the heavenly planets, with clear lakes, leaping fish and many flowers (5.24.8–10).', 26); });
 })();
 
 // Naraka & Pitṛloka
@@ -2478,7 +2533,8 @@ function flyFeature(f){
   const p = new THREE.Vector3(); f.anchor.getWorldPosition(p);
   const s = new THREE.Vector3(); f.anchor.getWorldScale(s);
   const dir = camera.position.clone().sub(controls.target).normalize();
-  if (dir.y < .3){ dir.y = .3; dir.normalize(); }
+  const minY = VARSA_IDS.includes(focusId) ? .95 : .3;   // the varṣas lie between ranges 10,000 yojanas high: look down into them
+  if (dir.y < minY){ const hz = Math.hypot(dir.x, dir.z) || 1, k = Math.sqrt(1 - minY*minY)/hz; dir.set(dir.x*k, minY, dir.z*k); }
   flyView({p, d: Math.max(f.d * Math.max(s.x, .004), .15), dir});
 }
 function setGlow(id, on){ (HILITE[id]||[]).forEach(m => { if (m.emissive) m.emissive.copy(on ? col(0x4a3510) : m.userData.baseEm); if (m.userData.baseOp !== undefined) m.opacity = on ? (m.userData.selOp !== undefined ? m.userData.selOp : Math.max(.34, m.userData.baseOp)) : m.userData.baseOp; }); }
