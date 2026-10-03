@@ -404,7 +404,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
         <button class="btn" id="btn-more" type="button" aria-expanded="false">More</button>
         <div class="more" id="more">
           <button class="btn here only-phone" id="btn-here-m" type="button">Where are we?</button>
-          <button class="btn" id="btn-cut" type="button" aria-pressed="true" title="Cut a slice out of the model to see the layers inside">Cutaway</button>
+          <button class="btn" id="btn-cut" type="button" aria-pressed="false" title="Cut a slice out of the model to see the layers inside">Cutaway</button>
           <button class="btn" id="btn-panels" type="button" aria-expanded="false" title="Show or hide each panel">Panels</button>
           <button class="btn" id="btn-layers" type="button" aria-expanded="false" title="Show or hide parts of the model">Layers</button>
           <button class="btn" id="btn-notes" type="button">Notes<span class="long">&nbsp;&amp; sources</span></button>
@@ -961,7 +961,7 @@ let sel = null, focusId = null, labelsOn = true;
 const LABELS = [];
 const FEAT = {};              // id -> [{name, note, anchor, d}]
 const MANAGED = [];           // {obj, layer, cluster}
-const LAYER_ON = {bhu:true, graha:true, cords:true, sisu:false, high:true, low:true, water:true, shell:true, ruler:true, ganga:true};
+const LAYER_ON = {bhu:true, graha:true, cords:true, sisu:true, high:true, low:true, water:true, shell:true, ruler:true, ganga:true};
 let timeMode = 'year';
 function manage(obj, layer, cluster){ MANAGED.push({obj, layer, cluster}); return obj; }
 function anchorAt(parent, x, y, z){ const o=new THREE.Object3D(); o.position.set(x,y,z); parent.add(o); return o; }
@@ -1016,7 +1016,7 @@ function addHi(id, mat){ (HILITE[id] = HILITE[id] || []).push(mat); }
 
 // Cutaway: one quarter (x>c and z>c) of the large layers is clipped away
 const clipX = new THREE.Plane(new THREE.Vector3(-1,0,0), 1e6), clipZ = new THREE.Plane(new THREE.Vector3(0,0,-1), 1e6);
-let cutOn = true;
+let cutOn = false;   // the model opens whole; Cutaway slices it on request
 function cut(m){ m.clippingPlanes = [clipX, clipZ]; m.clipIntersection = true; return m; }
 
 function stdMat(hex, o={}){
@@ -2513,7 +2513,7 @@ function contextIds(id){
 function updateLabels(){
   const W = canvas.clientWidth, H = canvas.clientHeight, placed = [], nowL = performance.now();
   const orbitDist = camera.position.distanceTo(controls.target);
-  const zoneOn = !focusId && !spotOn && orbitDist > 380 && orbitDist < 1150 && LAYER_ON.ruler;
+  const zoneOn = !focusId && !spotOn && orbitDist > 380 && orbitDist < overviewD()*1.6 && LAYER_ON.ruler;
   const ctx = spotOn ? contextIds(sel) : null;
   const key = L => (L.id===sel?1000:0) + L.pri + (L.shown?8:0);
   const order = LABELS.slice().sort((a,b) => key(b) - key(a));
@@ -2521,7 +2521,7 @@ function updateLabels(){
     let want = labelsOn && isVisibleDeep(L.anchor), faint = false;
     const own = L.id===sel || (L.only && (L.only.includes(sel) || L.only.includes(focusId)));
     if (want && L.mark) want = !focusId;
-    if (want && L.far) want = orbitDist > 1150;
+    if (want && L.far) want = orbitDist > overviewD()*1.6;
     if (want && L.trueOnly) want = T > .95 && !focusId && !spotOn;
     else if (want && L.zone) want = zoneOn && T < .5;
     if (want && W < 600 && !L.only && !L.zone && !L.trueOnly && !L.mark && L.id !== sel && L.pri < 55) want = false;
@@ -2766,6 +2766,21 @@ function updateTrail(){
 const DIR_SIDE = new THREE.Vector3(.5,.38,.78).normalize();
 const DIR_TOP = new THREE.Vector3(.22,.88,.5).normalize();
 const DIR_LOW = new THREE.Vector3(.55,-.12,.83).normalize();
+// The opening distance: close enough to fill a wide screen, far enough on a narrow one to fit the sphere and the ruler
+function overviewFit(t=T){
+  // Fit the ruler and the whole sphere (x from about -272 to 260) into the screen space the open panels leave free
+  const W = canvas.clientWidth || window.innerWidth, asp = camera.aspect || 1.6, tv = Math.tan(camera.fov*Math.PI/360);
+  let x0 = 0, x1 = W;
+  if (W >= 900){ const lad = $('#ladder'), ins = $('#inspector');
+    if (lad && !lad.hidden) x0 = lad.getBoundingClientRect().right;
+    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left; }
+  const kMax = Math.max(40, x1 - x0 - 24) / 532;                 // pixels per unit that still fits the span
+  const d = Math.max(lerp(720, 600, t), (W/2/kMax) / (tv*asp));
+  const k = (W/2) / (d*tv*asp);
+  const px = t > .5 ? 0 : -6 - ((x0 + x1)/2 - W/2) / k;           // centre the span in the free space
+  return {d, px};
+}
+function overviewD(t=T){ return overviewFit(t).d; }
 function focusFor(id){
   const t=T, v=new THREE.Vector3();
   const ring = RING_BY_ID[id];
@@ -2781,7 +2796,7 @@ function focusFor(id){
   if (lw>=0) return {p:v.set(0,Yh(-(lw+.5)*10e3),R(25.35e6)*.35), d:R(25.35e6)*1.15, dir:new THREE.Vector3(.18,.1,.98).normalize()};
   const js = lerp(1,1/240,t), hI=hIsland();
   switch(id){
-    case 'overview':   return {p:v.set(0,t?0:-5,0), d:lerp(730,600,t), dir:new THREE.Vector3(.48,.32,.82).normalize()};
+    case 'overview':   { const of = overviewFit(t); return {p:v.set(of.px, t?0:-5, 0), d:of.d, dir:new THREE.Vector3(.48*t, lerp(.07,.32,t), lerp(1,.82,t)).normalize()}; }   // Schematic opens side-on so the height ruler stands straight; True proportions keeps an angle, since its layers are too thin to read edge-on
     case 'bhumandala': return {p:v.set(0,0,0), d:R(125e6)*1.9, dir:DIR_TOP};
     case 'jambu':      return {p:v.set(0,hI+4*js,0), d:44*js, dir:new THREE.Vector3(.35,.62,.7).normalize()};
     case 'meru':       return {p:v.set(0,hI+11*js,0), d:44*js, dir:new THREE.Vector3(.5,.3,.81).normalize()};
@@ -2797,7 +2812,7 @@ function focusFor(id){
     case 'ananta':     return {p:v.set(0,Yh(-100e3)+6*lerp(1,.004,t),0), d:lerp(42,1,t), dir:new THREE.Vector3(.3,.18,.94).normalize()};
     case 'garbhodaka': return {p:v.set(0,Yh(-100e3)-60*(1-t),0), d:lerp(420,480,t), dir:DIR_LOW};
     case 'ganga':      return {p:v.set(0,t?110:95,0), d:lerp(430,520,t), dir:new THREE.Vector3(.58,.22,.78).normalize()};
-    case 'karana':     return {p:v.set(0,0,0), d:2500, dir:new THREE.Vector3(.5,.28,.82).normalize()};
+    case 'karana':     return {p:v.set(0,0,0), d:Math.max(2500, overviewD()*1.9), dir:new THREE.Vector3(.5,.28,.82).normalize()};
   }
   const VC = {ilavrta:[0,0],hari:[0,23.5e3],kimpurusa:[0,34.5e3],ramyaka:[0,-23.5e3],hiranmaya:[0,-34.5e3],kuru:[0,-45.5e3],ketumala:[-34e3,0],bhadrasva:[34e3,0]};
   if (VC[id]) return {p:v.set(J(VC[id][0])*js, hI+.5*js, J(VC[id][1])*js), d:(id==='ilavrta'?40:26)*js, dir:new THREE.Vector3(.25,.72,.65).normalize()};
@@ -3370,7 +3385,7 @@ document.addEventListener('click', e => { const m=$('#more'); if (m.classList.co
 function leaveFocus(){ if (!focusId) return; focusId=null; applyDim(); updateCut(); refreshVisibility(); updateTrail(); }
 function flyCustom(fn){ if (T !== modeTarget){ pendingFly = () => flyView(fn()); return; } flyView(fn()); }
 const TOUR = [
-  {id:'overview', title:'The whole universe', text:'Canto 5 describes the universe as a closed sphere, 500 million yojanas across. The coloured bar on the left names its layers, from the cosmic water at the bottom up through the seven upper worlds. A slice is cut away so you can see inside. Drag to turn it; scroll or pinch to zoom.',
+  {id:'overview', title:'The whole universe', text:'Canto 5 describes the universe as a closed sphere, 500 million yojanas across. The coloured bar on the left names its layers, from the cosmic water at the bottom up through the seven upper worlds. Turn on Cutaway to slice away a quarter and see inside. Drag to turn it; scroll or pinch to zoom.',
    go(){ leaveFocus(); setMode(0); setTimeMode('year'); select('overview', true); }},
   {id:'bhumandala', title:'Bhū-maṇḍala, the earthly disc', text:'Across the middle lies Bhū-maṇḍala: seven ring-shaped islands, each surrounded by its own ocean, of salt water, sugarcane juice, liquor, ghee, milk, yogurt and sweet water. Each island is twice as wide as the one before it, and each ocean is as wide as the island it surrounds.',
    go(){ leaveFocus(); setMode(0); setTimeMode('year'); select('bhumandala', true); }},
@@ -3670,6 +3685,7 @@ setSel('overview');
 { const f = focusFor('overview'); camera.position.copy(f.p.clone().add(f.dir.clone().multiplyScalar(f.d))); controls.target.copy(f.p); }
 syncCaption();
 applyPanels();
+{ const f = focusFor('overview'); camera.position.copy(f.p.clone().add(f.dir.clone().multiplyScalar(f.d))); controls.target.copy(f.p); }   // re-fit once the saved panel layout is applied
 requestAnimationFrame(frame);
 (() => {
   const start = HASH_OK(START_HASH) ? START_HASH : null;
