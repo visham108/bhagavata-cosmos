@@ -246,6 +246,23 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 .ins-x{position:absolute;right:10px;top:10px}
 #i-eyebrow{padding-right:28px}
 #timebar .x{margin-left:-4px}
+#intro{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 92px);z-index:30;width:min(620px,calc(100% - 32px));text-align:center;pointer-events:none}
+#intro .ic{opacity:0;transform:translateY(10px);transition:opacity .7s ease,transform .7s ease}
+#intro.show .ic{opacity:1;transform:none}
+#intro .kicker{text-shadow:0 1px 6px #000}
+#intro-t{font-family:var(--display);font-weight:400;font-size:38px;line-height:1.1;margin:4px 0 6px;color:var(--ivory);text-shadow:0 2px 14px rgba(0,0,0,.9),0 0 2px #000}
+#intro-s{margin:0;font-size:14.5px;color:#E8DFC9;text-shadow:0 1px 8px #000}
+#intro-skip{pointer-events:auto;margin-top:14px;border:1px solid var(--panel-edge);background:rgba(6,7,16,.55);color:var(--muted);border-radius:999px;padding:5px 14px;font:600 12px var(--body);cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#intro-skip:hover{color:var(--ivory)}
+.intro #ladder,.intro #inspector,.intro #timebar,.intro #caption,.intro #navtools,.intro #focusbar,.intro #labels{opacity:0!important;pointer-events:none!important}
+@keyframes panelIn{from{opacity:0}to{opacity:1}}
+.intro-out #ladder,.intro-out #inspector,.intro-out #timebar,.intro-out #caption,.intro-out #navtools,.intro-out #labels{animation:panelIn .8s ease both}
+#out-hint{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 76px);z-index:18;display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;font:600 12.5px var(--body);color:var(--gold-hi);cursor:pointer;animation:hintIn .6s ease both}
+#out-hint[hidden]{display:none}
+#out-hint span:first-child{font-size:14px}
+#out-hint:hover{color:var(--ivory)}
+@keyframes hintIn{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
+.touring #out-hint{display:none}
 #toast{position:absolute;left:50%;transform:translateX(-50%);top:var(--top,104px);z-index:35;padding:8px 14px;font-size:13px;max-width:calc(100% - 32px)}
 .eq{display:none;align-items:flex-end;gap:2px;height:12px}
 .eq i{display:block;width:3px;background:var(--gold-hi);border-radius:1px;animation:eq 1s ease-in-out infinite}
@@ -367,6 +384,9 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   #focusbar{left:8px;right:8px;transform:none;max-width:none;justify-content:space-between;top:calc(var(--top,104px) + 44px)}
   #navtools{left:8px;bottom:auto;top:var(--top,104px)}
   #lost{top:calc(var(--top,104px) + 96px);max-width:calc(100% - 16px);font-size:12.5px}
+  #out-hint{left:8px;transform:none;top:calc(var(--top,104px) + 6px);bottom:auto;animation:none}
+  #intro{bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
+  #intro-t{font-size:30px}
 }
 @media (max-width: 480px){#speed-out{display:none} #clock{padding-left:8px}}
 @media (max-width: 600px){
@@ -385,7 +405,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   #view-back-bar{display:none!important}
   #lost{max-width:calc(100% - 74px)}
 }
-@media (prefers-reduced-motion: reduce){#ladder{transition:none}}
+@media (prefers-reduced-motion: reduce){#ladder{transition:none} #out-hint{animation:none}}
 </style>
 
 </head>
@@ -523,6 +543,8 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   </div>
 
   <div id="toast" class="panel" role="status" hidden></div>
+  <div id="intro" hidden aria-live="polite"><div class="ic"><p class="kicker" id="intro-k"></p><h2 id="intro-t"></h2><p id="intro-s"></p></div><button id="intro-skip" type="button">Skip</button></div>
+  <button id="out-hint" class="panel" type="button" hidden><span aria-hidden="true">↗</span><span id="out-hint-t">Scroll out to leave the universe</span></button>
 
   <div id="layers" class="panel pop" hidden>
     <h2 class="kicker">Layers</h2>
@@ -579,7 +601,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
         </ol>
 
         <h3>Beyond the universe</h3>
-        <p>Zoom out past the shell, or press <b>Beyond</b>, to leave the universe the way Kṛṣṇa and Arjuna did in SB 10.89. Each step outward is drawn about ten times larger than the last, so the whole creation fits one zoom. None of it is to scale.</p>
+        <p>On a first visit the model opens with a short descent from the whole creation into our universe; any touch, scroll or key skips it. Zoom out past the shell, or press <b>Beyond</b>, to leave the universe the way Kṛṣṇa and Arjuna did in SB 10.89. Each step outward is drawn about ten times larger than the last, so the whole creation fits one zoom. None of it is to scale.</p>
         <ol>
           <li><b>The seven coverings</b> (earth, water, fire, air, ether, false ego, the mahat-tattva, then pradhāna) are drawn as a cross-section on a log scale, each tenfold step one band (SB 2.2.28–30, 3.11.41, 6.16.37, 3.26.52). Their order differs between lists; the model follows SB 2.2.28–30.</li>
           <li><b>Countless universes</b> float in the dark cloud of māyā. Ours is the smallest (CC Madhya 21.84–86). How many are drawn, and where, is illustrative.</li>
@@ -1526,6 +1548,16 @@ function layoutCovColumn(pxPerUnit){
   });
   COV_ANCH.avarana.position.set(COV_COL, top + sp*1.15, 0);
   lp.needsUpdate = dp.needsUpdate = true; LABELS.forEach(L => { if (L.anchor && L.anchor.parent === covBill) L.w = 0; });
+}
+
+// A soft ochre halo just outside the shell, where the covering of earth begins: a hint that the model goes on outside
+{
+  const m = new THREE.ShaderMaterial({uniforms:{uA:{value:0}, uR0:{value:UNI_R*1.03}, uR1:{value:UNI_R*1.17}},
+    vertexShader:COV_VS, fragmentShader:`uniform float uA, uR0, uR1; varying vec2 vP;
+      void main(){ float u = (length(vP) - uR0)/(uR1 - uR0); if (u < 0. || u > 1.) discard;
+        gl_FragColor = vec4(vec3(.82,.56,.3)*(1.05 - .45*u), uA*(pow(1. - u, 2.)*.16 + .5*(1. - smoothstep(.0, .035, u)))); }`,
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending});
+  BEY.halo = new THREE.Mesh(new THREE.RingGeometry(UNI_R*1.03, UNI_R*1.17, 256, 1), m); BEY.halo.renderOrder = 2; karanaGroup.add(BEY.halo);
 }
 
 /* Other universes, each with the same seven coverings; ours is the smallest (CC Madhya 21.84–86) */
@@ -3431,7 +3463,7 @@ function flyView(f){
   const r = Math.abs(Math.log(d1/d0)), move = fromT.distanceTo(f.p)/Math.max(d0, d1);
   // across many scales: zoom on a log scale, and move the pivot while the view is widest
   const log = r > Math.log(4) || move > 2;
-  const dur = log ? 1500 + 420*Math.min(r, 7) : 1500;
+  const dur = f.dur || (log ? 1500 + 420*Math.min(r, 7) : 1500);
   navT = performance.now() + dur;
   flight = {t0:performance.now(), dur, fromP:camera.position.clone(), fromT, toP:toPos, toT:f.p.clone(), log,
     l0:Math.log(d0), l1:Math.log(d1), e:1 + Math.min(2, r/2.5), out:d1 > d0, hump:Math.max(0, move - .6)*.5,
@@ -3748,7 +3780,7 @@ function updateBeyond(dt){
       const u = mesh.material.uniforms, tgt = sel === id || sel === 'avarana' ? 1 : coverSel ? -.15 : 0;
       u.uA.value = covA; u.uTime.value = BEY.t; u.uSel.value += (tgt - u.uSel.value)*Math.min(1, dt*6);
     });
-    BEY.covRim.uniforms.uOpacity.value = .3*covA; BEY.leads.forEach(m => fade(m, covA));
+    BEY.covRim.uniforms.uOpacity.value = .3*covA; BEY.leads.forEach(m => fade(m, introOn ? 0 : covA));
   }
   // countless universes, the dust of more, and the cloud of māyā
   const uA = on ? sstep(5000, 15000, camR) : 0, od = camera.position.distanceTo(controls.target);
@@ -3783,6 +3815,12 @@ function updateBeyond(dt){
   const mix = on ? sstep(oD*1.6, oD*4.5, camR) : 0, dm = BEY.dome.material.uniforms;
   BEY.dome.visible = mix > .004; dm.uMix.value = mix; dm.uCloud.value = 1 - sstep(1.0, 2.4, cd);
   dm.uSp.value.copy(SP_C).sub(cam); BEY.dome.position.copy(cam); BEY.dome.scale.setScalar(10);
+  // the halo and the hint, from the opening view until someone has been outside once
+  const hA = on ? sstep(oD*.55, oD*.85, camR)*(1 - covA) : 0;
+  BEY.halo.visible = hA > .004; if (BEY.halo.visible){ BEY.halo.material.uniforms.uA.value = hA; BEY.halo.quaternion.copy(camera.quaternion); }
+  if (!BEY.outSeen && !introOn && !flight && camR > oD*1.6){ BEY.outSeen = true; try{ localStorage.setItem('bc-out','1'); }catch(_){} }
+  const hint = $('#out-hint'), showHint = !BEY.outSeen && !introOn && tourI < 0 && sel === 'overview' && !focusId && !flight && camR < oD*1.3;
+  if (hint.hidden === showHint) hint.hidden = !showHint;
   // the figure of light is a sign, seen from a respectful distance: the view never comes closer than this
   if (mvGroup.visible){ BEY.mvC = BEY.mvC || MV_P.clone().add(new THREE.Vector3(0, 6500, 0)); const off = cam.clone().sub(BEY.mvC), dd = off.length(), g = 30000;
     if (dd < g && dd > 1){ cam.copy(BEY.mvC).addScaledVector(off, g/dd); } }
@@ -3813,10 +3851,10 @@ function coversView(){
   if (W >= 900){ const lad = $('#ladder'), ins = $('#inspector');
     if (lad && !lad.hidden) x0 = lad.getBoundingClientRect().right;
     if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left; }
-  const lab = 150, avail = Math.max(120, x1 - x0 - 28);
-  const k = Math.min((avail - lab)/(COV_OUT + COV_COL), H*.62/(2*COV_OUT));    // pixels per unit
+  const lab = introOn ? 0 : 150, avail = Math.max(120, x1 - x0 - 28);   // the opening shows no labels, so the onion is centred
+  const k = introOn ? Math.min(W*.8, H*.62)/(2*COV_OUT) : Math.min((avail - lab)/(COV_OUT + COV_COL), H*.62/(2*COV_OUT));    // pixels per unit
   const d = (W/2)/(k*tv*asp), dir = new THREE.Vector3(0,.12,1).normalize(), right = new THREE.Vector3(0,1,0).cross(dir).normalize();
-  const centre = ((COV_COL + lab/k) - COV_OUT)/2, off = -((x0 + x1)/2 - W/2)/k;
+  const centre = introOn ? 0 : ((COV_COL + lab/k) - COV_OUT)/2, off = introOn ? 0 : -((x0 + x1)/2 - W/2)/k;
   return {p: new THREE.Vector3().addScaledVector(right, centre + off), d, dir};
 }
 function beyondFocus(id){
@@ -3862,6 +3900,45 @@ function powSync(id){
   const act = e => { const g = e.target.closest('[data-k]'); if (g && g.dataset.k !== sel) select(g.dataset.k, BEY.covA < .9); };
   w.addEventListener('click', act);
   w.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('[data-k]')){ e.preventDefault(); act(e); } }); })();
+
+/* ------------------------------------------------------------------
+   OPENING: on a first visit, descend from the whole creation into our
+   universe, so the levels outside it are seen before anything else
+------------------------------------------------------------------- */
+const INTRO = [
+  {id:'paravyoma', k:'Beyond the universe', t:'The whole creation', s:'The spiritual sky, with the material world in one corner (BS 5.43)', hold:1600},
+  {id:'brahmandas', k:'The material world', t:'Countless universes', s:'Ours is the smallest of all (CC Madhya 21.84)', dur:2400, hold:500},
+  {id:'avarana', k:'Around our universe', t:'Seven coverings', s:'Each ten times thicker than the one inside it (SB 3.11.41)', dur:2000, hold:900},
+  {id:'overview', k:'Śrīmad-Bhāgavatam, Canto 5', t:'Our universe', s:'Scroll out at any time to leave it again', dur:2000, hold:900}
+];
+let introOn = false, introT = [], introDone = null;
+function introCap(st){ const w = $('#intro'); w.classList.remove('show'); void w.offsetWidth;
+  $('#intro-k').textContent = st.k; $('#intro-t').textContent = st.t; $('#intro-s').textContent = st.s; w.classList.add('show'); }
+function playIntro(done){
+  introOn = true; introDone = done; try{ localStorage.setItem('bc-intro','1'); }catch(_){}
+  document.getElementById('app').classList.add('intro'); $('#intro').hidden = false;
+  const f0 = focusFor('paravyoma'); camera.position.copy(f0.p).addScaledVector(f0.dir, f0.d); controls.target.copy(f0.p);
+  let t = 0;
+  INTRO.forEach((st, i) => {
+    introT.push(setTimeout(() => { introCap(st); if (i) flyView(Object.assign(focusFor(st.id), {dur:st.dur})); }, t));
+    t += (i ? st.dur : 0) + st.hold;
+  });
+  introT.push(setTimeout(() => endIntro(false), t));
+}
+function endIntro(skipped){
+  if (!introOn) return; introOn = false; introT.forEach(clearTimeout); introT = [];
+  const app = document.getElementById('app'); app.classList.remove('intro'); app.classList.add('intro-out'); setTimeout(() => app.classList.remove('intro-out'), 900);
+  const w = $('#intro'); w.classList.remove('show'); setTimeout(() => { w.hidden = true; }, 700);
+  if (skipped){ flight = null; flyView(Object.assign(focusFor('overview'), {dur:1000})); }
+  const d = introDone; introDone = null; if (d) setTimeout(d, skipped ? 1100 : 300);
+}
+// any touch, scroll or key ends it at once
+['pointerdown','wheel','touchstart'].forEach(ev => window.addEventListener(ev, e => { if (introOn && !(e.target && e.target.id === 'intro-skip')) endIntro(true); }, {capture:true, passive:true}));
+window.addEventListener('keydown', () => { if (introOn) endIntro(true); }, true);
+$('#intro-skip').addEventListener('click', () => endIntro(true));
+$('#out-hint').addEventListener('click', () => { BEY.outSeen = true; try{ localStorage.setItem('bc-out','1'); }catch(_){} $('#out-hint').hidden = true; select('avarana', true); });
+if (window.matchMedia && matchMedia('(pointer: coarse)').matches) $('#out-hint-t').textContent = 'Pinch out to leave the universe';
+try{ BEY.outSeen = localStorage.getItem('bc-out') === '1'; }catch(_){}
 
 /* ------------------------------------------------------------------
    LADDER
@@ -4145,7 +4222,9 @@ const TOUR = [
   {id:'ananta', title:'Ananta Śeṣa and the water', text:'Beneath Pātāla, Lord Ananta rests on the Garbhodaka water. The Bhāgavatam says the whole universe, on one of His thousands of hoods, looks like a white mustard seed.',
    go(){ setMode(0); setTimeMode('year'); explore('ananta'); }},
   {id:'overview', title:'The true proportions', text:'Until now, distances were compressed so you could see everything. This is the real scale. All the planets from the Sun to the pole star sit in a thin layer just above the disc, and the seven islands take up only its middle fifth. Click any world to read about it, or double-click to go inside.',
-   go(){ leaveFocus(); setTimeMode('year'); setSel('overview'); setMode(1); flyTo('overview'); }}
+   go(){ leaveFocus(); setTimeMode('year'); setSel('overview'); setMode(1); flyTo('overview'); }},
+  {id:'avarana', title:'Beyond the shell', text:'Everything so far lies inside one shell. Outside it are seven coverings, each ten times thicker than the last, and beyond them countless other universes, the Causal Ocean where Mahā-Viṣṇu lies, and the spiritual sky. Press Beyond to follow Arjuna\'s journey there (SB 10.89), or scroll out on your own.',
+   go(){ leaveFocus(); setTimeMode('year'); setMode(0); select('avarana', true); }}
 ];
 const JOURNEY = [
   {title:'Arjuna\'s journey', text:'In Dvārakā a brāhmaṇa\'s sons were taken one after another at birth. Arjuna vowed to protect the next child and failed. To keep His friend\'s word, Kṛṣṇa had Arjuna join Him on His chariot, and together they set off toward the west (SB 10.89.46).',
@@ -4462,7 +4541,10 @@ if (/[?&]debug\b/.test(location.search)) window.__bc = {camera, controls, select
 (() => {
   const start = HASH_OK(START_HASH) ? START_HASH : null;
   if (start){ setTimeout(() => select(start, true), 400); return; }   // a shared link skips the tour
-  let seen=false; try{ seen = localStorage.getItem('bc-tour')==='1'; }catch(_){} if (!seen) setTimeout(() => tourShow(0), 900); })();
+  let seen=false, intro=false; try{ seen = localStorage.getItem('bc-tour')==='1'; intro = localStorage.getItem('bc-intro')==='1'; }catch(_){}
+  const tour = () => { if (!seen) tourShow(0); };
+  if (!intro && !reduceMotion) setTimeout(() => playIntro(tour), 250);   // first visit: descend from the whole creation
+  else if (!seen) setTimeout(tour, 900); })();
 })();
 </script>
 
