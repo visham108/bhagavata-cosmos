@@ -29,4 +29,4 @@ An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrī
 
 ## Technical
 
-One self-contained `index.html` using Three.js r128 from cdnjs (with its OrbitControls and bloom post-processing scripts from jsDelivr) and fonts from Google Fonts. Without WebGL 2 the glow is skipped and everything else works. There is no build step. To run it locally, open `index.html` in a browser.
+One `index.html`, with two paintings in `img/` (Mahā-Viṣṇu on Ananta Śeṣa, and Ananta Śeṣa bearing the universe), loaded as textures; if they fail to load, drawn figures stand in. It uses Three.js r128 from cdnjs (with its OrbitControls and bloom post-processing scripts from jsDelivr) and fonts from Google Fonts. Without WebGL 2 the glow is skipped and everything else works. There is no build step. To run it locally, open `index.html` in a browser.
