@@ -263,6 +263,37 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 #out-hint:hover{color:var(--ivory)}
 @keyframes hintIn{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
 .touring #out-hint{display:none}
+#breath{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 74px);z-index:17;width:min(560px,calc(100% - 32px));padding:10px 14px 10px}
+#breath[hidden]{display:none}
+.br-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:7px}
+#br-state{font-size:12.5px;color:var(--ivory);text-align:right}
+.br-bar{position:relative;display:flex;gap:2px;height:26px;border-radius:7px;overflow:visible;cursor:pointer;touch-action:none}
+.br-bar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:10.5px;color:#1a1206;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;border-radius:5px}
+.br-bar i:nth-child(1){background:linear-gradient(90deg,#6d5a33,#d9b062)}.br-bar i:nth-child(2){background:#d9b062}.br-bar i:nth-child(3){background:linear-gradient(90deg,#d9b062,#6d5a33)}.br-bar i:nth-child(4){background:#3b3354;color:#cfc8e8}
+#br-mark{position:absolute;top:-4px;bottom:-4px;width:3px;margin-left:-1.5px;background:#fff;border-radius:2px;box-shadow:0 0 0 2px rgba(6,7,16,.7),0 0 10px rgba(255,240,200,.8);pointer-events:none}
+#br-now{position:absolute;top:100%;width:0;pointer-events:none}
+#br-now::before{content:"";position:absolute;left:-4px;top:2px;border:4px solid transparent;border-bottom-color:var(--gold-hi)}
+#br-now span{position:absolute;left:-14px;top:10px;font-size:10px;color:var(--gold-hi);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.br-act{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.br-act button{border:1px solid var(--panel-edge);background:none;color:var(--ivory);border-radius:9px;padding:5px 11px;font:600 12px var(--body);cursor:pointer}
+#br-play{background:var(--gold);color:#1b1404;border-color:var(--gold)}
+#br-present[disabled]{opacity:.4;cursor:default}
+.touring #breath,.intro #breath,.intro #scale{display:none}
+#scale{position:absolute;top:calc(var(--top,104px) + 70px);right:16px;z-index:16;width:30px;padding:10px 0;border-radius:999px;-webkit-user-select:none;user-select:none}
+#scale .kicker{display:none}
+.sc-track{position:relative;height:260px;margin:0 auto;width:30px;touch-action:none;cursor:ns-resize}
+.sc-line{position:absolute;left:14px;top:0;bottom:0;width:2px;border-radius:1px;background:rgba(237,228,207,.18)}
+.sc-fill{position:absolute;left:14px;bottom:0;width:2px;border-radius:1px;background:var(--gold)}
+.sc-stop{position:absolute;left:9px;transform:translateY(50%);width:12px;height:12px;border:0;background:none;padding:0;cursor:pointer}
+.sc-stop::after{content:"";position:absolute;inset:1.5px;border-radius:50%;background:#2a2b44;border:1.5px solid rgba(237,228,207,.4)}
+.sc-stop.past::after{background:var(--gold);border-color:var(--gold)}
+.sc-stop span{position:absolute;right:22px;top:50%;transform:translateY(-50%);white-space:nowrap;font:600 11.5px var(--body);color:var(--ivory);background:rgba(6,7,16,.78);border:1px solid var(--panel-edge);padding:2px 8px;border-radius:7px;opacity:0;pointer-events:none;transition:opacity .15s}
+.sc-stop.here span{opacity:1;color:var(--gold-hi)}
+#scale:hover .sc-stop span,#scale:focus-within .sc-stop span{opacity:1;pointer-events:auto}
+#scale:hover .sc-stop:not(.here) span:hover{color:var(--gold-hi)}
+.sc-mark{position:absolute;left:7px;width:16px;height:16px;margin-bottom:-8px;border-radius:50%;border:2px solid #fff;background:var(--gold);box-shadow:0 0 0 3px rgba(6,7,16,.6),0 0 12px rgba(242,203,116,.7);cursor:grab;padding:0;touch-action:none}
+.sc-mark:active{cursor:grabbing}
+.sc-cap{display:none}
 #toast{position:absolute;left:50%;transform:translateX(-50%);top:var(--top,104px);z-index:35;padding:8px 14px;font-size:13px;max-width:calc(100% - 32px)}
 .eq{display:none;align-items:flex-end;gap:2px;height:12px}
 .eq i{display:block;width:3px;background:var(--gold-hi);border-radius:1px;animation:eq 1s ease-in-out infinite}
@@ -385,6 +416,10 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   #navtools{left:8px;bottom:auto;top:var(--top,104px)}
   #lost{top:calc(var(--top,104px) + 96px);max-width:calc(100% - 16px);font-size:12.5px}
   #out-hint{left:8px;transform:none;top:calc(var(--top,104px) + 6px);bottom:auto;animation:none}
+  #breath{left:8px;right:58px;transform:none;width:auto;top:calc(var(--top,104px) + 92px);bottom:auto;padding:8px 10px}
+  .br-bar i{font-size:0}
+  #scale{top:calc(var(--top,104px) + 214px);right:10px}
+  .sc-track{height:170px}
   #intro{bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
   #intro-t{font-size:30px}
 }
@@ -544,6 +579,19 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 
   <div id="toast" class="panel" role="status" hidden></div>
   <div id="intro" hidden aria-live="polite"><div class="ic"><p class="kicker" id="intro-k"></p><h2 id="intro-t"></h2><p id="intro-s"></p></div><button id="intro-skip" type="button">Skip</button></div>
+  <div id="breath" class="panel" hidden role="group" aria-label="Mahā-Viṣṇu's breath">
+    <div class="br-top"><span class="kicker">Mahā-Viṣṇu's breath</span><span id="br-state">The present</span></div>
+    <div class="br-bar" id="br-bar" title="Drag to move through the breath">
+      <i style="flex:14">come out</i><i style="flex:48">last one lifetime of Brahmā</i><i style="flex:16">go back in</i><i style="flex:22">rest within Him</i>
+      <b id="br-now" aria-hidden="true"><span>now</span></b><b id="br-mark" aria-hidden="true"></b>
+    </div>
+    <div class="br-act"><button id="br-play" type="button">▶ Play the breath</button><button id="br-present" type="button">Return to the present</button></div>
+  </div>
+  <div id="scale" class="panel" role="group" aria-label="Scale of creation" title="Scale of creation: drag to zoom through the levels">
+    <p class="kicker">Scale of creation</p>
+    <div class="sc-track" id="sc-track"><span class="sc-line"></span><span class="sc-fill" id="sc-fill"></span><button class="sc-mark" id="sc-mark" type="button" aria-label="Drag to zoom through the levels"></button></div>
+    <p class="sc-cap">each step about ×10</p>
+  </div>
   <button id="out-hint" class="panel" type="button" hidden><span aria-hidden="true">↗</span><span id="out-hint-t">Scroll out to leave the universe</span></button>
 
   <div id="layers" class="panel pop" hidden>
@@ -605,7 +653,8 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
         <ol>
           <li><b>The seven coverings</b> (earth, water, fire, air, ether, false ego, the mahat-tattva, then pradhāna) are drawn as a cross-section on a log scale, each tenfold step one band (SB 2.2.28–30, 3.11.41, 6.16.37, 3.26.52). Their order differs between lists; the model follows SB 2.2.28–30.</li>
           <li><b>Countless universes</b> float in the dark cloud of māyā. Ours is the smallest (CC Madhya 21.84–86). How many are drawn, and where, is illustrative.</li>
-          <li><b>The Causal Ocean</b>, the Virajā, holds <b>Mahā-Viṣṇu</b> on Ananta Śeṣa in a palace of jewelled pillars (SB 10.89.52–56). He is drawn as a figure of light, a sign only. Universes stream from His pores and back with each breath; one breath, a Brahmā's lifetime, takes about forty seconds (BS 5.48; CC Ādi 5.68–70).</li>
+          <li><b>The Causal Ocean</b>, the Virajā, holds <b>Mahā-Viṣṇu</b> on Ananta Śeṣa in a palace of jewelled pillars (SB 10.89.52–56). He is drawn as a figure of light, a sign only. The view opens on the present: the first half of our Brahmā's life is over and the second half is current (SB 3.11.34), so every universe is out. <b>Play the breath</b> shows a whole breath as a time-lapse: the universes come out of His pores, last one lifetime of Brahmā, go back into Him as He breathes in, and rest within Him (BS 5.48; CC Ādi 5.68–70).</li>
+          <li><b>Scale of creation</b>, the rail at the side, marks each level from our universe out to the whole creation. Drag its marker to move through them, or click a level to go there.</li>
           <li><b>The brahmajyoti, the Vaikuṇṭha planets and Goloka</b> are placed one above another as BS 5.43 ranks the realms. On Arjuna's way out, the light comes before the water (SB 10.89.51–52); seen from the spiritual side, the light lies between Vaikuṇṭha and the ocean (CC Ādi 5.51). The model lets the effulgence fill everything and does not choose between them. Maheśa-dhāma (BS 5.43) is named but not placed, so it is not drawn. Kṛṣṇa is not drawn.</li>
         </ol>
 
@@ -1445,7 +1494,10 @@ const shellEq = manage(ringLine(0xD9A441, .18, 192), 'shell', 'shell'); scene.ad
    above all (BS 5.43).
 ------------------------------------------------------------------- */
 const karanaGroup = new THREE.Group(); scene.add(karanaGroup);
-const BEY = {mats:[], t:0, breath:0, deep:false};
+const BEY = {mats:[], t:0, breath:0, deep:false, ourQ:1};
+// Mahā-Viṣṇu's breath, as a time-lapse: universes come out, last one lifetime of Brahmā, go back in, and rest within Him (BS 5.48; CC Ādi 5.68–69)
+const BR_P = 48, BR_EM = .14, BR_LIFE = .62, BR_IN = .78, BR_NOW = BR_EM + (BR_LIFE - BR_EM)*.52;   // now: the second half of our Brahmā's life (SB 3.11.34)
+BEY.br = {play:false, ph:BR_NOW, B:1};
 const UNI_R = 250, COV_A = .255;
 const covRtrue = k => 1 + 2*(Math.pow(10, k+1) - 10)/9;            // outer edge of covering k, in radii of the universe
 const covR = k => UNI_R*(1 + COV_A*Math.log10(covRtrue(k)));         // drawn, on a log scale
@@ -1561,16 +1613,26 @@ function layoutCovColumn(pxPerUnit){
 }
 
 /* Other universes, each with the same seven coverings; ours is the smallest (CC Madhya 21.84–86) */
+const MV_BODY = [[-14.4,7.7,0,1.4,1.6,1.4],[-10.5,7,0,2.3,1.25,2.5],[-8.9,6.3,0,2.6,1.35,2.2],[-5.5,5.5,0,2.7,1.4,2.3],[0,5.3,1,3.4,1,1.1],[6,5,1,3.6,.9,1.0],[2,7,-1.2,3,1.2,.9]];
+const MV_ROT = new THREE.Matrix4().makeRotationY(.32);
+const poreAt = () => { const b = MV_BODY[Math.floor(brnd()*MV_BODY.length)], u = inEll();
+  return new THREE.Vector3(b[0]+u.x*b[3], b[1]+u.y*b[4], b[2]+u.z*b[5]).applyMatrix4(MV_ROT).multiplyScalar(MV_S).add(MV_P); };
 const UNIV = [];
 {
   const PAL = [col(0xF6DDA2), ...COVERS.map(c => col(c.hex))], B = [0,1,2,3,4,5,6,7].map(k => covR(k)/COV_OUT);
   const bodyGeo = new THREE.SphereGeometry(1, 26, 18);
-  const m = new THREE.ShaderMaterial({uniforms:{uPal:{value:PAL}, uB:{value:B}, uA:{value:1}, uFog:{value:new THREE.Vector2(1e5, 3e5)}},
-    vertexShader:`attribute float aSeed; varying vec3 vN; varying vec3 vV; varying float vS; varying float vZ;
-      void main(){ mat4 mm = modelMatrix*instanceMatrix; vec4 mv = viewMatrix*mm*vec4(position,1.);
-        vN = normalize(mat3(viewMatrix)*mat3(mm)*normal); vV = normalize(-mv.xyz); vS = aSeed; vZ = -mv.z; gl_Position = projectionMatrix*mv; }`,
-    fragmentShader:`uniform vec3 uPal[8]; uniform float uB[8]; uniform float uA; uniform vec2 uFog; varying vec3 vN; varying vec3 vV; varying float vS; varying float vZ;
-      void main(){ float c = clamp(abs(dot(normalize(vN), normalize(vV))), 0., 1.), rho = sqrt(1.-c*c);
+  const m = new THREE.ShaderMaterial({uniforms:{uPal:{value:PAL}, uB:{value:B}, uA:{value:1}, uOursA:{value:0}, uBr:{value:1}, uFog:{value:new THREE.Vector2(1e5, 3e5)}},
+    vertexShader:`attribute float aSeed; attribute float aOurs; attribute vec3 aO; attribute vec3 aCt; uniform float uBr;
+      varying vec3 vN; varying vec3 vV; varying float vS; varying float vZ; varying float vQ; varying float vOurs;
+      void main(){ vec3 cen = instanceMatrix[3].xyz; float sc = length(instanceMatrix[0].xyz);
+        // with the out-breath each universe travels from a pore of Mahā-Viṣṇu to its place and grows; the in-breath reverses it
+        float q = clamp(uBr*1.45 - aSeed*.45, 0., 1.), e = q*q*(3. - 2.*q);
+        vec3 c = mix(mix(aO, aCt, e), mix(aCt, cen, e), e);
+        vec4 mv = modelViewMatrix*vec4(c + position*sc*mix(.02, 1., pow(e, 1.6)), 1.);
+        vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); vS = aSeed; vZ = -mv.z; vQ = q; vOurs = aOurs; gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform vec3 uPal[8]; uniform float uB[8]; uniform float uA, uOursA; uniform vec2 uFog; varying vec3 vN; varying vec3 vV; varying float vS; varying float vZ; varying float vQ; varying float vOurs;
+      void main(){ if (vQ <= 0. || (vOurs > .5 && uOursA < .01)) discard;
+        float c = clamp(abs(dot(normalize(vN), normalize(vV))), 0., 1.), rho = sqrt(1.-c*c);
         vec3 band = uPal[0];
         for (int i=1;i<8;i++){ if (rho >= uB[i-1]) band = uPal[i]; }
         float lines = 0.;
@@ -1583,10 +1645,12 @@ const UNIV = [];
         if (nearF < fract(sin(dot(gl_FragCoord.xy, vec2(12.9898,78.233)))*43758.5453)) discard;
         float fog = smoothstep(uFog.x, uFog.y, vZ);
         col = mix(col, vec3(.10,.08,.12), fog*.82);
-        gl_FragColor = vec4(col, uA); }`,
+        col += vec3(1.,.85,.5)*(1. - smoothstep(.0, .35, vQ))*.6;               // newly born, still glowing from His body
+        gl_FragColor = vec4(col, uA*(vOurs > .5 ? uOursA : 1.)); }`,
     transparent:true});
   BEY.univMat = m;
   const tries = 12000, want = 430, MVw = MV_P.clone().add(new THREE.Vector3(0, 6*MV_S, 0));
+  UNIV.push({p:new THREE.Vector3(0,0,0), r:COV_OUT, s:.35, ours:1});        // our own universe takes part in the breath too
   for (let t=0; t<tries && UNIV.length<want; t++){
     let p;
     if (brnd() < .28){ const s = Math.pow(brnd(), .7); p = MVw.clone().lerp(CLOUD_C, .25 + .75*s).add(inEll().multiply(new THREE.Vector3(14000,9000,14000))); }   // a stream from Mahā-Viṣṇu toward the cloud
@@ -1600,17 +1664,21 @@ const UNIV = [];
     UNIV.push({p, r, s:brnd()});
   }
   const im = new THREE.InstancedMesh(bodyGeo, m, UNIV.length), M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3();
-  const seeds = new Float32Array(UNIV.length);
-  UNIV.forEach((u, i) => { M.compose(u.p, Q, S.setScalar(u.r)); im.setMatrixAt(i, M); seeds[i] = u.s; });
-  bodyGeo.setAttribute('aSeed', new THREE.InstancedBufferAttribute(seeds, 1));
+  const seeds = new Float32Array(UNIV.length), ours = new Float32Array(UNIV.length), po = new Float32Array(UNIV.length*3), pc = new Float32Array(UNIV.length*3);
+  UNIV.forEach((u, i) => { M.compose(u.p, Q, S.setScalar(u.r)); im.setMatrixAt(i, M); seeds[i] = u.s; ours[i] = u.ours || 0;
+    const o = poreAt(); o.toArray(po, i*3); o.clone().lerp(u.p, .45).add(new THREE.Vector3((brnd()-.5)*16000, 14000 + brnd()*16000, (brnd()-.5)*16000)).toArray(pc, i*3); });
+  bodyGeo.setAttribute('aSeed', new THREE.InstancedBufferAttribute(seeds, 1)); bodyGeo.setAttribute('aOurs', new THREE.InstancedBufferAttribute(ours, 1));
+  bodyGeo.setAttribute('aO', new THREE.InstancedBufferAttribute(po, 3)); bodyGeo.setAttribute('aCt', new THREE.InstancedBufferAttribute(pc, 3));
   im.frustumCulled = false; karanaGroup.add(im); pickable(im, 'brahmandas'); BEY.univ = im;
   // far beyond: countless more, like atoms (SB 3.11.41)
   const n = 26000, pos = new Float32Array(n*3); let j = 0;
   while (j < n){ const p = inEll().multiply(CLOUD_R).multiplyScalar(1.9).add(CLOUD_C); if (p.length() < 8000 || p.y < Y_OC + 600) continue; p.toArray(pos, j*3); j++; }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const dm = new THREE.ShaderMaterial({uniforms:{opacity:{value:.75}, uPx:{value:800}},
-    vertexShader:`uniform float uPx; varying float vA; void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); float z = -mv.z;
-      gl_PointSize = clamp(420.*uPx/z, 0., 7.); vA = smoothstep(2500., 9000., z); gl_Position = projectionMatrix*mv; }`,
+  const dm = new THREE.ShaderMaterial({uniforms:{opacity:{value:.75}, uPx:{value:800}, uBr:{value:1}, uO:{value:MV_P.clone().add(new THREE.Vector3(-3000, 6500, 0))}},
+    vertexShader:`uniform float uPx, uBr; uniform vec3 uO; varying float vA;
+      void main(){ float sd = fract(sin(dot(position.xz, vec2(.00123, .00457)))*43758.5453), q = clamp(uBr*1.4 - sd*.4, 0., 1.), e = q*q*(3. - 2.*q);
+        vec4 mv = modelViewMatrix*vec4(mix(uO, position, e), 1.); float z = -mv.z;
+        gl_PointSize = clamp(420.*uPx/z, 0., 7.)*step(.001, q); vA = smoothstep(2500., 9000., z)*(.4 + .6*e); gl_Position = projectionMatrix*mv; }`,
     fragmentShader:`uniform float opacity; varying float vA; void main(){ float r = length(gl_PointCoord - .5)*2.; if (r > 1.) discard;
       gl_FragColor = vec4(vec3(.95,.8,.52)*(1.2 - r), opacity*vA*(1. - smoothstep(.4, 1., r))); }`,
     transparent:true, depthWrite:false, blending:THREE.AdditiveBlending}); dm.userData.op = .75;
@@ -1626,13 +1694,18 @@ for (let i=0;i<34;i++){
 for (let i=0;i<10;i++){
   const p = inEll().multiply(CLOUD_R).add(CLOUD_C), s = bSprite(cloudTex, 0x9A7A42, 50000 + brnd()*30000, .16); s.position.copy(p); cloudGroup.add(s);
 }
+// where the effulgence meets the cloud, its upper edge is lit
+for (let i=0;i<18;i++){
+  const a = brnd()*Math.PI*2, el = .55 + brnd()*.8, d = new THREE.Vector3(Math.cos(a)*Math.cos(el), Math.sin(el), Math.sin(a)*Math.cos(el));
+  const p = d.multiply(CLOUD_R).multiplyScalar(1.02).add(CLOUD_C), s = bSprite(cloudTex, 0xC9A35E, 22000 + brnd()*20000, .09); s.position.copy(p); s.material.rotation = brnd()*6.28; cloudGroup.add(s);
+}
 
 /* The Causal Ocean: huge waves churned by a mighty wind (SB 10.89.52) */
 {
   const g = new THREE.CircleGeometry(OCEAN_R, 160); g.rotateX(-Math.PI/2);
-  const m = new THREE.ShaderMaterial({uniforms:{uTime:{value:0}, uA:{value:1}, uC:{value:new THREE.Vector2(OCEAN_C.x, OCEAN_C.z)}, uR:{value:OCEAN_R}, uMV:{value:new THREE.Vector2(MV_P.x, MV_P.z)}},
+  const m = new THREE.ShaderMaterial({uniforms:{uTime:{value:0}, uA:{value:1}, uGlow:{value:.3}, uC:{value:new THREE.Vector2(OCEAN_C.x, OCEAN_C.z)}, uR:{value:OCEAN_R}, uMV:{value:new THREE.Vector2(MV_P.x, MV_P.z)}},
     vertexShader:`varying vec3 vW; void main(){ vec4 w = modelMatrix*vec4(position,1.); vW = w.xyz; gl_Position = projectionMatrix*viewMatrix*w; }`,
-    fragmentShader:`uniform float uTime, uA, uR; uniform vec2 uC, uMV; varying vec3 vW;
+    fragmentShader:`uniform float uTime, uA, uR, uGlow; uniform vec2 uC, uMV; varying vec3 vW;
       float h2(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
       float vn(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h2(i),h2(i+vec2(1.,0.)),f.x), mix(h2(i+vec2(0.,1.)),h2(i+vec2(1.,1.)),f.x), f.y); }
       float px;
@@ -1651,7 +1724,7 @@ for (let i=0;i<10;i++){
         vec3 c = mix(vec3(.04,.11,.16), vec3(.12,.30,.36), smoothstep(.4, 1.4, h));
         c = mix(c, vec3(.40,.50,.50), fr*.6) + vec3(1.,.88,.6)*sp*.45;
         float dm = length(p - uMV);
-        c += vec3(.95,.80,.48)*.3*exp(-dm/24000.);   // the water glows around Mahā-Viṣṇu
+        c += vec3(.95,.80,.48)*uGlow*exp(-dm/24000.);   // the water glows around Mahā-Viṣṇu, more as He breathes out
         float dc = length(p - uC)/uR;
         gl_FragColor = vec4(c, uA*(1. - smoothstep(.35, 1., dc))*.95);
       }`, transparent:true, depthWrite:false, extensions:{derivatives:true}});
@@ -1717,7 +1790,8 @@ const MVF = {};
   gp.forEach((p, i) => { p.toArray(gpos, i*3); GH[i % 5].toArray(gcol, i*3); });
   const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.BufferAttribute(gpos, 3)); gg.setAttribute('color', new THREE.BufferAttribute(gcol, 3));
   fig.add(new THREE.Points(gg, new THREE.PointsMaterial({size:240, vertexColors:true, sizeAttenuation:true, transparent:true, depthWrite:false})));
-  const aura = bSprite(coolGlow, 0x6F95E8, 1, .2); aura.position.set(-2.5, 7, 0); aura.scale.set(36, 12, 1); fig.add(aura);
+  const aura = bSprite(coolGlow, 0x6F95E8, 1, .2); aura.position.set(-2.5, 7, 0); aura.scale.set(36, 12, 1); fig.add(aura); BEY.aura = aura;
+  const halo = bSprite(sunGlow, 0xFFE2A8, 7, .34); halo.position.set(-15.2, 9.2, -.8); fig.add(halo); BEY.mvHalo = halo; BEY.kau = kau;
   [[-14.5,7.8,4],[-10.4,6.9,6],[-6,6,6],[-1,5.5,6],[4.5,5.2,5],[9,5.1,3.5]].forEach(([x,y,r]) => { const g = bSprite(smoothTex, x < -5 ? 0x5C86F0 : 0xF0C060, r, .22); g.position.set(x, y, 0); fig.add(g); });
   MVF.head = anchorAt(fig, -14.5, 11.4, 0); MVF.feet = anchorAt(fig, 10.4, 6.6, 0); MVF.kaus = anchorAt(fig, -10.6, 8.5, 0);
 
@@ -1728,12 +1802,12 @@ const MVF = {};
     return new THREE.Vector3(-2.4 - rx*Math.cos(a), lerp(.9, 3.1, t), rz*Math.sin(a)); }));
   const cm2 = new THREE.Mesh(new THREE.TubeGeometry(coil, 520, 1.45, 18, false), white); mvGroup.add(cm2); pickable(cm2, 'mahavisnu');
   const tail = new THREE.Mesh(new THREE.ConeGeometry(1.45, 5, 18), white); tail.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), coil.getTangent(0).negate()); tail.position.copy(coil.getPoint(0)).addScaledVector(coil.getTangent(0), -2.4); mvGroup.add(tail);
-  const neckC = new THREE.CatmullRomCurve3([coil.getPoint(1), new THREE.Vector3(-17.2, 5.4, -.6), new THREE.Vector3(-18.6, 8.6, -.7), new THREE.Vector3(-17.8, 11.6, -.6)]);
+  const neckC = new THREE.CatmullRomCurve3([coil.getPoint(1), new THREE.Vector3(-17.4, 5.2, -1.6), new THREE.Vector3(-18.9, 8.8, -2.4), new THREE.Vector3(-18.2, 12.6, -2.2)]);
   mvGroup.add(new THREE.Mesh(new THREE.TubeGeometry(neckC, 60, 1.6, 16, false), blue));
   // Hoods fanned over the Lord's head: three full rows, and many more behind them
-  const C = new THREE.Vector3(-17.6, 12.2, 0), hoodGeo = new THREE.SphereGeometry(1, 22, 16); hoodGeo.scale(1.2, 1.75, .3);
+  const C = new THREE.Vector3(-17.3, 13.4, -1.2), hoodGeo = new THREE.SphereGeometry(1, 22, 16); hoodGeo.scale(1.2, 1.75, .3);
   const gemP = [];
-  [[44, 7.6, -1.5, 1.0, -1.6, 1.2], [26, 6.5, -.6, 1.25, -1.45, 1.05], [13, 5.1, .5, 1.5, -1.25, .9]].forEach(([n, R, dz, sc, a0, a1]) => {
+  [[44, 5.4, -.6, 1.0, -1.65, 1.25], [26, 4.2, .2, 1.25, -1.5, 1.1], [13, 2.9, 1.0, 1.5, -1.3, .95]].forEach(([n, R, dz, sc, a0, a1]) => {
     for (let i=0;i<n;i++){
       const phi = lerp(a0, a1, n > 1 ? i/(n-1) : .5), d = new THREE.Vector3(Math.sin(phi), Math.cos(phi), 0);
       const hp = C.clone().addScaledVector(d, R).add(new THREE.Vector3(0, 0, dz));
@@ -1747,7 +1821,7 @@ const MVF = {};
   const gemG = new THREE.BufferGeometry(); gemG.setAttribute('position', new THREE.BufferAttribute(gpa, 3));
   mvGroup.add(new THREE.Points(gemG, new THREE.PointsMaterial({color:0xFFDD90, size:260, sizeAttenuation:true, transparent:true, depthWrite:false})));
   const ah = bSprite(coolGlow, 0xC9D8FF, 1, .14); ah.position.copy(C); ah.scale.set(24, 24, 1); mvGroup.add(ah);
-  MVF.hoods = anchorAt(mvGroup, -18.5, 21.5, 0); MVF.coils = anchorAt(mvGroup, 4, 2.5, 6.5);
+  MVF.hoods = anchorAt(mvGroup, -18, 20.5, 0); MVF.coils = anchorAt(mvGroup, 4, 2.5, 6.5);
 
   // The palace: a platform and thousands of jewelled pillars (10.89.52); a few dozen are drawn, behind Him
   const floor = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, .5, 120), new THREE.MeshStandardMaterial({color:0x16214A, roughness:.45, metalness:.3, emissive:0x05081a}));
@@ -1770,7 +1844,7 @@ const MVF = {};
 }
 // Universes leaving and re-entering His pores with each breath (CC Ādi 5.68–70; BS 5.48)
 {
-  const n = 2400, A = new Float32Array(n*3), Bp = new Float32Array(n*3), Cp = new Float32Array(n*3), sd = new Float32Array(n), sz = new Float32Array(n);
+  const n = 1400, A = new Float32Array(n*3), Bp = new Float32Array(n*3), Cp = new Float32Array(n*3), sd = new Float32Array(n), sz = new Float32Array(n);
   const bodyPts = [[-14.4,7.7,0,1.4,1.6,1.4],[-10.5,7,0,2.3,1.25,2.5],[-8.9,6.3,0,2.6,1.35,2.2],[-5.5,5.5,0,2.7,1.4,2.3],[0,5.3,0,3.4,1,1.4],[6,5,0,3.6,.9,1.3]];
   for (let i=0;i<n;i++){
     const b = bodyPts[Math.floor(brnd()*bodyPts.length)], u = inEll();
@@ -1837,6 +1911,35 @@ const spGroup = new THREE.Group(); karanaGroup.add(spGroup);
   { const hm = new THREE.PointsMaterial({color:0xFFE6B8, size:52e3, sizeAttenuation:true, transparent:true, opacity:.28, depthWrite:false, blending:THREE.AdditiveBlending}); hm.userData.op = .28; spGroup.add(new THREE.Points(hg, hm)); }
   BEY.vaikA = P.slice().sort((a, b) => b.r - a.r)[0].p;
 }
+// Govinda's effulgence pouring down from Goloka (BS 5.40), drawn as soft rays
+{
+  const H = GOLOKA_P.y - Y_OC + 2e5, g = new THREE.ConeGeometry(1.25e6, H, 96, 1, true); g.translate(0, -H/2, 0);
+  const m = new THREE.ShaderMaterial({uniforms:{uA:{value:1}, uT:{value:0}},
+    vertexShader:`varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+    fragmentShader:`uniform float uA, uT; varying vec2 vUv;
+      float h(float x){ return fract(sin(x*127.1)*43758.5453); }
+      float n(float x){ float i = floor(x), f = fract(x); f = f*f*(3.-2.*f); return mix(h(i), h(i+1.), f); }
+      void main(){ float a = vUv.x*96., ray = pow(n(a + uT*.05), 3.)*.8 + pow(n(a*2.3 - uT*.03 + 7.), 5.)*.6;
+        float along = vUv.y;                                   // 1 at Goloka, 0 at the bottom
+        float f = smoothstep(0., .55, along)*(1. - smoothstep(.92, 1., along));
+        gl_FragColor = vec4(vec3(1.,.88,.62)*ray, uA*f*.11*ray); }`,
+    transparent:true, depthWrite:false, side:THREE.DoubleSide, blending:THREE.AdditiveBlending});
+  const cone = new THREE.Mesh(g, m); cone.position.copy(GOLOKA_P); cone.renderOrder = -1; spGroup.add(cone); BEY.rays = m;
+  // motes of light drifting slowly in the effulgence
+  const nm = 4000, mp = new Float32Array(nm*3);
+  for (let i=0;i<nm;i++) inEll().multiply(new THREE.Vector3(900e3, 600e3, 900e3)).add(SP_C).toArray(mp, i*3);
+  const mg = new THREE.BufferGeometry(); mg.setAttribute('position', new THREE.BufferAttribute(mp, 3));
+  const mm = new THREE.ShaderMaterial({uniforms:{uA:{value:1}, uT:{value:0}, uPx:{value:800}},
+    vertexShader:`uniform float uT, uPx; varying float vT;
+      void main(){ float s = fract(sin(dot(position.xz, vec2(.000123,.000457)))*43758.5453);
+        vec3 p = position + vec3(sin(uT*.05 + s*40.)*18000., mod(uT*1200.*(.5+s) + s*5e5, 5e5) - 2.5e5, cos(uT*.04 + s*30.)*18000.);
+        vec4 mv = modelViewMatrix*vec4(p, 1.); vT = s; gl_PointSize = clamp(9000.*uPx/(-mv.z), 1., 5.); gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform float uA, uT; varying float vT; void main(){ float r = length(gl_PointCoord - .5)*2.; if (r > 1.) discard;
+      gl_FragColor = vec4(vec3(1.,.93,.75), uA*(1. - r)*(.35 + .35*sin(uT*.8 + vT*60.))); }`,
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending});
+  BEY.motes = new THREE.Points(mg, mm); BEY.motes.frustumCulled = false; spGroup.add(BEY.motes);
+}
+
 // Goloka: a lotus of thousands of petals around a hexagonal whorl, within the square of Śvetadvīpa (BS 5.2–5)
 const golGroup = new THREE.Group(); golGroup.position.copy(GOLOKA_P); golGroup.scale.setScalar(1.5e5); spGroup.add(golGroup);
 {
@@ -1912,12 +2015,12 @@ const covWin = () => BEY.covA > .5 && camera.position.length() < 16000;
 COVERS.forEach((c, i) => addLabel({id:c.id, text:c.n, sub:c.yj + ' yojanas thick', cls:'c-gold bz', pri:62 - i, anchor:COV_ANCH[c.id], lod:0, win:covWin}));
 addLabel({id:'pradhana', text:'Pradhāna', sub:'unmanifest, unmeasured', cls:'c-soft bz', pri:54, anchor:COV_ANCH.pradhana, lod:0, win:covWin});
 addLabel({id:'avarana', text:'Seven coverings', sub:'each ten times the one inside', cls:'c-gold bz', pri:64, anchor:COV_ANCH.avarana, lod:0, win:covWin});
-addLabel({id:'overview', text:'Our universe', sub:'the smallest of all', cls:'c-here bz', pri:96, anchor:anchorAt(karanaGroup, 0, 0, 0), lod:0, win:d => { const cr = camera.position.length(); return cr > 6000 && cr < 400e3 && (BEY.covA < .5 || cr > 12000); }});
+addLabel({id:'overview', text:'Our universe', sub:'the smallest of all', cls:'c-here bz', pri:96, anchor:anchorAt(karanaGroup, 0, 0, 0), lod:0, win:d => { const cr = camera.position.length(); return cr > 6000 && cr < 400e3 && (BEY.covA < .5 || cr > 12000) && BEY.ourQ > .97; }});
 addLabel({id:'brahmandas', text:'Countless universes', sub:'from the pores of Mahā-Viṣṇu', cls:'c-gold bz', pri:80, anchor:anchorAt(karanaGroup, UNIV[0].p.x, UNIV[0].p.y + UNIV[0].r*1.1, UNIV[0].p.z), lod:0, win:d => { const cr = camera.position.length(); return cr > 9000 && cr < 260e3; }});
 addLabel({id:'brahmandas', text:'Devī-dhāma', sub:'the material creation · one fourth', cls:'c-gold bz', pri:80, anchor:anchorAt(karanaGroup, CLOUD_C.x, CLOUD_C.y + CLOUD_R.y*1.4, CLOUD_C.z), lod:0, win:d => camera.position.length() > 600e3});
 addLabel({id:'karana', text:'Kāraṇa Ocean', sub:'the Virajā', cls:'c-ocean bz', pri:86, anchor:anchorAt(karanaGroup, OCEAN_C.x + 70e3, Y_OC, OCEAN_C.z + 60e3), lod:0, win:d => { const cr = camera.position.length(); return cr > 40e3 && cr < 3e6; }});
 addLabel({id:'mahavisnu', text:'Mahā-Viṣṇu', sub:'Kāraṇodakaśāyī Viṣṇu', cls:'c-high bz', pri:90, anchor:MVF.head, lod:0, win:d => { const cr = camera.position.distanceTo(MV_P); return cr > 6000 && cr < 1.2e6; }});
-BEY.breathL = addLabel({text:'Breathing out', sub:'universes come from His pores', cls:'c-soft bz', pri:58, anchor:anchorAt(karanaGroup, (MV_P.x + CLOUD_C.x)/2, CLOUD_C.y + 26000, (MV_P.z + CLOUD_C.z)/2), lod:0, win:d => { const cr = camera.position.distanceTo(MV_P); return cr > 20000 && cr < 420e3; }});
+BEY.breathL = addLabel({text:'Breathing out', sub:'the present: all universes are out', cls:'c-soft bz', pri:58, anchor:anchorAt(karanaGroup, (MV_P.x + CLOUD_C.x)/2, CLOUD_C.y + 26000, (MV_P.z + CLOUD_C.z)/2), lod:0, win:d => { const cr = camera.position.distanceTo(MV_P); return cr > 20000 && cr < 420e3; }});
 addLabel({id:'brahmajyoti', text:'Brahmajyoti', sub:'the effulgence of the Lord', cls:'c-gold bz', pri:84, anchor:anchorAt(karanaGroup, SP_C.x - 420e3, SP_C.y - 120e3, SP_C.z + 180e3), lod:0, win:d => camera.position.length() > 250e3});
 addLabel({id:'vaikuntha', text:'Vaikuṇṭha planets', sub:'Hari-dhāma', cls:'c-ocean bz', pri:85, anchor:anchorAt(karanaGroup, BEY.vaikA.x, BEY.vaikA.y + 24e3, BEY.vaikA.z), lod:0, win:d => camera.position.distanceTo(SP_C) < 4e6 && camera.position.length() > 200e3});
 addLabel({id:'goloka', text:'Goloka', sub:'above all', cls:'c-here bz', pri:92, anchor:BEY.golA, lod:0, win:d => camera.position.length() > 200e3});
@@ -3386,7 +3489,8 @@ function overviewFit(t=T){
   let x0 = 0, x1 = W;
   if (W >= 900){ const lad = $('#ladder'), ins = $('#inspector');
     if (lad && !lad.hidden) x0 = lad.getBoundingClientRect().right;
-    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left; }
+    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left;
+    const sc = $('#scale'); if (sc && !sc.hidden && getComputedStyle(sc).display !== 'none') x1 = Math.min(x1, sc.getBoundingClientRect().left); }
   const kMax = Math.max(40, x1 - x0 - 24) / 532;                 // pixels per unit that still fits the span
   const d = Math.max(lerp(720, 600, t), (W/2/kMax) / (tv*asp));
   const k = (W/2) / (d*tv*asp);
@@ -3464,7 +3568,7 @@ function flyView(f){
   // across many scales: zoom on a log scale, and move the pivot while the view is widest
   const log = r > Math.log(4) || move > 2;
   const dur = f.dur || (log ? 1500 + 420*Math.min(r, 7) : 1500);
-  navT = performance.now() + dur;
+  navT = performance.now() + dur; zoomQ = 0;
   flight = {t0:performance.now(), dur, fromP:camera.position.clone(), fromT, toP:toPos, toT:f.p.clone(), log,
     l0:Math.log(d0), l1:Math.log(d1), e:1 + Math.min(2, r/2.5), out:d1 > d0, hump:Math.max(0, move - .6)*.5,
     u0:camera.position.clone().sub(fromT).normalize(), u1:f.dir.clone().normalize()};
@@ -3770,7 +3874,7 @@ function updateBeyond(dt){
   if (!reduceMotion) BEY.t += dt;
   karanaGroup.visible = on;
   // the seven coverings
-  const covA = on ? sstep(oD*1.25, oD*1.9, camR)*(1 - sstep(70e3, 160e3, camR)) : 0;
+  const covA = on ? sstep(oD*1.25, oD*1.9, camR)*(1 - sstep(70e3, 160e3, camR))*sstep(.97, 1, BEY.ourQ) : 0;
   BEY.covA = covA; covGroup.visible = covA > .004;
   if (covGroup.visible){
     covBill.quaternion.copy(camera.quaternion);
@@ -3784,7 +3888,7 @@ function updateBeyond(dt){
   }
   // countless universes, the dust of more, and the cloud of māyā
   const uA = on ? sstep(5000, 15000, camR) : 0, od = camera.position.distanceTo(controls.target);
-  BEY.univ.visible = uA > .004; BEY.univMat.uniforms.uA.value = uA; BEY.univMat.uniforms.uFog.value.set(od*.7, od*2.6);
+  BEY.univ.visible = uA > .004; BEY.univMat.uniforms.uA.value = uA; BEY.univMat.uniforms.uOursA.value = 1 - sstep(oD*1.25, oD*1.9, camR)*(1 - sstep(70e3, 160e3, camR)); BEY.univMat.uniforms.uFog.value.set(od*.7, od*2.6);
   BEY.dust.visible = uA > .004; fade(BEY.dust.material, uA*(1 - .6*sstep(400e3, 1.6e6, camR)));
   const cd = cloudDist(cam), cA = uA*sstep(1.05, 1.9, cd);
   cloudGroup.visible = cA > .004; cloudGroup.children.forEach(s => fade(s.material, cA));
@@ -3792,15 +3896,21 @@ function updateBeyond(dt){
   const oA = on ? sstep(5000, 22000, camR) : 0;
   BEY.ocean.visible = oA > .004; BEY.ocean.material.uniforms.uA.value = oA; BEY.ocean.material.uniforms.uTime.value = BEY.t;
   mvGroup.visible = oA > .004; BEY.figMat.uniforms.uT.value = BEY.t;
-  const P = 40, ph = reduceMotion ? .3 : (BEY.t % P)/P, b = ph < .5 ? easeIO(ph*2) : 1 - easeIO((ph - .5)*2);
-  BEY.breath = b; const su = BEY.stream.material.uniforms;
-  su.uBreath.value = b; su.uA.value = oA; BEY.stream.visible = oA > .004;
+  const br = BEY.br;
+  if (br.play && camR < 30000) breathPresent();                      // close in, the inside of our universe is drawn: stay in the present
+  if (br.play) br.ph = (br.ph + dt/BR_P) % 1;
+  const Bt = breathAt(br.ph); br.B += (Bt - br.B)*Math.min(1, dt*(br.play ? 30 : 4));
+  const b = br.B, su = BEY.stream.material.uniforms;
+  BEY.univMat.uniforms.uBr.value = b; BEY.dust.material.uniforms.uBr.value = b;
+  BEY.ourQ = clamp(b*1.45 - .35*.45, 0, 1);
+  su.uBreath.value = b; su.uA.value = oA*clamp(6*b*(1 - b), 0, 1); BEY.stream.visible = su.uA.value > .004;
   renderer.getDrawingBufferSize(dvSize); su.uPx.value = dvSize.y/(2*Math.tan(camera.fov*Math.PI/360)); BEY.dust.material.uniforms.uPx.value = su.uPx.value;
-  const out = ph < .5, L = BEY.breathL;
-  if (L.out !== out){ L.out = out; L.el.querySelector('span').textContent = out ? 'Breathing out' : 'Breathing in';
-    L.el.querySelector('small').textContent = out ? 'universes come from His pores' : 'universes enter His body again'; L.w = 0; }
+  if (BEY.motes){ BEY.motes.material.uniforms.uPx.value = su.uPx.value; BEY.motes.material.uniforms.uT.value = BEY.t; BEY.rays.uniforms.uT.value = BEY.t; }
+  fade(BEY.aura.material, .6 + .4*b); fade(BEY.mvHalo.material, .55 + .45*b); fade(BEY.kau.material, .7 + .3*b);
+  BEY.ocean.material.uniforms.uGlow.value = .18 + .16*b;
+  breathUI(b, camR, oA); railUpdate();
   // our universe, marked from afar
-  const bA = on ? sstep(8000, 24000, camR)*(1 - sstep(1.2e6, 2.6e6, camR)) : 0;
+  const bA = on ? sstep(8000, 24000, camR)*(1 - sstep(1.2e6, 2.6e6, camR))*sstep(.9, 1, BEY.ourQ) : 0;
   BEY.beacon.visible = BEY.ringBill.visible = bA > .004;
   if (bA > .004){ fade(BEY.beacon.material, bA); BEY.beacon.scale.setScalar(camR*.03);
     fade(BEY.ring.material, bA); BEY.ring.scale.setScalar(camR*.028); BEY.ringBill.quaternion.copy(camera.quaternion); }
@@ -3809,7 +3919,7 @@ function updateBeyond(dt){
   spGroup.visible = sA > .004;
   if (spGroup.visible){
     spGroup.traverse(o => { if (o.isSprite || o.isPoints) fade(o.material, sA); });
-    BEY.vaikMat.uniforms.uA.value = sA; BEY.golMat.uniforms.uA.value = sA; fade(BEY.sqMat, sA);
+    BEY.vaikMat.uniforms.uA.value = sA; BEY.golMat.uniforms.uA.value = sA; fade(BEY.sqMat, sA); BEY.rays.uniforms.uA.value = sA; BEY.motes.material.uniforms.uA.value = sA;
   }
   // the sky: indigo inside the universe, dark in the cloud of māyā, golden in the brahmajyoti
   const mix = on ? sstep(oD*1.6, oD*4.5, camR) : 0, dm = BEY.dome.material.uniforms;
@@ -3834,7 +3944,8 @@ function panelFit(span){
   let x0 = 0, x1 = W;
   if (W >= 900){ const lad = $('#ladder'), ins = $('#inspector');
     if (lad && !lad.hidden) x0 = lad.getBoundingClientRect().right;
-    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left; }
+    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left;
+    const sc = $('#scale'); if (sc && !sc.hidden && getComputedStyle(sc).display !== 'none') x1 = Math.min(x1, sc.getBoundingClientRect().left); }
   const kMax = Math.max(40, x1 - x0 - 24)/span;
   const d = Math.max((W/2/kMax)/(tv*asp), span*.56/tv);
   const k = (W/2)/(d*tv*asp);
@@ -3850,7 +3961,8 @@ function coversView(){
   let x0 = 0, x1 = W;
   if (W >= 900){ const lad = $('#ladder'), ins = $('#inspector');
     if (lad && !lad.hidden) x0 = lad.getBoundingClientRect().right;
-    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left; }
+    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left;
+    const sc = $('#scale'); if (sc && !sc.hidden && getComputedStyle(sc).display !== 'none') x1 = Math.min(x1, sc.getBoundingClientRect().left); }
   const lab = introOn ? 0 : 150, avail = Math.max(120, x1 - x0 - 28);   // the opening shows no labels, so the onion is centred
   const k = introOn ? Math.min(W*.8, H*.62)/(2*COV_OUT) : Math.min((avail - lab)/(COV_OUT + COV_COL), H*.62/(2*COV_OUT));    // pixels per unit
   const d = (W/2)/(k*tv*asp), dir = new THREE.Vector3(0,.12,1).normalize(), right = new THREE.Vector3(0,1,0).cross(dir).normalize();
@@ -3862,7 +3974,7 @@ function beyondFocus(id){
   switch(id){
     case 'brahmandas': return beyondView(new THREE.Vector3(-3000, 2500, -5000), 52000, new THREE.Vector3(.42,.3,.86));
     case 'karana':     return beyondView(new THREE.Vector3(OCEAN_C.x + 8e3, Y_OC + 16e3, OCEAN_C.z), 200e3, new THREE.Vector3(.4,.4,.82));
-    case 'mahavisnu':  return beyondView(MV_P.clone().add(new THREE.Vector3(-1500, 9000, 0)), 52e3, new THREE.Vector3(.3,.24,.92));
+    case 'mahavisnu':  return beyondView(MV_P.clone().add(new THREE.Vector3(-1500, 8500, 0)), 68e3, new THREE.Vector3(.3,.24,.92));   // the whole palace, with room to spare
     case 'brahmajyoti':return beyondView(CLOUD_C.clone().lerp(SP_C, .5), 1.3e6, new THREE.Vector3(.5,.18,.85));
     case 'vaikuntha':  return beyondView(SP_C, 1.5e6, new THREE.Vector3(.48,.26,.84));
     case 'goloka':     return beyondView(GOLOKA_P.clone().add(new THREE.Vector3(0, 50e3, 0)), 560e3, new THREE.Vector3(.4,.52,.75));
@@ -3900,6 +4012,105 @@ function powSync(id){
   const act = e => { const g = e.target.closest('[data-k]'); if (g && g.dataset.k !== sel) select(g.dataset.k, BEY.covA < .9); };
   w.addEventListener('click', act);
   w.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('[data-k]')){ e.preventDefault(); act(e); } }); })();
+
+/* ------------------------------------------------------------------
+   THE BREATH: by default the present, with every universe out; on
+   request a whole breath plays as a time-lapse
+------------------------------------------------------------------- */
+function breathAt(ph){
+  if (ph < BR_EM) return easeIO(ph/BR_EM);
+  if (ph < BR_LIFE) return 1;
+  if (ph < BR_IN) return 1 - easeIO((ph - BR_LIFE)/(BR_IN - BR_LIFE));
+  return 0;
+}
+function breathPhase(ph){
+  if (ph < BR_EM) return ['Breathing out', 'universes come from His pores'];
+  if (ph < BR_LIFE) return Math.abs(ph - BR_NOW) < .02 ? ['Breathing out · now', 'the second half of our Brahmā\'s life'] : ['Breathing out', 'every universe lasts one lifetime of Brahmā'];
+  if (ph < BR_IN) return ['Breathing in', 'the universes enter His body again'];
+  return ['Between breaths', 'the universes rest within Him'];
+}
+function breathPresent(){ BEY.br.play = false; BEY.br.ph = BR_NOW; }
+function breathUI(b, camR, oA){
+  const w = $('#breath'), show = oA > .5 && camR > 30000 && camR < 1.4e6 && !introOn && tourI < 0 && LAYER_ON.beyond !== false;
+  if (w.hidden === show) w.hidden = !show;
+  const br = BEY.br, atNow = !br.play && Math.abs(br.ph - BR_NOW) < 1e-3, [t, sub] = atNow ? ['The present', 'second half of our Brahmā\'s life (SB 3.11.34)'] : breathPhase(br.ph);
+  const key = t + sub + br.play;
+  if (BEY.brKey !== key){ BEY.brKey = key; $('#br-state').textContent = t + ' · ' + sub; $('#br-play').textContent = br.play ? '❚❚ Pause' : '▶ Play the breath';
+    $('#br-present').disabled = atNow;
+    const L = BEY.breathL; L.el.querySelector('span').textContent = t; L.el.querySelector('small').textContent = sub; L.w = 0; }
+  if (!w.hidden) $('#br-mark').style.left = (br.ph*100).toFixed(2) + '%';
+}
+$('#br-now').style.left = (BR_NOW*100) + '%';
+$('#br-play').addEventListener('click', () => { const br = BEY.br; br.play = !br.play; BEY.brKey = ''; });
+$('#br-present').addEventListener('click', () => { breathPresent(); BEY.brKey = ''; });
+{ // drag along the bar to move through the breath by hand
+  const bar = $('#br-bar'); let drag = false;
+  const at = e => { const r = bar.getBoundingClientRect(); BEY.br.ph = clamp((e.clientX - r.left)/r.width, 0, .9999); BEY.br.play = false; BEY.brKey = ''; };
+  bar.addEventListener('pointerdown', e => { drag = true; bar.setPointerCapture(e.pointerId); at(e); });
+  bar.addEventListener('pointermove', e => { if (drag) at(e); });
+  bar.addEventListener('pointerup', () => { drag = false; });
+}
+
+/* ------------------------------------------------------------------
+   SCALE OF CREATION: a rail of the levels, from our universe out to
+   the whole creation. The marker shows where the view is; dragging it
+   moves smoothly through the levels and keeps each one in frame
+------------------------------------------------------------------- */
+const RAIL = [
+  {id:'overview', n:'Our universe', v:() => focusFor('overview')},
+  {id:'avarana', n:'Seven coverings', v:() => coversView()},
+  {id:'brahmandas', n:'Countless universes', v:() => beyondView(new THREE.Vector3(-3000, 2500, -5000), 52000, new THREE.Vector3(.42,.3,.86))},
+  {id:'mahavisnu', n:'Mahā-Viṣṇu', v:() => beyondView(MV_P.clone().lerp(CLOUD_C, .4).add(new THREE.Vector3(0, 10000, 0)), 150e3, new THREE.Vector3(.36,.32,.88))},
+  {id:'brahmajyoti', n:'Brahmajyoti', v:() => beyondView(CLOUD_C.clone().lerp(SP_C, .5), 1.0e6, new THREE.Vector3(.5,.18,.85))},
+  {id:'vaikuntha', n:'Vaikuṇṭha', v:() => beyondView(SP_C, 1.25e6, new THREE.Vector3(.48,.26,.84))},
+  {id:'goloka', n:'Goloka', v:() => beyondView(GOLOKA_P.clone().add(new THREE.Vector3(0, 50e3, 0)), 1.25e6, new THREE.Vector3(.4,.5,.77))},
+  {id:'paravyoma', n:'The whole creation', v:() => focusFor('paravyoma')}
+];
+let railK = null, railKT = 0, railDrag = false;
+function railKeys(){   // the camera pose and distance from our universe at each level, refreshed now and then for the panel layout
+  const now = performance.now(); if (railK && now - railKT < 800) return railK; railKT = now;
+  railK = RAIL.map(r => { const f = r.v(); return {p:f.p.clone(), d:f.d, dir:f.dir.clone().normalize(), cr:f.d}; });
+  for (let i=1;i<railK.length;i++) railK[i].cr = Math.max(railK[i].cr, railK[i-1].cr*1.3);   // keep the order outward
+  return railK;
+}
+function railU(){   // where the view is on the rail, from how far the view stands back from what it looks at
+  const K = railKeys(), lr = Math.log(Math.max(1, camera.position.distanceTo(controls.target)));
+  if (lr <= Math.log(K[0].cr)) return 0;
+  for (let i=0;i<K.length-1;i++){ const a = Math.log(K[i].cr), b = Math.log(K[i+1].cr); if (lr <= b) return i + (lr - a)/(b - a); }
+  return K.length - 1;
+}
+function railPose(u){
+  const K = railKeys(), i = Math.min(K.length - 2, Math.max(0, Math.floor(u))), f = clamp(u - i, 0, 1), A = K[i], B = K[i+1];
+  const w = f*f*(3 - 2*f), d = Math.exp(lerp(Math.log(A.d), Math.log(B.d), f));
+  return {p:A.p.clone().lerp(B.p, w), d, dir:A.dir.clone().lerp(B.dir, w).normalize()};
+}
+(() => {
+  const track = $('#sc-track'), mark = $('#sc-mark'), n = RAIL.length;
+  RAIL.forEach((r, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'sc-stop'; b.style.bottom = (i/(n-1)*100) + '%';
+    b.innerHTML = `<span>${esc(r.n)}</span>`; b.title = r.n; b.addEventListener('click', e => { e.stopPropagation(); select(r.id, true); }); track.appendChild(b); r.el = b; });
+  const uAt = e => { const rc = track.getBoundingClientRect(); return clamp((rc.bottom - e.clientY)/rc.height, 0, 1)*(n - 1); };
+  const go = u => { flight = null; zoomQ = 0; const f = railPose(u); controls.target.copy(f.p); camera.position.copy(f.p).addScaledVector(f.dir, f.d); };
+  const start = e => { if (e.target.closest('.sc-stop')) return; railDrag = true; track.setPointerCapture(e.pointerId); pushView(); go(uAt(e)); e.preventDefault(); };
+  track.addEventListener('pointerdown', start);
+  track.addEventListener('pointermove', e => { if (railDrag) go(uAt(e)); });
+  track.addEventListener('pointerup', () => { railDrag = false; });
+  track.addEventListener('wheel', e => { e.preventDefault(); go(clamp(railU() - Math.sign(e.deltaY)*.25, 0, n - 1)); }, {passive:false});
+  mark.addEventListener('keydown', e => { const k = {ArrowUp:1, ArrowDown:-1, PageUp:1, PageDown:-1}[e.key]; if (k){ e.preventDefault(); select(RAIL[clamp(Math.round(railU()) + k, 0, n - 1)].id, true); } });
+})();
+let railLast = -1, railPlace = 0;
+function placeRail(){   // sit just left of the details panel
+  const ins = $('#inspector'), sc = $('#scale'), W = window.innerWidth; if (!sc) return;
+  if (W >= 900) sc.style.right = (ins && !ins.hidden ? Math.round(W - ins.getBoundingClientRect().left + 10) : 16) + 'px'; else sc.style.right = '';
+}
+function railUpdate(){
+  const now = performance.now();
+  if (now - railPlace > 500){ railPlace = now; placeRail(); }
+  const u = railU(); if (Math.abs(u - railLast) < .002) return; railLast = u;
+  const n = RAIL.length, pct = u/(n - 1)*100;
+  $('#sc-mark').style.bottom = pct + '%'; $('#sc-fill').style.height = pct + '%';
+  const here = Math.round(u); RAIL.forEach((r, i) => { r.el.classList.toggle('past', i <= u + .02); r.el.classList.toggle('here', i === here); });
+  $('#sc-mark').setAttribute('aria-valuetext', RAIL[here].n);
+}
 
 /* ------------------------------------------------------------------
    OPENING: on a first visit, descend from the whole creation into our
@@ -4162,6 +4373,7 @@ const panelOn = {brand:true, ladder:true, inspector:true, timebar:true, caption:
 try { const saved = JSON.parse(localStorage.getItem('bc-panels') || 'null'); if (saved) Object.assign(panelOn, saved); } catch(_){}
 function applyPanels(){
   ['brand','ladder','inspector','timebar','caption','navtools'].forEach(k => { $('#'+k).hidden = !panelOn[k]; });
+  placeRail();
   labelsOn = panelOn.labels; const lc = document.getElementById('ly-labels'); if (lc) lc.checked = panelOn.labels;
   LAYER_ON.ruler = panelOn.ruler; const rc = document.getElementById('ly-ruler'); if (rc) rc.checked = panelOn.ruler; refreshVisibility();
   PANELS.forEach(([k]) => { const cb = document.getElementById('pn-'+k); if (cb) cb.checked = panelOn[k]; });
@@ -4386,12 +4598,20 @@ function onWheel(e){
     shiftView(0, -Math.sign(sv) * d * .04, 0); return;
   }
   if (!v) return;
-  const P = zoomPoint(e.clientX, e.clientY);
-  const d = camera.position.distanceTo(controls.target), dp = camera.position.distanceTo(P);
-  let s = Math.exp(clamp(v, -240, 240) * .0011 * controls.zoomSpeed * (d > 3000 ? 1.7 : 1));   // faster across the scales beyond the shell
+  zoomPt.copy(zoomPoint(e.clientX, e.clientY));
+  const d = camera.position.distanceTo(controls.target);
+  zoomQ = clamp(zoomQ + clamp(v, -240, 240) * .0011 * controls.zoomSpeed * (d > 3000 ? 1.7 : 1), -3, 3);   // faster across the scales beyond the shell
+}
+// The zoom asked for by the wheel is applied a little each frame, so it glides instead of jumping
+let zoomQ = 0; const zoomPt = new THREE.Vector3();
+function stepZoom(dt){
+  if (!zoomQ) return;
+  const q = Math.abs(zoomQ) < 1e-4 ? zoomQ : zoomQ*(1 - Math.exp(-dt*13)); zoomQ -= q; if (Math.abs(zoomQ) < 1e-4) zoomQ = 0;
+  const P = zoomPt, d = camera.position.distanceTo(controls.target), dp = camera.position.distanceTo(P);
+  let s = Math.exp(q);
   s = clamp(d*s, controls.minDistance, controls.maxDistance) / d;          // pivot distance limits
-  if (s < 1 && dp*s < Math.max(.004, d*.002)) return;                      // don't fly into the surface
-  if (s < 1){ const rg = solidGuard(); if (rg && camera.position.clone().sub(P).multiplyScalar(s).add(P).distanceTo(gC) < rg) return; }   // or into a selected planet
+  if (s < 1 && dp*s < Math.max(.004, d*.002)){ zoomQ = 0; return; }         // don't fly into the surface
+  if (s < 1){ const rg = solidGuard(); if (rg && camera.position.clone().sub(P).multiplyScalar(s).add(P).distanceTo(gC) < rg){ zoomQ = 0; return; } }   // or into a selected planet
   // scale the view about the point under the mouse, so that point stays under the mouse
   camera.position.sub(P).multiplyScalar(s).add(P);
   controls.target.sub(P).multiplyScalar(s).add(P);
@@ -4465,7 +4685,7 @@ canvas.addEventListener('pointerleave', () => { tip.hidden = true; });
    LOOP
 ------------------------------------------------------------------- */
 function resize(){
-  syncTop();
+  syncTop(); placeRail();
   const w = canvas.clientWidth, h = canvas.clientHeight;
   renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
   if (composer){ composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
@@ -4503,6 +4723,7 @@ function frame(now){
     }
     if (p>=1) flight=null;
   }
+  stepZoom(dt);
   controls.update();
   // keep the view inside the universe so the model can't be lost off-screen
   const tl = Math.hypot(controls.target.x, controls.target.z), lim = 300;
