@@ -1,6 +1,6 @@
 # Bhāgavata Cosmos
 
-An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrīmad-Bhāgavatam, Canto 5**, with related details from the Viṣṇu Purāṇa. Every figure in the model links to its source verse.
+An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrīmad-Bhāgavatam, Canto 5**, with related details from the Viṣṇu Purāṇa. Beyond the shell it follows SB 10.89 and the Brahma-saṁhitā and Caitanya-caritāmṛta. Every figure in the model links to its source verse.
 
 **Live site:** https://visham108.github.io/bhagavata-cosmos/
 
@@ -11,6 +11,7 @@ An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrī
 - **The seven upper worlds** (SB 2.5.38–39): Bhūr (the disc), Bhuvar (the sky up to the Sun), Svar (heaven, up to Dhruvaloka), then Mahar, Jana, Tapa and Satya
 - **The seven lower worlds**: Atala to Pātāla, plus Naraka, Ananta Śeṣa and the Garbhodaka water
 - **The Gaṅgā's descent**, the Sun's yearly course, and a day/night view
+- **Beyond the universe**: zoom out past the shell, or press **Beyond** for Arjuna's journey (SB 10.89). It passes the seven coverings, each ten times thicker than the last and drawn on a log scale (SB 2.2.28–30, 3.11.41). Then come the countless universes, ours the smallest (CC Madhya 21.84–86), and the Causal Ocean, where Mahā-Viṣṇu lies on Ananta Śeṣa breathing universes out and in (SB 10.89.52–56; BS 5.47–48; CC Ādi 5.65–70). Last are the brahmajyoti, the Vaikuṇṭha planets and Goloka, arranged as the Brahma-saṁhitā ranks the realms (BS 5.2–5, 5.43). None of this is to scale; each step outward is drawn about ten times larger than the last.
 
 ## Two views
 
@@ -24,7 +25,7 @@ An interactive 3D model of the universe (Brahmāṇḍa) as described in **Śrī
 - Click anything to spotlight it. Double-click or use **Explore inside** to go in. **Back** (the arrow in the navigation tools, **Esc** or **Backspace**) returns to exactly the view you came from, one step at a time; **Whole universe** leaves completely.
 - **Panels** lets you show or hide each panel on its own. **Notes & sources** lists the references and the places where the texts differ.
 - Press **/** to find any world, island or planet by name; diacritics are optional (`sisumara` finds Śiśumāra).
-- Links open on a place: add its id after `#`, for example `…/bhagavata-cosmos/#sutala` or `#meru`. The address follows what you select.
+- Links open on a place: add its id after `#`, for example `…/bhagavata-cosmos/#sutala`, `#meru`, `#mahavisnu` or `#goloka`. The address follows what you select.
 
 ## Technical
 

@@ -47,6 +47,8 @@ body{background:var(--ground);color:var(--ivory);font-family:var(--body);font-si
 .lbl.zone::before{width:18px;height:2px;border-radius:1px;margin-top:8px}
 .lbl.zone small{letter-spacing:.02em;text-transform:none;font-size:11.5px;font-weight:400;margin-top:1px}
 .lbl.feat{font-size:11.5px}
+.lbl.bz>div{background:rgba(6,7,16,.5);padding:2px 7px 3px;border-radius:7px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.lbl.bz::before{margin-top:7px}
 .c-island{color:#AFD493}.c-ocean{color:#93CEDE}.c-gold{color:var(--gold-hi)}.c-graha{color:#F0DDAE}
 .c-high{color:#CBBAF4}.c-low{color:#E7A6C1}.c-here{color:#7FE3D4}.c-ember{color:#E6907A}.c-soft{color:#B9B6CC}
 
@@ -115,6 +117,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 .chip.vp{color:#8FD0C9;border-color:rgba(111,183,176,.5)}
 .chip.calc{color:var(--muted);border-color:rgba(163,164,192,.35)}
 .chip.pp{color:#BDB2EE;border-color:rgba(169,155,224,.5)}
+.chip.gv{color:#F2B6A0;border-color:rgba(232,150,120,.5)}
 
 #inspector{position:absolute;right:16px;top:var(--top,104px);bottom:84px;width:376px;display:flex;flex-direction:column;overflow:hidden;z-index:15}
 .ins-head{position:relative;padding:16px 18px 0}
@@ -142,6 +145,19 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 .refs li:last-child{border-bottom:0}
 .refs .ref{font-weight:600;font-size:11px;color:var(--gold-hi);font-variant-numeric:tabular-nums;padding-top:1px}
 .refs .ref.vp{color:#8FD0C9}
+.refs .ref.gv{color:#F2B6A0}
+.xsec.pow{padding:10px 10px 8px}
+.pw{display:block;width:100%;height:auto;overflow:visible}
+.pw .pw-b{cursor:pointer;transition:opacity .2s}
+.pw .pw-b:focus{outline:none}.pw .pw-b:focus-visible rect{stroke:#fff;stroke-width:1.5}
+.xsec.pow.has-sel .pw-b:not(.on){opacity:.42}
+.pw .pw-b.on rect{stroke:#FFF4D6;stroke-width:1.4}
+.pw-n{font:600 9.5px var(--body);fill:#1a1206}
+.pw-v{font:500 8.5px var(--body);fill:var(--muted)}
+.pw-x{font:600 8.5px var(--body);fill:var(--gold-hi)}
+.pw-c{font:500 8.5px var(--body);fill:var(--faint)}
+.pw-ax{stroke:rgba(237,228,207,.3);stroke-width:1}
+.pw-cap{margin:6px 2px 0;font-size:12px;color:var(--muted)}
 .box{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.5}
 .box h4{margin:0 0 3px;font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
 .box p{margin:0}
@@ -361,7 +377,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
   .btn{padding:6px 10px;font-size:12.5px}
   .seg button{padding:5px 10px;font-size:12.5px}
   .seg .short{display:none}
-  #btn-here{display:none}
+  #btn-here,#btn-journey{display:none}
   .only-phone{display:inline-flex!important}
   #navtools{left:auto;right:8px;top:var(--top,104px);bottom:auto;flex-direction:column;padding:3px}
   #navtools .seg{flex-direction:column}
@@ -400,10 +416,12 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
           <button type="button" id="mode-t" aria-pressed="false">True<span class="long"> proportions</span><span class="short"> scale</span></button>
         </div>
         <button class="btn tour" id="btn-tour" type="button">Tour</button>
+        <button class="btn tour" id="btn-journey" type="button" title="Arjuna's journey beyond the universe (SB 10.89), and what lies beyond">Beyond</button>
         <button class="btn here" id="btn-here" type="button">Where are we?</button>
         <button class="btn" id="btn-more" type="button" aria-expanded="false">More</button>
         <div class="more" id="more">
           <button class="btn here only-phone" id="btn-here-m" type="button">Where are we?</button>
+          <button class="btn tour only-phone" id="btn-journey-m" type="button">Beyond the universe</button>
           <button class="btn" id="btn-cut" type="button" aria-pressed="false" title="Cut a slice out of the model to see the layers inside">Cutaway</button>
           <button class="btn" id="btn-panels" type="button" aria-expanded="false" title="Show or hide each panel">Panels</button>
           <button class="btn" id="btn-layers" type="button" aria-expanded="false" title="Show or hide parts of the model">Layers</button>
@@ -454,6 +472,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
     </div>
     <div class="ins-scroll">
       <div class="xsec" id="i-xsec" hidden></div>
+      <div class="xsec pow" id="i-pow" hidden></div>
       <dl class="facts" id="i-facts"></dl>
       <p id="i-body"></p>
       <div class="sec" id="i-feat-wrap"><h3>Look closer</h3><div class="feats" id="i-feat"></div></div>
@@ -522,7 +541,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
       </header>
       <div class="body">
         <h3>Sources</h3>
-        <p>The model follows Śrīmad-Bhāgavatam Canto 5, chapters 16 to 26, in the Bhaktivedanta Book Trust translation, with a few verses from Cantos 2, 3 and 10. Where Canto 5 gives no figure, the Viṣṇu Purāṇa (Book 2, chapters 5 and 7) fills the gap. Every figure in the side panel carries a tag: <span class="chip sb">SB</span> for the Bhāgavatam, <span class="chip vp">VP</span> for the Viṣṇu Purāṇa, <span class="chip calc">Calculated</span> for a number worked out from the text's own figures, and <span class="chip pp">Purport</span> for Śrīla Prabhupāda's commentary.</p>
+        <p>The model follows Śrīmad-Bhāgavatam Canto 5, chapters 16 to 26, in the Bhaktivedanta Book Trust translation, with a few verses from Cantos 2, 3 and 10. Where Canto 5 gives no figure, the Viṣṇu Purāṇa (Book 2, chapters 5 and 7) fills the gap. Every figure in the side panel carries a tag: <span class="chip sb">SB</span> for the Bhāgavatam, <span class="chip vp">VP</span> for the Viṣṇu Purāṇa, <span class="chip calc">Calculated</span> for a number worked out from the text's own figures, and <span class="chip pp">Purport</span> for Śrīla Prabhupāda's commentary. Beyond the shell the model also draws on the Brahma-saṁhitā, the Caitanya-caritāmṛta and the Bhagavad-gītā, tagged <span class="chip gv">BS</span>, <span class="chip gv">CC</span> and <span class="chip gv">BG</span>.</p>
         <p>All distances are in yojanas. The BBT translation converts one yojana to about 8 miles; other traditions use other values.</p>
 
         <h3>Two views, one cutaway</h3>
@@ -559,6 +578,15 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
           <li><b>Interpretations.</b> Linking our planet with Bhārata-varṣa comes from Prabhupāda's purports. Reading Bhū-maṇḍala as the plane of the planets' orbits comes from Richard L. Thompson (Sadāpūta Dāsa). Both are marked as interpretations wherever they appear.</li>
         </ol>
 
+        <h3>Beyond the universe</h3>
+        <p>Zoom out past the shell, or press <b>Beyond</b>, to leave the universe the way Kṛṣṇa and Arjuna did in SB 10.89. Each step outward is drawn about ten times larger than the last, so the whole creation fits one zoom. None of it is to scale.</p>
+        <ol>
+          <li><b>The seven coverings</b> (earth, water, fire, air, ether, false ego, the mahat-tattva, then pradhāna) are drawn as a cross-section on a log scale, each tenfold step one band (SB 2.2.28–30, 3.11.41, 6.16.37, 3.26.52). Their order differs between lists; the model follows SB 2.2.28–30.</li>
+          <li><b>Countless universes</b> float in the dark cloud of māyā. Ours is the smallest (CC Madhya 21.84–86). How many are drawn, and where, is illustrative.</li>
+          <li><b>The Causal Ocean</b>, the Virajā, holds <b>Mahā-Viṣṇu</b> on Ananta Śeṣa in a palace of jewelled pillars (SB 10.89.52–56). He is drawn as a figure of light, a sign only. Universes stream from His pores and back with each breath; one breath, a Brahmā's lifetime, takes about forty seconds (BS 5.48; CC Ādi 5.68–70).</li>
+          <li><b>The brahmajyoti, the Vaikuṇṭha planets and Goloka</b> are placed one above another as BS 5.43 ranks the realms. On Arjuna's way out, the light comes before the water (SB 10.89.51–52); seen from the spiritual side, the light lies between Vaikuṇṭha and the ocean (CC Ādi 5.51). The model lets the effulgence fill everything and does not choose between them. Maheśa-dhāma (BS 5.43) is named but not placed, so it is not drawn. Kṛṣṇa is not drawn.</li>
+        </ol>
+
         <h3>Read the chapters</h3>
         <div class="links">
           <a href="https://vedabase.io/en/library/sb/5/16/" target="_blank" rel="noopener">SB 5.16 Jambūdvīpa</a>
@@ -572,6 +600,10 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
           <a href="https://vedabase.io/en/library/sb/2/5/" target="_blank" rel="noopener">SB 2.5 The seven upper worlds</a>
           <a href="https://vedabase.io/en/library/sb/3/11/" target="_blank" rel="noopener">SB 3.11 Time and dissolution</a>
           <a href="https://sacred-texts.com/hin/vp/vp065.htm" target="_blank" rel="noopener">Viṣṇu Purāṇa 2.7</a>
+          <a href="https://vedabase.io/en/library/sb/10/89/" target="_blank" rel="noopener">SB 10.89 Beyond the universe</a>
+          <a href="https://vedabase.io/en/library/bs/5/" target="_blank" rel="noopener">Brahma-saṁhitā 5</a>
+          <a href="https://vedabase.io/en/library/cc/adi/5/" target="_blank" rel="noopener">CC Ādi 5 The puruṣas</a>
+          <a href="https://vedabase.io/en/library/cc/madhya/21/" target="_blank" rel="noopener">CC Madhya 21 The universes</a>
         </div>
       </div>
     </div>
@@ -947,11 +979,87 @@ const RASHI = ['Meṣa','Vṛṣabha','Mithuna','Karkaṭa','Siṁha','Kanyā','
 const RASHI_EN = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 ['candra','sukra','budha','angaraka','brhaspati','sani','rahu'].forEach(id => { E[id].drawn = (E[id].drawn ? E[id].drawn+' ' : '') + 'When selected, a band of the twelve signs and a trail of its last few weeks appear; the signs start from an arbitrary point.'; });
 const GANGA_A = {};
-E.karana = {name:'Kāraṇa Ocean', deva:'कारणार्णव', gloss:'The Causal Ocean, outside the universe', eyebrow:'Beyond the shell',
-  facts:[['Universes','countless, clustered together like atoms','SB 3.11.41'],['Their source','the pores of the Lord\'s body','SB 10.14.11'],['Lies in it','Mahā-Viṣṇu (Kāraṇodakaśāyī Viṣṇu)','pp'],['The Gaṅgā','is this ocean\'s water, entering through Lord Vāmana\'s toe','SB 5.17.1']],
-  body:'Outside the seven coverings of our universe is the Causal Ocean. Brahmā tells Kṛṣṇa that unlimited universes pass through the pores of His body, and our universe, with everything in this model, is only one of them. The Gaṅgā is water from this ocean, entering where Lord Vāmana\'s toe pierced the shell.',
-  refs:[['SB 3.11.41','The coverings are each ten times thicker than the one before, and all the universes clustered together appear like atoms.'],['SB 10.14.11','Unlimited universes pass through the pores of the Lord\'s body.'],['SB 5.17.1','Water from the Causal Ocean entered the universe as the Gaṅgā.']],
-  drawn:'Not to scale. The golden lights stand for other universes. Mahā-Viṣṇu is not drawn; He is named only in Śrīla Prabhupāda\'s purports, and no shape here could represent Him.'};
+/* ------------------------------------------------------------------
+   BEYOND THE SHELL: the coverings, the Causal Ocean, Mahā-Viṣṇu and
+   the spiritual sky (SB 2.2, 3.11, 3.26, 10.89; BS 5; CC Ādi 5, Madhya 21)
+------------------------------------------------------------------- */
+const COVERS = [
+  {id:'cvearth', n:'Earth', sa:'pṛthivī', deva:'पृथिवी', hex:0xB98A52, yj:'5 billion', mi:'40 billion', edge:'5.25 billion', sense:'aroma'},
+  {id:'cvwater', n:'Water', sa:'jala', deva:'जल', hex:0x4E8FC7, yj:'50 billion', mi:'400 billion', edge:'55.25 billion', sense:'taste'},
+  {id:'cvfire', n:'Fire', sa:'tejas', deva:'तेजस्', hex:0xE2703C, yj:'500 billion', mi:'4 trillion', edge:'about 555 billion', sense:'form'},
+  {id:'cvair', n:'Air', sa:'vāyu', deva:'वायु', hex:0x9CC9B4, yj:'5 trillion', mi:'40 trillion', edge:'about 5.56 trillion', sense:'touch'},
+  {id:'cvether', n:'Ether', sa:'ākāśa', deva:'आकाश', hex:0x7C78D8, yj:'50 trillion', mi:'400 trillion', edge:'about 55.6 trillion', sense:'sound'},
+  {id:'cvego', n:'False ego', sa:'ahaṅkāra', deva:'अहङ्कार', hex:0xC274B8, yj:'500 trillion', mi:'4,000 trillion', edge:'about 556 trillion'},
+  {id:'cvmahat', n:'Mahat-tattva', sa:'the total material energy', deva:'महत्तत्त्व', hex:0xE3C277, yj:'5,000 trillion', mi:'40,000 trillion', edge:'about 5,560 trillion'}
+];
+const COVER_IDS = COVERS.map(c => c.id);
+const BEYOND_IDS = new Set(['avarana', ...COVER_IDS, 'pradhana', 'brahmandas', 'karana', 'mahavisnu', 'brahmajyoti', 'vaikuntha', 'goloka', 'paravyoma']);
+const COVER_DRAWN = 'Drawn on a log scale, so each tenfold step takes one band of about the same width. At true scale the universe would be a dot one twenty-millionth of the picture. The bands are a cross-section through the centre, turned to face you; the coverings themselves are dark, not see-through (SB 10.89.47–50). Their colours are only to tell them apart.';
+const ORDER_NOTE = 'The lists differ in order. SB 3.26.52 begins with water and puts air before fire, and 6.16.37 names the mahat-tattva before false ego. The model follows SB 2.2.28–30, the order in which a yogī passes them, earth first. It is the order of creation reversed (SB 3.26): the mahat-tattva came first and earth last, so the earliest element is outermost.';
+E.avarana = {name:'Seven coverings', deva:'सप्त आवरण', gloss:'The shells of the elements around the universe', eyebrow:'Beyond the shell · around our universe',
+  facts:[['Number','seven','SB 6.16.37'],['Inside out','earth, water, fire, air, ether, false ego, mahat-tattva','SB 2.2.28–30'],['Thickness','each ten times the one inside it','SB 3.11.41'],['First, of earth','ten times the universe: 5 billion yojanas','pp'],['Last, the mahat-tattva','5,000 trillion yojanas thick','calc'],['Outside them','pradhāna, unmanifest nature','SB 3.26.52']],
+  body:'The universe is enclosed like an egg in its shell. Each covering is made of one element and is ten times thicker than the one inside it, so the universe within them is like an atom. A devotee leaving through Satyaloka passes them one after another: earth, water, fire, air and ether, then false ego, then the mahat-tattva. Arjuna, riding with Kṛṣṇa beyond Lokāloka, found them a region of total darkness, "dense oblivion expanded from primeval matter", where the horses lost their way and only the Sudarśana disc could cut a path.',
+  refs:[['SB 3.11.41','The layers covering the universes are each ten times thicker than the one before, and all the universes clustered together appear like atoms.'],['SB 3.11.41 purport','The first covering, earth, is ten times thicker than the universe itself: if the universe is four billion miles, the earthly covering is four billion times ten.'],['SB 6.16.37','Every universe is covered by seven layers, each ten times greater than the previous one.'],['SB 2.2.28–30','The devotee passes from the earthly stage to the watery, fiery, glowing, airy and ethereal, then enters egoism, which merges in the mahat-tattva.'],['SB 10.89.47–50','Beyond Lokāloka the chariot entered total darkness; the Sudarśana disc cut through the dense oblivion expanded from primeval matter.'],['SB 10.14.11','Brahmā describes himself enclosed in a pot-like universe of material nature, the total material energy, false ego, ether, air, water and earth.']],
+  note:ORDER_NOTE, drawn:COVER_DRAWN};
+COVERS.forEach((c, i) => {
+  const k = i + 1, prev = i ? COVERS[i-1] : null;
+  const sense = c.sense ? `It is the element of ${c.sense}: passing it, the devotee leaves behind the subtle object ${c.sense === 'sound' ? 'heard by the ear' : 'of that sense'} (SB 2.2.29).` : '';
+  const body = {
+    cvearth:`The first covering is earth, ten times thicker than the universe inside it. A devotee who leaves through Satyaloka passes first into an earthly state, then a watery one, and so on outward (SB 2.2.28). ${sense}`,
+    cvego:'Beyond the five gross elements the devotee enters the plane of egoism. There the modes of ignorance and passion are merged and only egoism in goodness remains (SB 2.2.30). In creation, material ego springs from the mahat-tattva, and the mind, the senses and the gross elements evolve from it (SB 3.26.23–24).',
+    cvmahat:'The outermost of the seven is the mahat-tattva, the total material energy, 5,000 trillion yojanas thick. All egoism merges into it, and the devotee who passes it reaches pure self-realization (SB 2.2.30). In creation it comes first: when the Lord impregnates material nature with His potency, she delivers this sum total of cosmic intelligence (SB 3.26.19; CC Ādi 5.65).'
+  }[c.id] || `Covering ${k} is ${c.n.toLowerCase()} (${c.sa}), ten times thicker than the covering of ${prev.n.toLowerCase()} inside it. ${sense}`;
+  E[c.id] = {name: k <= 5 ? 'Covering of ' + c.n.toLowerCase() : c.n, deva:c.deva, gloss:`Covering ${k} of 7 · ${c.sa}`, eyebrow:`Seven coverings · ${k} of 7`,
+    facts:[['Thickness', c.yj + ' yojanas', k === 1 ? 'pp' : 'calc'], ['In miles', c.mi, 'calc'], ['Ten times', k === 1 ? 'the universe itself' : 'the covering of ' + prev.n.toLowerCase(), 'SB 3.11.41'], ['Centre to its outer edge', c.edge + ' yojanas', 'calc']],
+    body, refs:[['SB 3.11.41','The layers covering the universes are each ten times thicker than the one before.'], k <= 5 ? ['SB 2.2.28–29','The devotee attains stages from earthly to watery, fiery, glowing and airy, until he reaches the ethereal, surpassing aroma, taste, form, touch and sound.'] : ['SB 2.2.30','Surpassing the gross and subtle coverings, the devotee enters the plane of egoism; then all egoism is merged in the mahat-tattva.']],
+    note: k === 1 || k >= 6 ? ORDER_NOTE : '', drawn:COVER_DRAWN};
+});
+E.pradhana = {name:'Pradhāna', deva:'प्रधान', gloss:'Unmanifest material nature, outside every covering', eyebrow:'Beyond the seven coverings',
+  facts:[['Place','the final outside layer','SB 3.26.52'],['Extent','infinite','VP 2.7'],['Also called','prakṛti, which supplies the ingredients of the material world','CC Ādi 5.58'],['By itself','dull and inert; it acts by the Lord\'s energy, as iron glows in fire','CC Ādi 5.59–60']],
+  body:'Each layer of the universal egg is ten times bigger than the one before, and the final outside layer is covered by pradhāna (SB 3.26.52). Pradhāna is material nature before it is manifest. Being inert, it cannot itself cause the material world; when the Lord infuses His energy into it, it becomes the secondary cause, as iron becomes red-hot in fire. The Viṣṇu Purāṇa calls it infinite.',
+  refs:[['SB 3.26.52','Each layer is ten times bigger than the previous one, and the final outside layer is covered by pradhāna.'],['CC Ādi 5.58–60','Māyā exists as pradhāna or prakṛti, which supplies the ingredients; inert by itself, it becomes the secondary cause by Kṛṣṇa\'s energy.'],['VP 2.7','The last envelope is encompassed by Pradhāna, which is infinite.']],
+  drawn:'Drawn as a dark haze outside the mahat-tattva that merges into the cloud of māyā in which all the universes float. Its extent is not measured.'};
+E.brahmandas = {name:'Countless universes', deva:'अनन्त ब्रह्माण्ड', gloss:'Devī-dhāma, the abode of the external energy', eyebrow:'Beyond the shell · the material creation',
+  facts:[['Number','countless, unknown even to those who can estimate the coverings','pp'],['Our universe','the smallest, 4 billion miles across, so its Brahmā has four heads','CC Madhya 21.84'],['Others','1 billion to 100 trillion yojanas across','CC Madhya 21.85'],['Their Brahmās','with more heads as the universe is larger','CC Madhya 21.86'],['Their source','the pores of Mahā-Viṣṇu\'s body','SB 10.14.11'],['Lifespan','one breath of Mahā-Viṣṇu','BS 5.48'],['Realm','Devī-dhāma, one fourth of the Lord\'s energy','CC Madhya 21.53']],
+  body:'Brahmā tells Kṛṣṇa that unlimited universes pass through the pores of His body like dust through a screened window. In the Caitanya-caritāmṛta, Kṛṣṇa tells the Brahmā of our universe that his universe, four billion miles across, is the smallest of all; others are up to 100 trillion yojanas across, 200,000 times wider, and their Brahmās have more heads to match. Each has its own Brahmā and its own Garbhodakaśāyī Viṣṇu, for the Lord enters every one of them. Together they are Devī-dhāma, the abode of the external energy, lowest of the realms the Brahma-saṁhitā names.',
+  refs:[['SB 10.14.11','Unlimited universes pass through the pores of Your body just as particles of dust pass through the openings of a screened window.'],['SB 6.16.37','There are innumerable universes besides this one, and although they are unlimitedly large, they move about like atoms in You.'],['CC Madhya 21.84–86','Your universe has a diameter of four billion miles, the smallest of all; some are one billion yojanas, some one hundred trillion. According to the size of the universe, there are so many heads on Brahmā.'],['CC Ādi 5.67','The puruṣa enters each of the countless universes, in as many forms as there are universes.'],['CC Madhya 21.52–53','Beyond the Virajā is the external abode, full of unlimited universes, called Devī-dhāma.']],
+  drawn:'Not to scale. Sizes are compressed: drawn true, the largest would be 200,000 times wider than ours. Each is drawn with the same coloured coverings as ours. How many are drawn, and where, is illustrative; the text says only that they are countless.'};
+E.karana = {name:'Kāraṇa Ocean', deva:'कारणार्णव', gloss:'The Causal Ocean, the Virajā', eyebrow:'Beyond the shell · the border of the spiritual sky',
+  facts:[['Also called','the Virajā, the river between the spiritual and material worlds','CC Madhya 21.51'],['Its water','spiritual; the Gaṅgā is a drop of it','CC Ādi 5.54'],['Extent','endless, unfathomed and unlimited','CC Ādi 5.52'],['Lies in it','Mahā-Viṣṇu, on Ananta Śeṣa','SB 10.89.52–56'],['Māyā','stays outside it and cannot touch its waters','CC Ādi 5.57'],['Seen by Arjuna','huge waves churned by a mighty wind','SB 10.89.52']],
+  body:'Beyond the brahmajyoti, Kṛṣṇa\'s chariot entered a body of water with huge waves churned by a mighty wind. In it stood a palace more radiant than anything Arjuna had seen, with thousands of jewelled pillars, and there lay Ananta Śeṣa and Mahā-Viṣṇu. The Caitanya-caritāmṛta describes the same ocean from the other side: outside the Vaikuṇṭha planets is the brahmajyoti, and beyond it this endless ocean of spiritual water. It is the Virajā, the border: the spiritual sky on one side, the external energy with its universes on the other. The Gaṅgā that enters our universe at Lord Vāmana\'s toe is a drop of it.',
+  refs:[['SB 10.89.52','From that region they entered a body of water resplendent with huge waves being churned by a mighty wind, with an amazing palace.'],['CC Ādi 5.51–52','Outside the Vaikuṇṭha planets is the impersonal Brahman effulgence, and beyond it is the Kāraṇa Ocean, a mass of water that is endless, unfathomed and unlimited.'],['CC Ādi 5.54','Its water is spiritual; the sacred Ganges is but a drop of it.'],['CC Madhya 21.51–52','Beyond the river Virajā is the spiritual nature; on the other side is the external abode, full of unlimited universes.'],['SB 5.17.1','Water from the Causal Ocean entered the universe as the Gaṅgā.']],
+  note:'The light and the water come in a different order in two accounts. On Arjuna\'s journey outward (SB 10.89.51–52) the chariot reaches the brahmajyoti first and the water after it. The Caitanya-caritāmṛta (Ādi 5.51), describing from the spiritual side, puts the brahmajyoti just outside the Vaikuṇṭha planets and the ocean beyond it. The model draws the ocean lying within an effulgence that pervades the whole scene, and does not decide between them.',
+  drawn:'Drawn as a luminous sea beneath the universes, with moving waves, fading at its edges because no shore is described. Its size and position are not to scale.'};
+E.mahavisnu = {name:'Mahā-Viṣṇu', deva:'महाविष्णु', gloss:'Kāraṇodakaśāyī Viṣṇu, the first puruṣa', eyebrow:'Beyond the shell · in the Kāraṇa Ocean',
+  facts:[['Lies','on Ananta Śeṣa, in a palace in the Causal Ocean','SB 10.89.52–54'],['Complexion','bluish, the colour of a dense rain cloud','SB 10.89.54–56'],['Dress','a beautiful yellow garment','SB 10.89.54–56'],['Arms','eight, long and handsome','SB 10.89.54–56'],['Ornaments','crown, earrings, the Kaustubha gem, Śrīvatsa, a garland of forest flowers','SB 10.89.54–56'],['Universes','come from His pores as He breathes out, and enter as He breathes in','CC Ādi 5.68–69'],['One breath','the lifetime of a Brahmā','BS 5.48'],['A Brahmā\'s lifetime','311 trillion 40 billion years','pp'],['First of three puruṣas','creator of the total material energy','CC Madhya 20.251']],
+  body:'Kṛṣṇa and Arjuna found Him seated at ease on the serpent bed, served by Sunanda, Nanda and His other attendants, His cakra and weapons in their personal forms, and His potencies Puṣṭi, Śrī, Kīrti and Ajā. He had taken the brāhmaṇa\'s sons, He said, because He wanted to see the two of them. He is the first of three puruṣas. Mahā-Viṣṇu creates the total material energy, Garbhodakaśāyī Viṣṇu lies within each universe, and Kṣīrodakaśāyī Viṣṇu lives in every heart. He glances at māyā from a distance, and universes appear from the pores of His body as He breathes out and enter Him again as He breathes in. Each Brahmā lives for one of His breaths.',
+  refs:[['SB 10.89.53','Ananta Śeṣa shone with the gems on His thousands of hoods; He resembled white Mount Kailāsa, and His necks and tongues were dark blue.'],['SB 10.89.54–56','Arjuna saw Mahā-Viṣṇu sitting at ease on the serpent bed: bluish like a dense rain cloud, in a yellow garment, with eight long arms, crown and earrings, the Kaustubha gem, Śrīvatsa and a garland of forest flowers.'],['SB 10.89.58','I brought the brāhmaṇa\'s sons here because I wanted to see the two of you, My expansions.'],['BS 5.47','Reposing in the Causal Ocean with the infinity of the world in the pores of His hair, He enjoys creative sleep.'],['BS 5.48','Brahmā and the other lords of the worlds, appearing from His pores, live as long as one of His exhalations.'],['BG 8.17 purport','Brahmā\'s hundred years, by earth calculation, total 311 trillion 40 billion years.'],['CC Ādi 5.65–70','The first puruṣa glances at māyā from a distance; the universes come out with each outward breath and re-enter as He inhales, passing through His pores like dust through a window.'],['CC Madhya 20.251','Viṣṇu has three forms called puruṣas: Mahā-Viṣṇu, Garbhodakaśāyī and Kṣīrodakaśāyī.']],
+  drawn:'Drawn as a figure of light, only a sign: rain-cloud blue with a yellow garment and a golden crown, on a white Ananta whose necks are dark blue. His form is only outlined, with two of His eight arms, and the view keeps its distance; His ornaments and attendants are described here and not modelled, for no shape here could represent Him. The streams of light are universes leaving and re-entering His pores, and one breath, a whole lifetime of Brahmā, takes about forty seconds. He, the palace and the universes are not to scale.'};
+E.brahmajyoti = {name:'Brahmajyoti', deva:'ब्रह्मज्योति', gloss:'The effulgence of the Lord\'s body', eyebrow:'Beyond the shell · Siddhaloka',
+  facts:[['Source','the effulgence of Govinda\'s body','BS 5.40'],['Place','outside the Vaikuṇṭha planets','CC Ādi 5.32'],['Also called','Siddhaloka','CC Ādi 5.33'],['Nature','spiritual, but without spiritual varieties','CC Ādi 5.33'],['Who lives there','those who attain brahma-sāyujya, merging into Brahman','CC Ādi 5.31'],['Seen by Arjuna','an endless light that hurt his eyes','SB 10.89.51']],
+  body:'Past the darkness of the coverings, Kṛṣṇa\'s chariot reached the endless spiritual light of the all-pervasive brahmajyoti, and Arjuna had to shut his eyes. The Brahma-saṁhitā calls this light the effulgence of Govinda, the undifferentiated Brahman of the Upaniṣads. It surrounds the Vaikuṇṭha planets. Those who seek to merge into Brahman live in it, outside Vaikuṇṭha, without the variety of spiritual pastimes.',
+  refs:[['SB 10.89.51','The chariot went beyond the darkness and reached the endless spiritual light of the all-pervasive brahmajyoti; Arjuna\'s eyes hurt, and he shut them.'],['BS 5.40','Govinda\'s effulgence is the source of the nondifferentiated Brahman mentioned in the Upaniṣads.'],['CC Ādi 5.31–33','Outside the Vaikuṇṭha planets is the glowing effulgence of the rays of Kṛṣṇa\'s body, called Siddhaloka; those who attain brahma-sāyujya reside there.']],
+  note:'Arjuna meets this light before the Causal Ocean (SB 10.89.51–52), while CC Ādi 5.51 places it between the Vaikuṇṭha planets and the ocean. The model draws it pervading everything beyond the coverings.',
+  drawn:'Drawn as a golden radiance that fills the sky beyond the coverings and grows brighter toward the spiritual sky. It is unlimited; the picture only fades at its edges.'};
+E.vaikuntha = {name:'Vaikuṇṭha planets', deva:'वैकुण्ठ', gloss:'Hari-dhāma, the planets of the spiritual sky', eyebrow:'The spiritual sky · paravyoma',
+  facts:[['Realm','Hari-dhāma, above Devī-dhāma and Maheśa-dhāma','BS 5.43'],['The Lord there','Nārāyaṇa, in His many pastimes','CC Ādi 5.26'],['Light','not lit by sun, moon, fire or electricity','BG 15.6'],['Elements','earth, water, fire, air and ether, all spiritual','CC Ādi 5.53'],['Free of','the modes of nature, time and māyā','SB 2.9.10'],['Its share','three fourths of the Lord\'s energy','SB 2.6.20']],
+  body:'Beyond the Virajā is the spiritual nature, indestructible, eternal, inexhaustible and unlimited, called the paravyoma. Its planets are the Vaikuṇṭhas, where the Lord appears as Nārāyaṇa. The Brahma-saṁhitā ranks the realms: Devī-dhāma, the material world, lowest; above it Maheśa-dhāma, Lord Śiva\'s realm; above that Hari-dhāma, the Vaikuṇṭhas; and Goloka above all. No mode of nature, no time and no illusion enters there, and those who reach it never return.',
+  refs:[['CC Madhya 21.51','Beyond the river Virajā is the spiritual nature, indestructible, eternal, inexhaustible and unlimited, called paravyoma.'],['BS 5.43','Lowest is Devī-dhāma, next Maheśa-dhāma, above it Hari-dhāma, and above them all Goloka.'],['SB 2.9.10','In that abode the modes of ignorance and passion do not prevail, nor goodness; time has no influence, and the illusory energy cannot enter.'],['BG 15.6','That supreme abode is not illumined by the sun or moon, nor by fire or electricity. Those who reach it never return.'],['SB 2.6.19–20','The kingdom of God is beyond the three higher planetary systems and beyond the material coverings; the spiritual world is three fourths of the Lord\'s energy.']],
+  note:'Maheśa-dhāma lies between the material world and Vaikuṇṭha in BS 5.43, with a dark portion, Mahākāla-dhāma, and the luminous Sadāśivaloka within it. No place or shape is given, so it is not drawn.',
+  drawn:'Drawn as self-luminous spheres in the effulgence. How many, how large and where are illustrative.'};
+E.goloka = {name:'Goloka', deva:'गोलोक', gloss:'Kṛṣṇa\'s own abode, above all', eyebrow:'The spiritual sky · highest of all',
+  facts:[['Place','above every other realm','BS 5.43'],['Form','a lotus of thousands of petals','BS 5.2'],['The whorl','the hexagonal abode of Kṛṣṇa','BS 5.4'],['The petals','abodes of the gopīs','BS 5.4'],['Around it','Śvetadvīpa, a square in four parts','BS 5.5'],['The land','touchstone, with forests of desire trees','CC Ādi 5.20'],['Also called','Gokula, Vraja, Śvetadvīpa and Vṛndāvana','CC Ādi 5.17']],
+  body:'In the highest region of the spiritual sky is Kṛṣṇaloka, with three divisions: Dvārakā, Mathurā and Gokula. Gokula, highest of all, is also called Goloka. The Brahma-saṁhitā pictures it as a lotus of thousands of petals. The whorl is Kṛṣṇa\'s hexagonal abode, the petals are the abodes of the gopīs, and the extended leaves are the garden abode of Śrī Rādhikā. Around it lies Śvetadvīpa, divided into four, with the abodes of Vāsudeva, Saṅkarṣaṇa, Pradyumna and Aniruddha. There Govinda tends the surabhi cows in houses built of spiritual gems, among millions of desire trees, served by hundreds of thousands of goddesses of fortune.',
+  refs:[['BS 5.2','Gokula has thousands of petals and a corolla like that of a lotus; the whorl is the actual abode of Kṛṣṇa.'],['BS 5.4','The whorl is the hexagonal abode of Kṛṣṇa; its petals are the abodes of the gopīs; the extended leaves are the garden abode of Śrī Rādhikā.'],['BS 5.5','A quadrangular place named Śvetadvīpa surrounds Gokula, divided into four parts, the abodes of Vāsudeva, Saṅkarṣaṇa, Pradyumna and Aniruddha.'],['BS 5.29','Govinda tends the cows yielding all desires, in abodes built with spiritual gems, surrounded by millions of purpose trees.'],['CC Ādi 5.16–17','In the highest region of the spiritual sky is Kṛṣṇaloka, with three divisions; Gokula, the highest, is also called Goloka.'],['BS 5.43','Above them all is located Kṛṣṇa\'s own realm named Goloka.']],
+  note:'Drawing Goloka at the top follows BS 5.43, which ranks the realms one above another. The Caitanya-caritāmṛta also says that Vṛndāvana, sixteen krośas across, holds all the Vaikuṇṭha planets and innumerable universes in one corner (Madhya 21.29), and that Gokula expands above and below without restriction (Ādi 5.18). No single picture can show both.',
+  drawn:'Drawn as a lotus of a thousand petals around a hexagonal golden whorl, inside a white square for Śvetadvīpa. Kṛṣṇa is not drawn; the light in the whorl stands for His abode. Its size and distance are not to scale.'};
+E.paravyoma = {name:'The whole creation', deva:'परव्योम', gloss:'The spiritual sky, with the material world in one corner', eyebrow:'Beyond the shell · everything',
+  facts:[['Spiritual world','three fourths of the Lord\'s energy','SB 2.6.20'],['Material world','one fourth','SB 2.6.19'],['Realms, low to high','Devī-dhāma, Maheśa-dhāma, Hari-dhāma, Goloka','BS 5.43'],['Between them','the Virajā, the Causal Ocean','CC Madhya 21.51–52'],['The spiritual sky','all-pervading, infinite and supreme','CC Ādi 5.15'],['Our universe','one of countless, and the smallest','CC Madhya 21.84']],
+  body:'This is the whole picture, from the Bhāgavatam and the Vaiṣṇava texts that explain it. Countless universes, ours the smallest, float in the dark cloud of māyā beside the Causal Ocean, where Mahā-Viṣṇu lies breathing them out and in. Beyond the Virajā, in the effulgence of the brahmajyoti, are the Vaikuṇṭha planets of Nārāyaṇa, and above them all is Goloka, Kṛṣṇa\'s own abode. The material creation is only a quarter of the Lord\'s energy; the spiritual world is three quarters.',
+  refs:[['SB 2.6.19–20','The Lord sustains the material world by one fourth of His energy; the spiritual world, three fourths of His energy, is beyond it.'],['CC Madhya 21.55','The spiritual world is three fourths of the energy and opulence of the Lord; this material world is only one fourth.'],['CC Ādi 5.14–15','Beyond the material nature lies the paravyoma, all-pervading, infinite and supreme, the residence of Kṛṣṇa and His incarnations.'],['BS 5.43','Devī-dhāma, Maheśa-dhāma, Hari-dhāma and Goloka, one above another.']],
+  note:'The spiritual world is described as all-pervading and unlimited, not as a place at some distance. The arrangement here, the material creation in a lower corner with the spiritual sky above it, is a picture of the order the texts give, not a map.',
+  drawn:'Nothing here is to scale. Each step outward is drawn about ten times larger than the last so that all of it fits on one screen. Zoom out from our universe to pass through every level; the left panel jumps straight to each.'};
+E.overview.drawn = 'The coverings are shown as one thin glowing shell. Zoom out, or pick Beyond the universe on the left, to see the seven coverings, the other universes, the Causal Ocean and the spiritual sky. Pick any tier on the left, or click anything in the scene.';
 
 
 /* ------------------------------------------------------------------
@@ -961,7 +1069,7 @@ let sel = null, focusId = null, labelsOn = true;
 const LABELS = [];
 const FEAT = {};              // id -> [{name, note, anchor, d}]
 const MANAGED = [];           // {obj, layer, cluster}
-const LAYER_ON = {bhu:true, graha:true, cords:true, sisu:true, high:true, low:true, water:true, shell:true, ruler:true, ganga:true};
+const LAYER_ON = {bhu:true, graha:true, cords:true, sisu:true, high:true, low:true, water:true, shell:true, ruler:true, ganga:true, beyond:true};
 let timeMode = 'year';
 function manage(obj, layer, cluster){ MANAGED.push({obj, layer, cluster}); return obj; }
 function anchorAt(parent, x, y, z){ const o=new THREE.Object3D(); o.position.set(x,y,z); parent.add(o); return o; }
@@ -995,11 +1103,11 @@ const SKY = (() => { const c=document.createElement('canvas'); c.width=c.height=
   const g=x.createRadialGradient(256,215,0,256,256,330); g.addColorStop(0,'#161B3C'); g.addColorStop(.48,'#0B0E22'); g.addColorStop(1,'#04050C');
   x.fillStyle=g; x.fillRect(0,0,512,512); return new THREE.CanvasTexture(c); })();
 scene.background = SKY;
-const camera = new THREE.PerspectiveCamera(42, 1, 0.05, 8000);
+const camera = new THREE.PerspectiveCamera(42, 1, 0.05, 8000);   // near and far follow the zoom (see frame)
 camera.position.set(250, 170, 440);
 const controls = new THREE.OrbitControls(camera, canvas);
 controls.enableDamping = true; controls.dampingFactor = 0.08;
-controls.minDistance = 0.08; controls.maxDistance = 3600;
+controls.minDistance = 0.08; controls.maxDistance = 3.4e6;   // out to the whole creation
 controls.target.set(0, 0, 0);
 controls.rotateSpeed = 0.7; controls.zoomSpeed = 0.9;
 
@@ -1285,25 +1393,8 @@ function makeRiver(pts, hex, w){
   return new THREE.Mesh(new THREE.TubeGeometry(curve, 60, w, 6, false), new THREE.MeshBasicMaterial({color:hex}));
 }
 
-/* Other universes in the Causal Ocean, far outside the shell (SB 3.11.41, 10.14.11) */
-const karanaGroup = new THREE.Group(); scene.add(karanaGroup);
-const KARANA_A = {};
-(() => {
-  const n=240, p=new Float32Array(n*3);
-  for(let i=0;i<n;i++){ const r=1500+Math.random()*1300, th=Math.random()*Math.PI*2, ph=Math.acos(Math.random()*2-1);
-    p[i*3]=r*Math.sin(ph)*Math.cos(th); p[i*3+1]=r*Math.cos(ph)*.7; p[i*3+2]=r*Math.sin(ph)*Math.sin(th); }
-  const g=new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(p,3));
-  karanaGroup.add(new THREE.Points(g, new THREE.PointsMaterial({color:0xE6B866, size:2, sizeAttenuation:false, transparent:true, opacity:.45, depthWrite:false})));
-  // A few nearer universes drawn as small golden spheres, so that from outside ours reads as one of many
-  const tex = glowTex('rgba(255,226,160,.9)','rgba(230,176,90,.25)');
-  for (let i=0;i<46;i++){
-    const r=900+((i*97)%900), th=i*2.399, y=((i*53)%600)-300, sz=40+((i*31)%70);
-    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:.55}));
-    sp.scale.set(sz,sz,1); sp.position.set(Math.cos(th)*r, y, Math.sin(th)*r); karanaGroup.add(sp);
-  }
-})();
 
-/* Universe shell (clip-aware rim shader) *//* Universe shell (clip-aware rim shader) */
+/* Universe shell (clip-aware rim shader) */
 const shellMat = new THREE.ShaderMaterial({
   uniforms:{uColor:{value:col(0xE0AE55)}, uOpacity:{value:.6}},
   vertexShader:`#include <clipping_planes_pars_vertex>
@@ -1322,6 +1413,488 @@ cut(shellMat);
 const shell = manage(new THREE.Mesh(new THREE.SphereGeometry(1, 96, 64), shellMat), 'shell', 'shell');
 scene.add(shell);
 const shellEq = manage(ringLine(0xD9A441, .18, 192), 'shell', 'shell'); scene.add(shellEq);
+
+/* ------------------------------------------------------------------
+   BEYOND THE SHELL (scene). Every step outward is drawn about ten
+   times larger than the last, so the whole creation fits one zoom:
+   the seven coverings on a log scale (SB 3.11.41), the countless
+   universes in the cloud of māyā, the Causal Ocean with Mahā-Viṣṇu
+   (SB 10.89.52–56), the brahmajyoti, the Vaikuṇṭha planets and Goloka
+   above all (BS 5.43).
+------------------------------------------------------------------- */
+const karanaGroup = new THREE.Group(); scene.add(karanaGroup);
+const BEY = {mats:[], t:0, breath:0, deep:false};
+const UNI_R = 250, COV_A = .255;
+const covRtrue = k => 1 + 2*(Math.pow(10, k+1) - 10)/9;            // outer edge of covering k, in radii of the universe
+const covR = k => UNI_R*(1 + COV_A*Math.log10(covRtrue(k)));         // drawn, on a log scale
+const COV_OUT = covR(7), PRAD_R = COV_OUT*1.5;
+const Y_OC = -5200;                                                  // surface of the Causal Ocean
+const CLOUD_C = new THREE.Vector3(-4000, 9000, -6000), CLOUD_R = new THREE.Vector3(46000, 17000, 40000);
+const MV_P = new THREE.Vector3(-66000, Y_OC, -58000), MV_S = 1000;
+const OCEAN_C = new THREE.Vector3(-40000, Y_OC, -36000), OCEAN_R = 300e3;
+const SP_C = new THREE.Vector3(300e3, 450e3, -260e3);               // centre of the spiritual sky
+const GOLOKA_P = SP_C.clone().add(new THREE.Vector3(0, 420e3, 0));
+let bSeed = 20251; const brnd = () => (bSeed = (bSeed*16807) % 2147483647) / 2147483647;
+const inEll = () => { let x,y,z; do { x=brnd()*2-1; y=brnd()*2-1; z=brnd()*2-1; } while (x*x+y*y+z*z > 1); return new THREE.Vector3(x,y,z); };
+const cloudDist = p => Math.hypot((p.x-CLOUD_C.x)/CLOUD_R.x, (p.y-CLOUD_C.y)/CLOUD_R.y, (p.z-CLOUD_C.z)/CLOUD_R.z);
+function softTex(stops, n=128){
+  const c=document.createElement('canvas'); c.width=c.height=n; const x=c.getContext('2d');
+  const g=x.createRadialGradient(n/2,n/2,0,n/2,n/2,n/2); stops.forEach(([o,s]) => g.addColorStop(o,s));
+  x.fillStyle=g; x.fillRect(0,0,n,n); return new THREE.CanvasTexture(c);
+}
+const smoothTex = softTex([[0,'rgba(255,255,255,1)'],[.22,'rgba(255,255,255,.55)'],[.55,'rgba(255,255,255,.14)'],[1,'rgba(255,255,255,0)']]);
+const cloudTex = (() => {   // a soft, uneven puff for the cloud of māyā
+  const n=256, c=document.createElement('canvas'); c.width=c.height=n; const x=c.getContext('2d');
+  for (let i=0;i<46;i++){ const a=brnd()*Math.PI*2, r=brnd()*n*.26, cx=n/2+Math.cos(a)*r, cy=n/2+Math.sin(a)*r, rr=n*(.12+brnd()*.2);
+    const g=x.createRadialGradient(cx,cy,0,cx,cy,rr); g.addColorStop(0,'rgba(255,255,255,.22)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,n,n); }
+  return new THREE.CanvasTexture(c); })();
+function bSprite(tex, hex, size, op, add=true){
+  const m = new THREE.SpriteMaterial({map:tex, color:hex, transparent:true, depthWrite:false, opacity:op, blending: add ? THREE.AdditiveBlending : THREE.NormalBlending});
+  m.userData.op = op; const s = new THREE.Sprite(m); s.scale.set(size, size, 1); return s;
+}
+const fade = (m, a) => { m.opacity = (m.userData.op !== undefined ? m.userData.op : 1) * a; };
+
+/* The seven coverings: a cross-section through the centre, turned to face the viewer */
+const covGroup = new THREE.Group(); karanaGroup.add(covGroup);
+const covBill = new THREE.Group(); covGroup.add(covBill);
+const COV_FS = `uniform vec3 uC; uniform float uA, uR0, uR1, uK, uTime, uSel; varying vec2 vP;
+  float h(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+  float n(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h(i),h(i+vec2(1.,0.)),f.x), mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x), f.y); }
+  void main(){
+    float r = length(vP), u = (r-uR0)/(uR1-uR0), a = atan(vP.y, vP.x);
+    if (u < 0. || u > 1.) discard;
+    float t;
+    if (uK < 1.5) t = n(vP/5.)*.55 + n(vP/1.6)*.45;                                         // earth: grain
+    else if (uK < 2.5) t = .5 + .5*sin(r*.42 - uTime*1.1 + n(vP/26.)*5.);                  // water: ripples
+    else if (uK < 3.5) t = n(vec2(a*70., r/9. - uTime*1.8))*.75 + .25*n(vP/3.);            // fire: rising flicker
+    else if (uK < 4.5) t = n(vec2(a*18. + r*.03 + uTime*.12, r/16.));                     // air: streaks
+    else if (uK < 5.5) { vec2 cc = floor(vP/2.6); t = .12 + step(.982, h(cc))*(.6+.4*sin(uTime*2.+h(cc)*40.)); }   // ether: points of light
+    else if (uK < 6.5) t = n(vec2(a*9., r/9.) + n(vP/22.)*3.2);                            // false ego: marbling
+    else t = .35 + .65*pow(n(vec2(a*44., r/5. + uTime*.25)), 3.);                         // mahat: filaments
+    vec3 c = uC*(.42 + .62*t);
+    c += uC*.75*smoothstep(.93, 1., u);                                                    // a bright outer edge
+    c *= .82 + .55*uSel;
+    float al = uA*(.8 - .25*smoothstep(.0,.12,u)*(1.-smoothstep(.88,1.,u)));
+    gl_FragColor = vec4(c, al);
+  }`;
+const COV_VS = `varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`;
+const COV_MESH = {};
+COVERS.forEach((c, i) => {
+  const k = i+1, r0 = covR(k-1), r1 = covR(k);
+  const m = new THREE.ShaderMaterial({uniforms:{uC:{value:col(c.hex)}, uA:{value:1}, uR0:{value:r0}, uR1:{value:r1}, uK:{value:k}, uTime:{value:0}, uSel:{value:0}},
+    vertexShader:COV_VS, fragmentShader:COV_FS, transparent:true, depthWrite:false, side:THREE.DoubleSide});
+  const mesh = new THREE.Mesh(new THREE.RingGeometry(r0, r1, 192, 1), m); mesh.renderOrder = 2;
+  covBill.add(mesh); pickable(mesh, c.id); COV_MESH[c.id] = mesh; BEY.mats.push(m);
+});
+{ // pradhāna: an unmeasured dark haze outside the mahat-tattva
+  const m = new THREE.ShaderMaterial({uniforms:{uA:{value:1}, uR0:{value:COV_OUT}, uR1:{value:PRAD_R*1.5}, uTime:{value:0}, uSel:{value:0}},
+    vertexShader:COV_VS, fragmentShader:`uniform float uA, uR0, uR1, uTime, uSel; varying vec2 vP;
+      float h(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+      float n(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h(i),h(i+vec2(1.,0.)),f.x), mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x), f.y); }
+      void main(){ float r=length(vP), u=(r-uR0)/(uR1-uR0); if (u<0.||u>1.) discard;
+        float s = n(vP/60. + vec2(uTime*.02, 0.))*.6 + n(vP/22.)*.4;
+        vec3 c = vec3(.06,.045,.11) + vec3(.09,.06,.14)*s + vec3(.18,.13,.22)*uSel*(1.-u);
+        gl_FragColor = vec4(c, uA*pow(1.-u, 1.4)*(.55+.35*s)); }`,
+    transparent:true, depthWrite:false, side:THREE.DoubleSide});
+  const mesh = new THREE.Mesh(new THREE.RingGeometry(COV_OUT, PRAD_R*1.5, 192, 1), m); mesh.renderOrder = 1;
+  covBill.add(mesh); pickable(mesh, 'pradhana'); COV_MESH.pradhana = mesh; BEY.mats.push(m);
+}
+{ // a faint gold rim on the outermost covering, so turning the view still reads as a sphere
+  const m = shellMat.clone(); m.uniforms = {uColor:{value:col(0xE3C277)}, uOpacity:{value:.35}}; m.clippingPlanes = null;
+  const rim = new THREE.Mesh(new THREE.SphereGeometry(COV_OUT, 64, 40), m); covGroup.add(rim); BEY.covRim = m;
+}
+// Labels in a column to the right, each joined to its band by a leader line
+const COV_ANCH = {}, COV_COL = COV_OUT + 150, COV_LIST = [...COVERS.map(c => c.id), 'pradhana'];
+COV_LIST.forEach(id => { COV_ANCH[id] = anchorAt(covBill, COV_COL, 0, 0); });
+COV_ANCH.avarana = anchorAt(covBill, COV_COL, 0, 0);
+{
+  const lm = new THREE.LineBasicMaterial({color:0xF2D79A, transparent:true, opacity:.55, depthWrite:false, depthTest:false}); lm.userData.op = .55;
+  const lines = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(COV_LIST.length*6), 3)), lm); lines.renderOrder = 4; lines.frustumCulled = false; covBill.add(lines);
+  const dm = new THREE.PointsMaterial({color:0xFFF0C8, size:7, sizeAttenuation:false, transparent:true, depthWrite:false, depthTest:false}); dm.userData.op = 1;
+  const dots = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(COV_LIST.length*3), 3)), dm); dots.renderOrder = 4; dots.frustumCulled = false; covBill.add(dots);
+  BEY.leads = [lm, dm]; BEY.leadGeo = [lines.geometry, dots.geometry]; BEY.colSp = 0;
+}
+// Space the column so its labels never touch, however small the onion is on screen
+function layoutCovColumn(pxPerUnit){
+  const sp = Math.max(112, 38/Math.max(pxPerUnit, 1e-6));
+  if (Math.abs(sp - BEY.colSp) < BEY.colSp*.03) return; BEY.colSp = sp;
+  const top = Math.max(400, sp*(COV_LIST.length - 1)/2), lp = BEY.leadGeo[0].attributes.position, dp = BEY.leadGeo[1].attributes.position;
+  COV_LIST.forEach((id, i) => {
+    const y = top - i*sp, a = Math.atan2(y, COV_COL), r = i < 7 ? (covR(i) + covR(i+1))/2 : COV_OUT*1.1;
+    COV_ANCH[id].position.set(COV_COL, y, 0);
+    lp.setXYZ(i*2, Math.cos(a)*r, Math.sin(a)*r, 0); lp.setXYZ(i*2+1, COV_COL - 12/Math.max(pxPerUnit, .02)*.5, y, 0); dp.setXYZ(i, Math.cos(a)*r, Math.sin(a)*r, 0);
+  });
+  COV_ANCH.avarana.position.set(COV_COL, top + sp*1.15, 0);
+  lp.needsUpdate = dp.needsUpdate = true; LABELS.forEach(L => { if (L.anchor && L.anchor.parent === covBill) L.w = 0; });
+}
+
+/* Other universes, each with the same seven coverings; ours is the smallest (CC Madhya 21.84–86) */
+const UNIV = [];
+{
+  const PAL = [col(0xF6DDA2), ...COVERS.map(c => col(c.hex))], B = [0,1,2,3,4,5,6,7].map(k => covR(k)/COV_OUT);
+  const bodyGeo = new THREE.SphereGeometry(1, 26, 18);
+  const m = new THREE.ShaderMaterial({uniforms:{uPal:{value:PAL}, uB:{value:B}, uA:{value:1}, uFog:{value:new THREE.Vector2(1e5, 3e5)}},
+    vertexShader:`attribute float aSeed; varying vec3 vN; varying vec3 vV; varying float vS; varying float vZ;
+      void main(){ mat4 mm = modelMatrix*instanceMatrix; vec4 mv = viewMatrix*mm*vec4(position,1.);
+        vN = normalize(mat3(viewMatrix)*mat3(mm)*normal); vV = normalize(-mv.xyz); vS = aSeed; vZ = -mv.z; gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform vec3 uPal[8]; uniform float uB[8]; uniform float uA; uniform vec2 uFog; varying vec3 vN; varying vec3 vV; varying float vS; varying float vZ;
+      void main(){ float c = clamp(abs(dot(normalize(vN), normalize(vV))), 0., 1.), rho = sqrt(1.-c*c);
+        vec3 band = uPal[0];
+        for (int i=1;i<8;i++){ if (rho >= uB[i-1]) band = uPal[i]; }
+        float lines = 0.;
+        for (int i=0;i<8;i++){ float e = (rho - uB[i])/.011; lines += exp(-e*e); }
+        vec3 shell = mix(vec3(.11,.08,.07), band*.42, .55)*(.75 + .35*vS);
+        vec3 col = rho < uB[0] ? mix(vec3(1.,.9,.66), vec3(.86,.62,.3), rho/uB[0])*(.95 - .2*vS) : shell;
+        col += mix(band, vec3(1.,.88,.6), .5)*lines*.38 + vec3(1.,.86,.55)*pow(rho, 18.)*.4;
+        // fade out universes that come close to the eye, dithered so no sorting is needed
+        float nearF = smoothstep(uFog.x*.18, uFog.x*.5, vZ);
+        if (nearF < fract(sin(dot(gl_FragCoord.xy, vec2(12.9898,78.233)))*43758.5453)) discard;
+        float fog = smoothstep(uFog.x, uFog.y, vZ);
+        col = mix(col, vec3(.10,.08,.12), fog*.82);
+        gl_FragColor = vec4(col, uA); }`,
+    transparent:true});
+  BEY.univMat = m;
+  const tries = 12000, want = 430, MVw = MV_P.clone().add(new THREE.Vector3(0, 6*MV_S, 0));
+  for (let t=0; t<tries && UNIV.length<want; t++){
+    let p;
+    if (brnd() < .28){ const s = Math.pow(brnd(), .7); p = MVw.clone().lerp(CLOUD_C, .25 + .75*s).add(inEll().multiply(new THREE.Vector3(14000,9000,14000))); }   // a stream from Mahā-Viṣṇu toward the cloud
+    else p = inEll().multiply(CLOUD_R).add(CLOUD_C);
+    const f = Math.pow(10, Math.log10(2) + brnd()*(Math.log10(2e5) - Math.log10(2)));    // 2 to 200,000 times our width
+    const r = COV_OUT*(1 + .3*Math.log10(f));
+    if (p.y - r < Y_OC + 400) continue;
+    if (p.length() < 5200 + r) continue;                                              // keep clear of our universe
+    if (p.distanceTo(MVw) < 26*MV_S) continue;
+    if (UNIV.some(u => u.p.distanceTo(p) < u.r + r + 2400)) continue;
+    UNIV.push({p, r, s:brnd()});
+  }
+  const im = new THREE.InstancedMesh(bodyGeo, m, UNIV.length), M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3();
+  const seeds = new Float32Array(UNIV.length);
+  UNIV.forEach((u, i) => { M.compose(u.p, Q, S.setScalar(u.r)); im.setMatrixAt(i, M); seeds[i] = u.s; });
+  bodyGeo.setAttribute('aSeed', new THREE.InstancedBufferAttribute(seeds, 1));
+  im.frustumCulled = false; karanaGroup.add(im); pickable(im, 'brahmandas'); BEY.univ = im;
+  // far beyond: countless more, like atoms (SB 3.11.41)
+  const n = 26000, pos = new Float32Array(n*3); let j = 0;
+  while (j < n){ const p = inEll().multiply(CLOUD_R).multiplyScalar(1.9).add(CLOUD_C); if (p.length() < 8000 || p.y < Y_OC + 600) continue; p.toArray(pos, j*3); j++; }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const dm = new THREE.ShaderMaterial({uniforms:{opacity:{value:.75}, uPx:{value:800}},
+    vertexShader:`uniform float uPx; varying float vA; void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); float z = -mv.z;
+      gl_PointSize = clamp(420.*uPx/z, 0., 7.); vA = smoothstep(2500., 9000., z); gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform float opacity; varying float vA; void main(){ float r = length(gl_PointCoord - .5)*2.; if (r > 1.) discard;
+      gl_FragColor = vec4(vec3(.95,.8,.52)*(1.2 - r), opacity*vA*(1. - smoothstep(.4, 1., r))); }`,
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending}); dm.userData.op = .75;
+  Object.defineProperty(dm, 'opacity', {get(){ return this.uniforms.opacity.value; }, set(v){ if (this.uniforms) this.uniforms.opacity.value = v; }});
+  BEY.dust = new THREE.Points(g, dm); karanaGroup.add(BEY.dust);
+}
+// The cloud of māyā in which they float (CC Ādi 5.57, 5.65–66)
+const cloudGroup = new THREE.Group(); karanaGroup.add(cloudGroup);
+for (let i=0;i<34;i++){
+  const p = inEll().multiply(CLOUD_R).multiplyScalar(.8).add(CLOUD_C), sz = 34000 + brnd()*42000;
+  const s = bSprite(cloudTex, i%3 ? 0x2A1F4A : 0x3A2A55, sz, .55, false); s.position.copy(p); s.material.rotation = brnd()*6.28; cloudGroup.add(s);
+}
+for (let i=0;i<10;i++){
+  const p = inEll().multiply(CLOUD_R).add(CLOUD_C), s = bSprite(cloudTex, 0x9A7A42, 50000 + brnd()*30000, .16); s.position.copy(p); cloudGroup.add(s);
+}
+
+/* The Causal Ocean: huge waves churned by a mighty wind (SB 10.89.52) */
+{
+  const g = new THREE.CircleGeometry(OCEAN_R, 160); g.rotateX(-Math.PI/2);
+  const m = new THREE.ShaderMaterial({uniforms:{uTime:{value:0}, uA:{value:1}, uC:{value:new THREE.Vector2(OCEAN_C.x, OCEAN_C.z)}, uR:{value:OCEAN_R}, uMV:{value:new THREE.Vector2(MV_P.x, MV_P.z)}},
+    vertexShader:`varying vec3 vW; void main(){ vec4 w = modelMatrix*vec4(position,1.); vW = w.xyz; gl_Position = projectionMatrix*viewMatrix*w; }`,
+    fragmentShader:`uniform float uTime, uA, uR; uniform vec2 uC, uMV; varying vec3 vW;
+      float h2(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+      float vn(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h2(i),h2(i+vec2(1.,0.)),f.x), mix(h2(i+vec2(0.,1.)),h2(i+vec2(1.,1.)),f.x), f.y); }
+      float px;
+      // swells of many sizes, each dropped once it is finer than a pixel, so the sea never turns into a pattern
+      float sea(vec2 p){ float h = 0., a = 1., L = 30000.; vec2 w = vec2(.8,.6);
+        for (int i=0;i<6;i++){ float k = 1. - smoothstep(.08, .35, px/L); h += a*k*vn(p/L + w*uTime*(.05 + .03*float(i))); a *= .55; L *= .42; w = vec2(-w.y, w.x); }
+        return h; }
+      void main(){
+        vec2 p = vW.xz; px = length(fwidth(p));
+        float e = max(px, 60.), h = sea(p), hx = sea(p + vec2(e, 0.)), hz = sea(p + vec2(0., e));
+        vec3 nrm = normalize(vec3((h - hx)*1600./e, 1., (h - hz)*1600./e));
+        vec3 v = normalize(cameraPosition - vW);
+        float fr = pow(1. - max(dot(nrm, v), 0.), 4.);
+        vec3 L = normalize(vec3(.35, .9, .25)), hv = normalize(L + v);
+        float sp = pow(max(dot(nrm, hv), 0.), 120.);
+        vec3 c = mix(vec3(.04,.11,.16), vec3(.12,.30,.36), smoothstep(.4, 1.4, h));
+        c = mix(c, vec3(.40,.50,.50), fr*.6) + vec3(1.,.88,.6)*sp*.45;
+        float dm = length(p - uMV);
+        c += vec3(.95,.80,.48)*.3*exp(-dm/24000.);   // the water glows around Mahā-Viṣṇu
+        float dc = length(p - uC)/uR;
+        gl_FragColor = vec4(c, uA*(1. - smoothstep(.35, 1., dc))*.95);
+      }`, transparent:true, depthWrite:false, extensions:{derivatives:true}});
+  BEY.ocean = new THREE.Mesh(g, m); BEY.ocean.position.copy(OCEAN_C); BEY.ocean.renderOrder = -2; karanaGroup.add(BEY.ocean); BEY.mats.push(m);
+  pickable(BEY.ocean, 'karana', true);
+}
+
+/* Mahā-Viṣṇu on Ananta Śeṣa, in a palace of jewelled pillars (SB 10.89.52–56): a figure of light, a sign only */
+const mvGroup = new THREE.Group(); mvGroup.position.copy(MV_P); mvGroup.scale.setScalar(MV_S); mvGroup.rotation.y = .32; karanaGroup.add(mvGroup);
+const MVF = {};
+{
+  // A reclining form of light: one smooth silhouette, rain-cloud blue, the lower body in yellow (10.89.54–56).
+  // No limbs or features are modelled; it is a sign, not a likeness.
+  // tube(points, profile [[u, ry, rz]...], cloth range in u): a smooth limb or body whose radius follows the profile
+  const tube = (pts, PROF, c0, c1) => {
+    const spine = new THREE.CatmullRomCurve3(pts.map(a => new THREE.Vector3(...a)));
+    const prof = u => { let k = 0; while (k < PROF.length-2 && PROF[k+1][0] < u) k++; const a = PROF[k], b = PROF[k+1], t = clamp((u - a[0])/(b[0] - a[0]), 0, 1), e = t*t*(3 - 2*t); return [lerp(a[1], b[1], e), lerp(a[2], b[2], e)]; };
+    const NU = 110, NV = 40, pos = [], cl = [], idx = [], up = new THREE.Vector3(0,1,0);
+    for (let i=0;i<=NU;i++){
+      const u = i/NU, c = spine.getPointAt(u), t = spine.getTangentAt(u);
+      let y = up.clone().addScaledVector(t, -up.dot(t)); if (y.lengthSq() < 1e-4) y.set(1,0,0); y.normalize();
+      const z = t.clone().cross(y).normalize(), [ry, rz] = prof(u), cloth = u >= c0 && u <= c1 ? 1 : 0;
+      for (let j=0;j<=NV;j++){ const v = j/NV*Math.PI*2; const p = c.clone().addScaledVector(y, Math.cos(v)*ry).addScaledVector(z, Math.sin(v)*rz); pos.push(p.x, p.y, p.z); cl.push(cloth); }
+    }
+    for (let i=0;i<NU;i++) for (let j=0;j<NV;j++){ const a = i*(NV+1)+j, b = a+NV+1; idx.push(a, b, a+1, b, b+1, a+1); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aU', new THREE.Float32BufferAttribute(cl, 1)); g.setIndex(idx); g.computeVertexNormals();
+    return g;
+  };
+  const parts = [
+    // head, chest, hips and the outstretched leg
+    tube([[-15.7,8.7,0],[-14.5,7.9,0],[-12.9,7.1,0],[-10.7,6.85,0],[-8.2,6.35,0],[-5.5,5.8,.2],[-1.5,5.45,.9],[3,5.25,1.0],[7.4,5.05,1.0],[10.2,5.4,1.0]],
+      [[0,.15,.15],[.035,1.25,1.15],[.07,1.38,1.3],[.105,.72,.72],[.15,1.25,2.3],[.2,1.42,2.6],[.28,1.22,2.05],[.36,1.42,2.35],[.46,1.05,1.25],[.68,.8,.9],[.86,.55,.62],[.95,.5,.5],[1,.12,.15]], .335, .93),
+    // the other leg, its knee raised
+    tube([[-5.2,5.9,-.8],[-1,7.2,-1.1],[2.4,8.4,-1.2],[5,6.6,-1.1],[7.6,5.35,-1.0],[8.9,5.7,-1.0]],
+      [[0,1.1,1.15],[.35,.88,.92],[.48,.78,.8],[.8,.55,.58],[.9,.5,.5],[1,.12,.15]], 0, .86),
+    // two of the eight arms: one along the body, one beneath the head
+    tube([[-11.3,7.4,2.6],[-9.9,6.9,3.1],[-8.4,6.4,3.25],[-6.9,6.15,3.05],[-5.5,6.05,2.7],[-4.9,6.05,2.45]], [[0,.62,.62],[.45,.5,.5],[.9,.4,.42],[1,.18,.2]], 2, 2),
+    tube([[-11.4,7.5,-2.5],[-12.4,8.8,-2.7],[-13.3,9.8,-2.6],[-14.3,9.7,-1.9],[-15.1,9.3,-1.2]], [[0,.6,.6],[.45,.5,.5],[.88,.42,.44],[1,.2,.2]], 2, 2)
+  ];
+  const bg = THREE.BufferGeometryUtils.mergeBufferGeometries(parts);
+  const figM = new THREE.ShaderMaterial({uniforms:{uA:{value:1}, uT:{value:0}},
+    vertexShader:`attribute float aU; varying vec3 vN; varying vec3 vV; varying float vU; varying float vY;
+      void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); vU = aU; vY = normalize(mat3(modelMatrix)*normal).y; gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform float uA, uT; varying vec3 vN; varying vec3 vV; varying float vU; varying float vY;
+      void main(){ float c = max(dot(normalize(vN), normalize(vV)), 0.), f = pow(1. - c, 2.);
+        float cloth = vU;
+        vec3 body = vec3(.16,.27,.58), yellow = vec3(.80,.60,.14);
+        vec3 b = mix(body, yellow, cloth)*(.7 + .3*vY);
+        vec3 rim = mix(vec3(.75,.85,1.), vec3(1.,.9,.6), cloth);
+        vec3 col = b*1.25 + rim*f*.55 + b*.5*pow(c, 3.)*(.92 + .08*sin(uT*.6));
+        gl_FragColor = vec4(col, uA*(.6 + .4*pow(c, .8))); }`, transparent:true});
+  const fig = new THREE.Group(); mvGroup.add(fig); MVF.fig = fig;
+  const bm = new THREE.Mesh(bg, figM); bm.renderOrder = 3; fig.add(bm); pickable(bm, 'mahavisnu'); BEY.figMat = figM;
+  // A golden crown at the head, the Kaustubha gem on the chest, a garland of forest flowers
+  const gold = gild(0xE9BE62, .3, {roughness:.4});
+  const dir = new THREE.Vector3(-.82, .57, 0).normalize();
+  const crown = new THREE.Mesh(new THREE.CylinderGeometry(.62, 1.02, 2.2, 8), gold);
+  crown.position.set(-14.5, 7.8, 0).addScaledVector(dir, 2.15); crown.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir); fig.add(crown); pickable(crown, 'mahavisnu');
+  const fin = new THREE.Mesh(new THREE.ConeGeometry(.42, 1, 8), gold); fin.position.copy(crown.position).addScaledVector(dir, 1.55); fin.quaternion.copy(crown.quaternion); fig.add(fin);
+  const kau = bSprite(smoothTex, 0xFF6A3A, 1.4, .9); kau.position.set(-10.6, 8.2, 0); fig.add(kau);
+  const gc = new THREE.CatmullRomCurve3([[-12.6,7.75,2.0],[-10.4,8.25,2.3],[-7.6,7.65,2.2],[-4.6,7.05,2.15],[-1.4,6.6,1.8],[.8,6.55,0],[-1.4,6.6,-1.8],[-4.6,7.05,-2.15],[-7.6,7.65,-2.2],[-10.4,8.25,-2.3],[-12.6,7.75,-2.0]].map(a => new THREE.Vector3(...a)));
+  const gp = gc.getSpacedPoints(150), gpos = new Float32Array(gp.length*3), gcol = new Float32Array(gp.length*3), GH = [0xF2C14E,0xE8506A,0xF6F1E6,0x7FC97A,0xD879C9].map(col);
+  gp.forEach((p, i) => { p.toArray(gpos, i*3); GH[i % 5].toArray(gcol, i*3); });
+  const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.BufferAttribute(gpos, 3)); gg.setAttribute('color', new THREE.BufferAttribute(gcol, 3));
+  fig.add(new THREE.Points(gg, new THREE.PointsMaterial({size:240, vertexColors:true, sizeAttenuation:true, transparent:true, depthWrite:false})));
+  const aura = bSprite(coolGlow, 0x6F95E8, 1, .2); aura.position.set(-2.5, 7, 0); aura.scale.set(36, 12, 1); fig.add(aura);
+  [[-14.5,7.8,4],[-10.4,6.9,6],[-6,6,6],[-1,5.5,6],[4.5,5.2,5],[9,5.1,3.5]].forEach(([x,y,r]) => { const g = bSprite(smoothTex, x < -5 ? 0x5C86F0 : 0xF0C060, r, .22); g.position.set(x, y, 0); fig.add(g); });
+  MVF.head = anchorAt(fig, -14.5, 11.4, 0); MVF.feet = anchorAt(fig, 10.4, 6.6, 0); MVF.kaus = anchorAt(fig, -10.6, 8.5, 0);
+
+  // Ananta Śeṣa: white like Mount Kailāsa, necks dark blue, gems on thousands of hoods (10.89.53)
+  const white = new THREE.MeshStandardMaterial({color:0xA8A7A1, roughness:.6, metalness:.05, emissive:0x101116});
+  const blue = new THREE.MeshStandardMaterial({color:0x22346A, roughness:.5, metalness:.1, emissive:0x060914});
+  const coil = new THREE.CatmullRomCurve3(Array.from({length:140}, (_, i) => { const t = i/139, a = t*Math.PI*6, rx = lerp(14.2, 11.6, t), rz = lerp(5.2, 3.7, t);
+    return new THREE.Vector3(-2.4 - rx*Math.cos(a), lerp(.9, 3.1, t), rz*Math.sin(a)); }));
+  const cm2 = new THREE.Mesh(new THREE.TubeGeometry(coil, 520, 1.45, 18, false), white); mvGroup.add(cm2); pickable(cm2, 'mahavisnu');
+  const tail = new THREE.Mesh(new THREE.ConeGeometry(1.45, 5, 18), white); tail.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), coil.getTangent(0).negate()); tail.position.copy(coil.getPoint(0)).addScaledVector(coil.getTangent(0), -2.4); mvGroup.add(tail);
+  const neckC = new THREE.CatmullRomCurve3([coil.getPoint(1), new THREE.Vector3(-17.2, 5.4, -.6), new THREE.Vector3(-18.6, 8.6, -.7), new THREE.Vector3(-17.8, 11.6, -.6)]);
+  mvGroup.add(new THREE.Mesh(new THREE.TubeGeometry(neckC, 60, 1.6, 16, false), blue));
+  // Hoods fanned over the Lord's head: three full rows, and many more behind them
+  const C = new THREE.Vector3(-17.6, 12.2, 0), hoodGeo = new THREE.SphereGeometry(1, 22, 16); hoodGeo.scale(1.2, 1.75, .3);
+  const gemP = [];
+  [[44, 7.6, -1.5, 1.0, -1.6, 1.2], [26, 6.5, -.6, 1.25, -1.45, 1.05], [13, 5.1, .5, 1.5, -1.25, .9]].forEach(([n, R, dz, sc, a0, a1]) => {
+    for (let i=0;i<n;i++){
+      const phi = lerp(a0, a1, n > 1 ? i/(n-1) : .5), d = new THREE.Vector3(Math.sin(phi), Math.cos(phi), 0);
+      const hp = C.clone().addScaledVector(d, R).add(new THREE.Vector3(0, 0, dz));
+      const hood = new THREE.Mesh(hoodGeo, white); hood.position.copy(hp); hood.rotation.set(.18, 0, -phi); hood.scale.setScalar(sc); mvGroup.add(hood); pickable(hood, 'mahavisnu');
+      const L = R - 1.6*sc, st = new THREE.Mesh(new THREE.CylinderGeometry(.26*sc, .42*sc, L, 10), blue);
+      st.position.copy(C).addScaledVector(d, L/2).add(new THREE.Vector3(0, 0, dz - .5)); st.rotation.z = -phi; mvGroup.add(st);
+      gemP.push(hp.clone().addScaledVector(d, .55*sc).add(new THREE.Vector3(0, 0, .4*sc)));
+    }
+  });
+  const gpa = new Float32Array(gemP.length*3); gemP.forEach((p, i) => p.toArray(gpa, i*3));
+  const gemG = new THREE.BufferGeometry(); gemG.setAttribute('position', new THREE.BufferAttribute(gpa, 3));
+  mvGroup.add(new THREE.Points(gemG, new THREE.PointsMaterial({color:0xFFDD90, size:260, sizeAttenuation:true, transparent:true, depthWrite:false})));
+  const ah = bSprite(coolGlow, 0xC9D8FF, 1, .14); ah.position.copy(C); ah.scale.set(24, 24, 1); mvGroup.add(ah);
+  MVF.hoods = anchorAt(mvGroup, -18.5, 21.5, 0); MVF.coils = anchorAt(mvGroup, 4, 2.5, 6.5);
+
+  // The palace: a platform and thousands of jewelled pillars (10.89.52); a few dozen are drawn, behind Him
+  const floor = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, .5, 120), new THREE.MeshStandardMaterial({color:0x16214A, roughness:.45, metalness:.3, emissive:0x05081a}));
+  floor.scale.set(27, 1, 14); floor.position.set(-1.4, -.25, 0); mvGroup.add(floor);
+  const pg = gild(0xD9C389, .1, {roughness:.5}); pg.envMapIntensity = .35;
+  const rimR = new THREE.Mesh(new THREE.TorusGeometry(1, .015, 8, 160), pg); rimR.rotation.x = Math.PI/2; rimR.scale.set(27, 14, 14); rimR.position.set(-1.4, .02, 0); mvGroup.add(rimR);
+  const NP = 19, pil = new THREE.InstancedMesh(new THREE.CylinderGeometry(.26, .34, 10, 12), pg, NP);
+  const cap = [], M = new THREE.Matrix4(), q0 = new THREE.Quaternion(), s1 = new THREE.Vector3(1,1,1);
+  for (let i=0;i<NP;i++){ const a = Math.PI*(1.04 + .92*i/(NP-1)), x = -1.4 + Math.cos(a)*26, z = Math.sin(a)*13.2;   // the far arc only, so the view stays open
+    M.compose(new THREE.Vector3(x, 5, z), q0, s1); pil.setMatrixAt(i, M); cap.push(new THREE.Vector3(x, 10.2, z)); }
+  mvGroup.add(pil);
+  const archC = new THREE.EllipseCurve(-1.4, 0, 26, 13.2, Math.PI*1.04, Math.PI*1.96, false, 0);
+  const archP = archC.getPoints(80).map(p => new THREE.Vector3(p.x, 10.05, p.y));
+  mvGroup.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(archP), 120, .22, 8, false), pg));
+  const cpa = new Float32Array(cap.length*3), cpc = new Float32Array(cap.length*3), GEM = [0xFF6A6A,0x7FE0FF,0xFFE07A,0x9CFF9C,0xE59CFF].map(col);
+  cap.forEach((p, i) => { p.toArray(cpa, i*3); GEM[i%5].toArray(cpc, i*3); });
+  const cg = new THREE.BufferGeometry(); cg.setAttribute('position', new THREE.BufferAttribute(cpa, 3)); cg.setAttribute('color', new THREE.BufferAttribute(cpc, 3));
+  mvGroup.add(new THREE.Points(cg, new THREE.PointsMaterial({size:340, vertexColors:true, sizeAttenuation:true, transparent:true, depthWrite:false})));
+  MVF.palace = anchorAt(mvGroup, -1.4, 11.5, -13.2);
+}
+// Universes leaving and re-entering His pores with each breath (CC Ādi 5.68–70; BS 5.48)
+{
+  const n = 2400, A = new Float32Array(n*3), Bp = new Float32Array(n*3), Cp = new Float32Array(n*3), sd = new Float32Array(n), sz = new Float32Array(n);
+  const bodyPts = [[-14.4,7.7,0,1.4,1.6,1.4],[-10.5,7,0,2.3,1.25,2.5],[-8.9,6.3,0,2.6,1.35,2.2],[-5.5,5.5,0,2.7,1.4,2.3],[0,5.3,0,3.4,1,1.4],[6,5,0,3.6,.9,1.3]];
+  for (let i=0;i<n;i++){
+    const b = bodyPts[Math.floor(brnd()*bodyPts.length)], u = inEll();
+    const a = new THREE.Vector3(b[0]+u.x*b[3], b[1]+u.y*b[4], b[2]+u.z*b[5]);
+    mvGroup.updateMatrixWorld(true); a.applyMatrix4(mvGroup.matrixWorld);
+    const e = inEll().multiply(CLOUD_R).multiplyScalar(.95).add(CLOUD_C);
+    const c = a.clone().lerp(e, .45).add(new THREE.Vector3((brnd()-.5)*20000, 16000 + brnd()*18000, (brnd()-.5)*20000));
+    a.toArray(A, i*3); e.toArray(Bp, i*3); c.toArray(Cp, i*3); sd[i] = brnd(); sz[i] = 500 + brnd()*1100;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(A, 3)); g.setAttribute('aB', new THREE.BufferAttribute(Bp, 3)); g.setAttribute('aC', new THREE.BufferAttribute(Cp, 3));
+  g.setAttribute('aSeed', new THREE.BufferAttribute(sd, 1)); g.setAttribute('aSize', new THREE.BufferAttribute(sz, 1));
+  const m = new THREE.ShaderMaterial({uniforms:{uBreath:{value:0}, uA:{value:1}, uPx:{value:800}},
+    vertexShader:`attribute vec3 aB; attribute vec3 aC; attribute float aSeed; attribute float aSize; uniform float uBreath, uPx; varying float vA; varying float vS;
+      void main(){ float q = clamp(uBreath*1.4 - aSeed*.4, 0., 1.); float e = 1. - pow(1.-q, 2.2);
+        vec3 p = mix(mix(position, aC, e), mix(aC, aB, e), e);
+        vec4 mv = modelViewMatrix*vec4(p,1.);
+        vA = smoothstep(0., .06, q)*(1. - smoothstep(.82, 1., q)); vS = aSeed;
+        gl_PointSize = clamp(aSize*mix(.35, 1., e)*uPx/(-mv.z), 1.5, 22.); gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform float uA; varying float vA; varying float vS;
+      void main(){ vec2 d = gl_PointCoord - .5; float r = length(d)*2.; if (r > 1.) discard;
+        vec3 c = mix(vec3(1.,.86,.55), vec3(1.,.95,.8), vS)*(1.15 - r*.6);
+        gl_FragColor = vec4(c, vA*uA*(1. - smoothstep(.55, 1., r))); }`,
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending});
+  BEY.stream = new THREE.Points(g, m); BEY.stream.frustumCulled = false; karanaGroup.add(BEY.stream);
+}
+
+/* Our universe, marked so it can be found from far away */
+BEY.beacon = bSprite(sunGlow, 0xFFE2A0, 1, .9); karanaGroup.add(BEY.beacon);
+BEY.ring = (() => { const m = new THREE.LineBasicMaterial({color:0xF2CB74, transparent:true, opacity:.8, depthWrite:false}); m.userData.op = .8;
+  const l = new THREE.LineLoop(circleGeo(96), m); l.rotation.x = Math.PI/2; return l; })();
+const ringBill = new THREE.Group(); ringBill.add(BEY.ring); karanaGroup.add(ringBill); BEY.ringBill = ringBill;
+
+/* The brahmajyoti, the Vaikuṇṭha planets and Goloka (BS 5.40, 5.43; CC Ādi 5.31–33) */
+const spGroup = new THREE.Group(); karanaGroup.add(spGroup);
+{
+  [[SP_C.clone().add(new THREE.Vector3(0,-60e3,0)), 3.2e6, 0xFFE2A8, .2], [SP_C, 1.6e6, 0xFFEFD0, .16], [GOLOKA_P, 8e5, 0xFFD9C8, .22], [CLOUD_C.clone().add(new THREE.Vector3(60e3, 160e3, -40e3)), 9e5, 0xF7D79A, .12]]
+    .forEach(([p, s, hex, op]) => { const sp = bSprite(smoothTex, hex, s, op); sp.position.copy(p); spGroup.add(sp); });
+  // Vaikuṇṭha planets: self-luminous (BG 15.6)
+  const geo = new THREE.SphereGeometry(1, 28, 18);
+  const m = new THREE.ShaderMaterial({uniforms:{uA:{value:1}},
+    vertexShader:`attribute float aSeed; varying vec3 vN; varying vec3 vV; varying float vS;
+      void main(){ mat4 mm = modelMatrix*instanceMatrix; vec4 mv = viewMatrix*mm*vec4(position,1.);
+        vN = normalize(mat3(viewMatrix)*mat3(mm)*normal); vV = normalize(-mv.xyz); vS = aSeed; gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform float uA; varying vec3 vN; varying vec3 vV; varying float vS;
+      void main(){ float c = max(dot(normalize(vN), normalize(vV)), 0.);
+        vec3 core = mix(vec3(1.,.95,.82), vec3(.9,.97,1.), vS), rim = mix(vec3(.25,.55,1.), vec3(1.,.7,.3), vS);
+        vec3 col = mix(rim, core, pow(c, 1.6))*.98;
+        gl_FragColor = vec4(col, uA); }`, transparent:true});
+  const P = [];
+  for (let t=0; t<6000 && P.length<170; t++){
+    const p = inEll().multiply(new THREE.Vector3(640e3, 330e3, 640e3)).add(SP_C);
+    if (p.y < SP_C.y - 230e3 || p.distanceTo(GOLOKA_P) < 260e3) continue;
+    const r = 7e3 + Math.pow(brnd(), 2)*13e3;
+    if (P.some(o => o.p.distanceTo(p) < o.r + r + 26e3)) continue;
+    P.push({p, r, s:brnd()});
+  }
+  const im = new THREE.InstancedMesh(geo, m, P.length), M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), sd = new Float32Array(P.length);
+  const gpos = new Float32Array(P.length*3);
+  P.forEach((o, i) => { M.compose(o.p, Q, S.setScalar(o.r)); im.setMatrixAt(i, M); sd[i] = o.s; o.p.toArray(gpos, i*3); });
+  geo.setAttribute('aSeed', new THREE.InstancedBufferAttribute(sd, 1));
+  im.frustumCulled = false; spGroup.add(im); pickable(im, 'vaikuntha'); BEY.vaikMat = m;
+  const hg = new THREE.BufferGeometry(); hg.setAttribute('position', new THREE.BufferAttribute(gpos, 3));
+  { const hm = new THREE.PointsMaterial({color:0xFFE6B8, size:52e3, sizeAttenuation:true, transparent:true, opacity:.28, depthWrite:false, blending:THREE.AdditiveBlending}); hm.userData.op = .28; spGroup.add(new THREE.Points(hg, hm)); }
+  BEY.vaikA = P.slice().sort((a, b) => b.r - a.r)[0].p;
+}
+// Goloka: a lotus of thousands of petals around a hexagonal whorl, within the square of Śvetadvīpa (BS 5.2–5)
+const golGroup = new THREE.Group(); golGroup.position.copy(GOLOKA_P); golGroup.scale.setScalar(1.5e5); spGroup.add(golGroup);
+{
+  // One petal: pointed, cupped across, its tip curling up; length 1 along +z, half-width 1
+  const pg = (() => { const NL = 14, NA = 8, pos = [], uv = [], idx = [];
+    for (let i=0;i<=NL;i++){ const v = i/NL, hw = Math.pow(Math.sin(Math.PI*Math.min(1, v*1.04)), .8)*(1 - .2*v) + .001;
+      for (let j=0;j<=NA;j++){ const a = -1 + 2*j/NA; pos.push(a*hw, .32*a*a*hw + .3*v*v, v); uv.push(a, v); } }
+    for (let i=0;i<NL;i++) for (let j=0;j<NA;j++){ const a = i*(NA+1)+j, b = a+NA+1; idx.push(a, b, a+1, b, b+1, a+1); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setIndex(idx); g.computeVertexNormals(); return g; })();
+  const counts = [16,40,72,112,152,184,208,216];   // a thousand petals in eight rings
+  const N = counts.reduce((a, b) => a + b, 0), ring = new Float32Array(N);
+  const m = new THREE.ShaderMaterial({uniforms:{uA:{value:1}},
+    vertexShader:`attribute float aRing; varying vec2 vUv; varying float vR; varying vec3 vN; varying vec3 vV;
+      void main(){ vUv = uv; vR = aRing; mat4 mm = modelMatrix*instanceMatrix; vec4 mv = viewMatrix*mm*vec4(position,1.);
+        vN = normalize(mat3(viewMatrix)*mat3(mm)*normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix*mv; }`,
+    fragmentShader:`uniform float uA; varying vec2 vUv; varying float vR; varying vec3 vN; varying vec3 vV;
+      void main(){ float c = abs(dot(normalize(vN), normalize(vV))), a = abs(vUv.x), t = vUv.y;
+        vec3 base = mix(vec3(.92,.66,.3), vec3(.86,.42,.55), vR), mid = mix(vec3(.97,.78,.8), vec3(.93,.6,.72), vR), tip = vec3(1.,.9,.92);
+        vec3 col = mix(mix(base, mid, smoothstep(0., .45, t)), tip, smoothstep(.55, 1., t));
+        col *= .58 + .42*(1. - a*a);                                  // darker toward the edges, so each petal reads
+        col += vec3(1.,.92,.85)*exp(-a*a*90.)*.18*t;                  // a central vein
+        col *= .7 + .3*c;
+        gl_FragColor = vec4(col*.86, uA); }`, transparent:true, side:THREE.DoubleSide});
+  const im = new THREE.InstancedMesh(pg, m, N), M = new THREE.Matrix4(), E1 = new THREE.Euler(), Q = new THREE.Quaternion(), V = new THREE.Vector3(), S = new THREE.Vector3();
+  let j = 0;
+  counts.forEach((c, i) => {
+    const f = i/(counts.length-1), base = .1 + f*.72, len = .2 + f*.42, tilt = lerp(1.25, .42, f), w = clamp(2*Math.PI*base/c*1.05, .045, .16);
+    for (let k=0;k<c;k++){
+      const a = (k + .5*(i%2))/c*Math.PI*2;
+      E1.set(-tilt, a, 0, 'YXZ'); Q.setFromEuler(E1);
+      V.set(Math.sin(a)*base, .05*(counts.length-1-i), Math.cos(a)*base);
+      M.compose(V, Q, S.set(w, len*.7, len)); im.setMatrixAt(j, M); ring[j] = f; j++;
+    }
+  });
+  pg.setAttribute('aRing', new THREE.InstancedBufferAttribute(ring, 1));
+  im.frustumCulled = false; golGroup.add(im); pickable(im, 'goloka'); BEY.golMat = m;
+  const whorl = new THREE.Mesh(new THREE.CylinderGeometry(.11, .13, .1, 6), gild(0xF2C45A, .5, {roughness:.35})); whorl.position.y = .42; golGroup.add(whorl); pickable(whorl, 'goloka');
+  const hexL = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(Array.from({length:6}, (_, i) => new THREE.Vector3(Math.cos(i/6*Math.PI*2)*.15, .47, Math.sin(i/6*Math.PI*2)*.15))), new THREE.LineBasicMaterial({color:0xFFF0C0}));
+  golGroup.add(hexL);
+  const core = bSprite(sunGlow, 0xFFE8C0, .55, .7); core.position.y = .55; golGroup.add(core);
+  // Śvetadvīpa: a white square around Gokula, in four parts (BS 5.5)
+  const sq = new THREE.Shape([new THREE.Vector2(-1.55,-1.55), new THREE.Vector2(1.55,-1.55), new THREE.Vector2(1.55,1.55), new THREE.Vector2(-1.55,1.55)]);
+  sq.holes.push(new THREE.Path([new THREE.Vector2(-1.22,-1.22), new THREE.Vector2(-1.22,1.22), new THREE.Vector2(1.22,1.22), new THREE.Vector2(1.22,-1.22)]));
+  const sg = new THREE.ShapeGeometry(sq); sg.rotateX(-Math.PI/2);
+  const sm = new THREE.MeshBasicMaterial({color:0xC9CCD8, transparent:true, opacity:.45, side:THREE.DoubleSide, depthWrite:false}); sm.userData.op = .45;
+  const sqm = new THREE.Mesh(sg, sm); sqm.position.y = -.08; golGroup.add(sqm); pickable(sqm, 'goloka'); BEY.sqMat = sm;
+  const div = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints([[-1.55,-1.55,-1.22,-1.22],[1.55,-1.55,1.22,-1.22],[1.55,1.55,1.22,1.22],[-1.55,1.55,-1.22,1.22]].flatMap(([a,b,c,d]) => [new THREE.Vector3(a,-.07,b), new THREE.Vector3(c,-.07,d)])), new THREE.LineBasicMaterial({color:0xE0AE55}));
+  golGroup.add(div);
+  [[0,1.38],[1.38,0],[0,-1.38],[-1.38,0]].forEach(([x, z]) => { const s = bSprite(smoothTex, 0xFFFFFF, .32, .8); s.position.set(x, 0, z); golGroup.add(s); });
+  const halo = bSprite(smoothTex, 0xFFD8C8, 5.5, .32); golGroup.add(halo);
+  BEY.golA = anchorAt(golGroup, 0, 1.0, 0); BEY.svetaA = anchorAt(golGroup, 1.38, .05, 1.38); BEY.whorlA = anchorAt(golGroup, 0, .5, 0);
+}
+
+/* The sky beyond: dark inside the cloud of māyā, golden in the brahmajyoti, brightest toward the spiritual sky */
+BEY.dome = (() => {
+  const m = new THREE.ShaderMaterial({uniforms:{uMix:{value:0}, uCloud:{value:1}, uSp:{value:new THREE.Vector3(0,1,0)}},
+    vertexShader:`varying vec3 vD; void main(){ vD = position; vec4 mv = modelViewMatrix*vec4(position,1.); gl_Position = projectionMatrix*mv; gl_Position.z = gl_Position.w*.99999; }`,
+    fragmentShader:`uniform float uMix, uCloud; uniform vec3 uSp; varying vec3 vD;
+      void main(){ vec3 d = normalize(vD); float up = d.y;
+        vec3 jy = mix(vec3(.035,.028,.032), vec3(.12,.085,.05), smoothstep(-.4, .9, up));
+        float g = max(dot(d, normalize(uSp)), 0.);
+        jy += vec3(.50,.36,.14)*pow(g, 9.) + vec3(.16,.10,.04)*pow(g, 2.5);
+        vec3 maya = mix(vec3(.025,.022,.055), vec3(.07,.055,.06), smoothstep(-.2, 1., up));
+        gl_FragColor = vec4(mix(jy, maya, uCloud), uMix); }`,
+    side:THREE.BackSide, depthWrite:false, depthTest:false, transparent:false, blending:THREE.CustomBlending,
+    blendSrc:THREE.SrcAlphaFactor, blendDst:THREE.OneMinusSrcAlphaFactor});
+  const d = new THREE.Mesh(new THREE.SphereGeometry(1, 48, 24), m); d.renderOrder = -1000; d.frustumCulled = false; scene.add(d); return d;
+})();
+
+/* Labels beyond the shell: each shows only at the scale where it belongs */
+const LW = (lo, hi) => d => d > (typeof lo === 'function' ? lo() : lo) && d < hi;
+const covWin = () => BEY.covA > .5 && camera.position.length() < 16000;
+COVERS.forEach((c, i) => addLabel({id:c.id, text:c.n, sub:c.yj + ' yojanas thick', cls:'c-gold bz', pri:62 - i, anchor:COV_ANCH[c.id], lod:0, win:covWin}));
+addLabel({id:'pradhana', text:'Pradhāna', sub:'unmanifest, unmeasured', cls:'c-soft bz', pri:54, anchor:COV_ANCH.pradhana, lod:0, win:covWin});
+addLabel({id:'avarana', text:'Seven coverings', sub:'each ten times the one inside', cls:'c-gold bz', pri:64, anchor:COV_ANCH.avarana, lod:0, win:covWin});
+addLabel({id:'overview', text:'Our universe', sub:'the smallest of all', cls:'c-here bz', pri:96, anchor:anchorAt(karanaGroup, 0, 0, 0), lod:0, win:d => { const cr = camera.position.length(); return cr > 6000 && cr < 400e3 && (BEY.covA < .5 || cr > 12000); }});
+addLabel({id:'brahmandas', text:'Countless universes', sub:'from the pores of Mahā-Viṣṇu', cls:'c-gold bz', pri:80, anchor:anchorAt(karanaGroup, UNIV[0].p.x, UNIV[0].p.y + UNIV[0].r*1.1, UNIV[0].p.z), lod:0, win:d => { const cr = camera.position.length(); return cr > 9000 && cr < 260e3; }});
+addLabel({id:'brahmandas', text:'Devī-dhāma', sub:'the material creation · one fourth', cls:'c-gold bz', pri:80, anchor:anchorAt(karanaGroup, CLOUD_C.x, CLOUD_C.y + CLOUD_R.y*1.4, CLOUD_C.z), lod:0, win:d => camera.position.length() > 600e3});
+addLabel({id:'karana', text:'Kāraṇa Ocean', sub:'the Virajā', cls:'c-ocean bz', pri:86, anchor:anchorAt(karanaGroup, OCEAN_C.x + 70e3, Y_OC, OCEAN_C.z + 60e3), lod:0, win:d => { const cr = camera.position.length(); return cr > 40e3 && cr < 3e6; }});
+addLabel({id:'mahavisnu', text:'Mahā-Viṣṇu', sub:'Kāraṇodakaśāyī Viṣṇu', cls:'c-high bz', pri:90, anchor:MVF.head, lod:0, win:d => { const cr = camera.position.distanceTo(MV_P); return cr > 6000 && cr < 1.2e6; }});
+BEY.breathL = addLabel({text:'Breathing out', sub:'universes come from His pores', cls:'c-soft bz', pri:58, anchor:anchorAt(karanaGroup, (MV_P.x + CLOUD_C.x)/2, CLOUD_C.y + 26000, (MV_P.z + CLOUD_C.z)/2), lod:0, win:d => { const cr = camera.position.distanceTo(MV_P); return cr > 20000 && cr < 420e3; }});
+addLabel({id:'brahmajyoti', text:'Brahmajyoti', sub:'the effulgence of the Lord', cls:'c-gold bz', pri:84, anchor:anchorAt(karanaGroup, SP_C.x - 420e3, SP_C.y - 120e3, SP_C.z + 180e3), lod:0, win:d => camera.position.length() > 250e3});
+addLabel({id:'vaikuntha', text:'Vaikuṇṭha planets', sub:'Hari-dhāma', cls:'c-ocean bz', pri:85, anchor:anchorAt(karanaGroup, BEY.vaikA.x, BEY.vaikA.y + 24e3, BEY.vaikA.z), lod:0, win:d => camera.position.distanceTo(SP_C) < 4e6 && camera.position.length() > 200e3});
+addLabel({id:'goloka', text:'Goloka', sub:'above all', cls:'c-here bz', pri:92, anchor:BEY.golA, lod:0, win:d => camera.position.length() > 200e3});
+addLabel({id:'paravyoma', text:'The spiritual sky', sub:'three fourths of the Lord\'s energy', cls:'c-soft bz', pri:70, anchor:anchorAt(karanaGroup, SP_C.x + 520e3, SP_C.y + 260e3, SP_C.z - 100e3), lod:0, win:d => camera.position.length() > 1.4e6});
+const bzFeat = (id, name, anchor, note, d) => { addLabel({text:name, cls:'c-gold feat bz', pri:46, only:[id], anchor, lod:0, win:() => true}); feat(id, name, note, anchor, d); };
+bzFeat('mahavisnu', 'Ananta Śeṣa', MVF.hoods, 'White like Mount Kailāsa, with gems on thousands of hoods; His necks and tongues are dark blue (10.89.53).', 34);
+bzFeat('mahavisnu', 'The palace', MVF.palace, 'A palace more radiant than anything Arjuna had seen, its beauty enhanced by thousands of jewelled pillars (10.89.52).', 60);
+bzFeat('goloka', 'The whorl', BEY.whorlA, 'The hexagonal abode of Kṛṣṇa; the petals around it are the abodes of the gopīs (BS 5.4).', 1.2);
+bzFeat('goloka', 'Śvetadvīpa', BEY.svetaA, 'A quadrangular place in four parts, the abodes of Vāsudeva, Saṅkarṣaṇa, Pradyumna and Aniruddha (BS 5.5).', 1.6);
 
 /* ------------------------------------------------------------------
    BHŪ-MAṆḌALA
@@ -2172,8 +2745,6 @@ const gangaTube = new THREE.Mesh(new THREE.BufferGeometry(), flowMat(80)); ganga
 const gangaGlow = new THREE.Sprite(new THREE.SpriteMaterial({map:coolGlow, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:.95})); gangaGroup.add(gangaGlow);
 GANGA_A.toe = anchorAt(gangaGroup,0,0,0); GANGA_A.moon = anchorAt(gangaGroup,0,0,0); GANGA_A.mid = anchorAt(gangaGroup,0,0,0);
 addLabel({id:'ganga', text:'Gaṅgā', sub:'descends from the shell to Meru', cls:'c-ocean', pri:76, anchor:GANGA_A.mid});
-addLabel({id:'karana', text:'Kāraṇa Ocean', sub:'countless universes, ours among them', cls:'zone c-gold', pri:97, far:true, anchor:anchorAt(karanaGroup, -620, 330, 380), lod:0});
-addLabel({id:'overview', text:'Our universe', sub:'everything in this model', cls:'c-gold', pri:96, far:true, anchor:anchorAt(karanaGroup, 0, 262, 0), lod:0});
 featLabel('ganga','Lord Vāmana\'s toe pierced the shell here', GANGA_A.toe, 'c-ocean');
 featLabel('ganga','Past the Moon', GANGA_A.moon, 'c-ocean');
 function buildGanga(){
@@ -2453,7 +3024,7 @@ function refreshVisibility(){
   const cl = clustersFor(focusId);
   MANAGED.forEach(m => {
     const inFocus = !cl || cl.some(c => m.cluster===c || m.cluster.startsWith(c+':'));
-    m.obj.visible = !!LAYER_ON[m.layer] && inFocus;
+    m.obj.visible = !!LAYER_ON[m.layer] && inFocus && !BEY.deep;
   });
   if (T > .98) ananta.visible = false;
   sisu.visible = LAYER_ON.sisu || sel==='sisumara' || focusId==='sisumara' || focusId==='dhruva' || sel==='dhruva';
@@ -2500,6 +3071,7 @@ function behindDisc(p){
   return !(focusId && dimKeep(focusId));   // in a disc focus, other rings are faded and see-through
 }
 function contextIds(id){
+  if (BEYOND_IDS.has(id)) return BEYOND_IDS;
   if (LOWER.includes(id) || ['naraka','ananta','garbhodaka'].includes(id)) return new Set([...LOWER,'naraka','ananta']);
   if (HIGHER.some(w=>w.id===id)) return new Set(HIGHER.map(w=>w.id));
   if (id==='trailokya') return new Set(['bhuvar','svar','lokaloka','bhumandala','surya','dhruva']);
@@ -2514,6 +3086,7 @@ function updateLabels(){
   const W = canvas.clientWidth, H = canvas.clientHeight, placed = [], nowL = performance.now();
   const orbitDist = camera.position.distanceTo(controls.target);
   const zoneOn = !focusId && !spotOn && orbitDist > 380 && orbitDist < overviewD()*1.6 && LAYER_ON.ruler;
+  const insideU = camera.position.length() < overviewD()*1.75 && orbitDist < overviewD()*1.6;
   const ctx = spotOn ? contextIds(sel) : null;
   const key = L => (L.id===sel?1000:0) + L.pri + (L.shown?8:0);
   const order = LABELS.slice().sort((a,b) => key(b) - key(a));
@@ -2521,16 +3094,17 @@ function updateLabels(){
     let want = labelsOn && isVisibleDeep(L.anchor), faint = false;
     const own = L.id===sel || (L.only && (L.only.includes(sel) || L.only.includes(focusId)));
     if (want && L.mark) want = !focusId;
-    if (want && L.far) want = orbitDist > overviewD()*1.6;
+    if (want && L.win) want = L.win(orbitDist);
+    else if (want && !L.zone && !insideU) want = false;
     if (want && L.trueOnly) want = T > .95 && !focusId && !spotOn;
     else if (want && L.zone) want = zoneOn && T < .5;
     if (want && W < 600 && !L.only && !L.zone && !L.trueOnly && !L.mark && L.id !== sel && L.pri < 55) want = false;
     if (want && L.only) want = L.only.includes(sel) || L.only.includes(focusId);
-    if (want && spotOn && !own && !L.zone && !L.far && !L.mark){ if (L.id && ctx.has(L.id)) faint = true; else want = false; }
-    if (want && !L.zone && !L.trueOnly && !L.far && !L.mark && !L.only && L.id !== sel && L.lod > 0){
+    if (want && spotOn && !own && !L.zone && !L.mark){ if (L.id && ctx.has(L.id)) faint = true; else want = false; }
+    if (want && !L.zone && !L.trueOnly && !L.win && !L.mark && !L.only && L.id !== sel && L.lod > 0){
       L.anchor.getWorldPosition(tmpV); if (camera.position.distanceTo(tmpV) > 520) want = false;
     }
-    if (want && !L.zone && !L.far && !L.trueOnly && !L.mark){
+    if (want && !L.zone && !L.win && !L.trueOnly && !L.mark){
       L.anchor.getWorldPosition(tmpV);
       if (cutCur < 300 && !(spotOn && own) && inCut(tmpV)) want = false;
       else if (!(spotOn && own) && behindDisc(tmpV)) want = false;
@@ -2591,6 +3165,9 @@ function spotRoots(id){
   if (id==='ananta') return [ananta];
   if (id==='garbhodaka') return [waterGroup, ananta];
   if (id==='ganga') return [gangaGroup, GANGA_A.branch];
+  if (COV_MESH[id]) return [COV_MESH[id]];
+  if (id==='mahavisnu') return [mvGroup];
+  if (id==='goloka') return [golGroup];
   return [];
 }
 function setSpot(id){
@@ -2628,7 +3205,7 @@ function guardSolid(){
   if (dd < r && dd > 1e-6){ camera.position.copy(gC).add(off.multiplyScalar(r/dd)); }
 }
 const frus = new THREE.Frustum(), frusM = new THREE.Matrix4();
-const WIDE = new Set(['trailokya','bhuvar','svar','manasottara','lokaloka','naksatra','ganga','siddha','garbhodaka','sisumara','saptarsi','bhumandala','karana']);
+const WIDE = new Set(['trailokya','bhuvar','svar','manasottara','lokaloka','naksatra','ganga','siddha','garbhodaka','sisumara','saptarsi','bhumandala', ...BEYOND_IDS]);
 let inViewT = 0, lostShown = false, selSphereT = 0;
 function selSphere(now){
   if (now - selSphereT < 300 && gSphere.radius > 0) return gSphere;
@@ -2739,6 +3316,10 @@ function trailFor(id){
   if (GRAHA_IDS.has(id)) return [U, ['Svarloka','svar'], me];
   if (HIGHER.some(w=>w.id===id)) return [U, ['Upper worlds 4–7',null], me];
   if (LOWER.includes(id) || ['naraka','ananta','garbhodaka'].includes(id)) return [U, ['Below Bhū-maṇḍala',null], me];
+  if (COVER_IDS.includes(id) || id==='pradhana') return [U, ['Seven coverings','avarana'], me];
+  if (['goloka','vaikuntha','brahmajyoti'].includes(id)) return [['The whole creation','paravyoma'], me];
+  if (id==='paravyoma') return [me];
+  if (BEYOND_IDS.has(id) && id!=='avarana') return [['The whole creation','paravyoma'], ['Material creation','brahmandas'], me].filter((x,k,a) => k===a.length-1 || x[1]!==id);
   return [U, me];
 }
 function updateTrail(){
@@ -2782,6 +3363,7 @@ function overviewFit(t=T){
 }
 function overviewD(t=T){ return overviewFit(t).d; }
 function focusFor(id){
+  if (BEYOND_IDS.has(id)){ const bf = beyondFocus(id); if (bf) return bf; }
   const t=T, v=new THREE.Vector3();
   const ring = RING_BY_ID[id];
   if (ring && id!=='jambu') return {p:v.set(0,0,0), d:R(ring.rOut)*2.35, dir:DIR_TOP};
@@ -2812,7 +3394,6 @@ function focusFor(id){
     case 'ananta':     return {p:v.set(0,Yh(-100e3)+6*lerp(1,.004,t),0), d:lerp(42,1,t), dir:new THREE.Vector3(.3,.18,.94).normalize()};
     case 'garbhodaka': return {p:v.set(0,Yh(-100e3)-60*(1-t),0), d:lerp(420,480,t), dir:DIR_LOW};
     case 'ganga':      return {p:v.set(0,t?110:95,0), d:lerp(430,520,t), dir:new THREE.Vector3(.58,.22,.78).normalize()};
-    case 'karana':     return {p:v.set(0,0,0), d:Math.max(2500, overviewD()*1.9), dir:new THREE.Vector3(.5,.28,.82).normalize()};
   }
   const VC = {ilavrta:[0,0],hari:[0,23.5e3],kimpurusa:[0,34.5e3],ramyaka:[0,-23.5e3],hiranmaya:[0,-34.5e3],kuru:[0,-45.5e3],ketumala:[-34e3,0],bhadrasva:[34e3,0]};
   if (VC[id]) return {p:v.set(J(VC[id][0])*js, hI+.5*js, J(VC[id][1])*js), d:(id==='ilavrta'?40:26)*js, dir:new THREE.Vector3(.25,.72,.65).normalize()};
@@ -2846,8 +3427,15 @@ let flight = null, pendingFly = null;
 function flyView(f){
   const toPos = f.p.clone().add(f.dir.clone().multiplyScalar(f.d));
   if (reduceMotion){ camera.position.copy(toPos); controls.target.copy(f.p); return; }
-  navT = performance.now() + 1500;
-  flight = {t0:performance.now(), dur:1500, fromP:camera.position.clone(), fromT:controls.target.clone(), toP:toPos, toT:f.p.clone()};
+  const fromT = controls.target.clone(), d0 = Math.max(1e-3, camera.position.distanceTo(fromT)), d1 = Math.max(1e-3, f.d);
+  const r = Math.abs(Math.log(d1/d0)), move = fromT.distanceTo(f.p)/Math.max(d0, d1);
+  // across many scales: zoom on a log scale, and move the pivot while the view is widest
+  const log = r > Math.log(4) || move > 2;
+  const dur = log ? 1500 + 420*Math.min(r, 7) : 1500;
+  navT = performance.now() + dur;
+  flight = {t0:performance.now(), dur, fromP:camera.position.clone(), fromT, toP:toPos, toT:f.p.clone(), log,
+    l0:Math.log(d0), l1:Math.log(d1), e:1 + Math.min(2, r/2.5), out:d1 > d0, hump:Math.max(0, move - .6)*.5,
+    u0:camera.position.clone().sub(fromT).normalize(), u1:f.dir.clone().normalize()};
 }
 function flyTo(id){ if (T !== modeTarget){ pendingFly = () => flyTo(id); return; } flyView(focusFor(id)); }
 function flyExplore(id){ if (T !== modeTarget){ pendingFly = () => flyExplore(id); return; } flyView(exploreView(id)); }
@@ -2867,6 +3455,7 @@ const chipOf = src => {
   if (src==='calc') return '<span class="chip calc">Calculated</span>';
   if (src==='pp') return '<span class="chip pp">Purport</span>';
   if (src.startsWith('VP')) return `<span class="chip vp">${src}</span>`;
+  if (/^(BS|CC|BG)/.test(src)) return `<span class="chip gv">${src}</span>`;
   return `<span class="chip sb">${src}</span>`;
 };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -2878,7 +3467,8 @@ function showInspector(id){
   $('#i-name').textContent = e.name;
   $('#i-deva').textContent = e.deva || '';
   $('#i-gloss').textContent = e.gloss || '';
-  $('#i-explore').hidden = id==='overview' || focusId===id;
+  $('#i-explore').hidden = id==='overview' || focusId===id || BEYOND_IDS.has(id);
+  powSync(id);
   $('#i-facts').innerHTML = (e.facts||[]).map(([l,v,s]) => `<dt>${esc(l)}</dt><dd><span>${esc(v)}</span>${chipOf(s)}</dd>`).join('');
   $('#i-body').textContent = e.body || '';
   { const xs = $('#i-xsec'), show = XS_SHOW.has(id) || (XS_SHOW.has(xsPrevWorld) && XS_WORLD[id]);
@@ -2894,7 +3484,7 @@ function showInspector(id){
     b.addEventListener('click', () => { if (focusId !== id) explore(id, true); flyFeature(f); if (window.innerWidth<900) insp.classList.add('collapsed'); });
     fw.appendChild(b); });
   $('#i-refs-wrap').hidden = !(e.refs && e.refs.length);
-  $('#i-refs').innerHTML = (e.refs||[]).map(([r,t]) => `<li><span class="ref${r.startsWith('VP')?' vp':''}">${esc(r)}</span><span>${esc(t)}</span></li>`).join('');
+  $('#i-refs').innerHTML = (e.refs||[]).map(([r,t]) => `<li><span class="ref${r.startsWith('VP')?' vp':/^(BS|CC|BG)/.test(r)?' gv':''}">${esc(r)}</span><span>${esc(t)}</span></li>`).join('');
   fillBox('#i-note', e.note); fillBox('#i-interp', e.interp);
   let drawn = e.drawn || '';
   if (T > .5 && id==='ananta') drawn = 'Hidden in True proportions: no size for Ananta can be drawn on this scale.';
@@ -3111,6 +3701,7 @@ function setSel(id){
 function select(id, fly){
   if (!E[id]) return;
   if (id !== sel || fly) pushView();
+  if (BEYOND_IDS.has(id) && focusId){ focusId = null; applyDim(); updateCut(); refreshVisibility(); }
   if (focusId && id !== focusId && id !== 'overview'){ explore(id); return; }
   if (focusId && id === 'overview'){ exitExplore(); return; }
   setSel(id);
@@ -3119,6 +3710,7 @@ function select(id, fly){
 }
 function explore(id, noFly){
   if (!E[id] || id==='overview') return;
+  if (BEYOND_IDS.has(id)){ if (focusId){ pushView(); focusId = null; applyDim(); updateCut(); refreshVisibility(); } if (id !== sel) setSel(id); if (!noFly) flyTo(id); return; }
   pushView();
   focusId = id; setSel(id);
   if (LOWER.includes(id)) (HILITE[id]||[]).forEach(m => { if (m.userData.baseOp!==undefined) m.opacity = .95; });
@@ -3136,10 +3728,147 @@ function exitExplore(){
 }
 
 /* ------------------------------------------------------------------
+   BEYOND THE SHELL: per-frame fades, so each level appears only at
+   the scale where it belongs
+------------------------------------------------------------------- */
+const sstep = (a, b, x) => { const t = clamp((x - a)/(b - a), 0, 1); return t*t*(3 - 2*t); };
+const dvSize = new THREE.Vector2();
+function updateBeyond(dt){
+  const cam = camera.position, camR = cam.length(), oD = overviewD(), on = LAYER_ON.beyond !== false;
+  if (!reduceMotion) BEY.t += dt;
+  karanaGroup.visible = on;
+  // the seven coverings
+  const covA = on ? sstep(oD*1.25, oD*1.9, camR)*(1 - sstep(70e3, 160e3, camR)) : 0;
+  BEY.covA = covA; covGroup.visible = covA > .004;
+  if (covGroup.visible){
+    covBill.quaternion.copy(camera.quaternion);
+    layoutCovColumn((canvas.clientHeight/2)/(Math.max(1, camR)*Math.tan(camera.fov*Math.PI/360)));
+    const coverSel = COVER_IDS.includes(sel) || sel === 'pradhana';
+    Object.entries(COV_MESH).forEach(([id, mesh]) => {
+      const u = mesh.material.uniforms, tgt = sel === id || sel === 'avarana' ? 1 : coverSel ? -.15 : 0;
+      u.uA.value = covA; u.uTime.value = BEY.t; u.uSel.value += (tgt - u.uSel.value)*Math.min(1, dt*6);
+    });
+    BEY.covRim.uniforms.uOpacity.value = .3*covA; BEY.leads.forEach(m => fade(m, covA));
+  }
+  // countless universes, the dust of more, and the cloud of māyā
+  const uA = on ? sstep(5000, 15000, camR) : 0, od = camera.position.distanceTo(controls.target);
+  BEY.univ.visible = uA > .004; BEY.univMat.uniforms.uA.value = uA; BEY.univMat.uniforms.uFog.value.set(od*.7, od*2.6);
+  BEY.dust.visible = uA > .004; fade(BEY.dust.material, uA*(1 - .6*sstep(400e3, 1.6e6, camR)));
+  const cd = cloudDist(cam), cA = uA*sstep(1.05, 1.9, cd);
+  cloudGroup.visible = cA > .004; cloudGroup.children.forEach(s => fade(s.material, cA));
+  // the Causal Ocean, Mahā-Viṣṇu and His breath
+  const oA = on ? sstep(5000, 22000, camR) : 0;
+  BEY.ocean.visible = oA > .004; BEY.ocean.material.uniforms.uA.value = oA; BEY.ocean.material.uniforms.uTime.value = BEY.t;
+  mvGroup.visible = oA > .004; BEY.figMat.uniforms.uT.value = BEY.t;
+  const P = 40, ph = reduceMotion ? .3 : (BEY.t % P)/P, b = ph < .5 ? easeIO(ph*2) : 1 - easeIO((ph - .5)*2);
+  BEY.breath = b; const su = BEY.stream.material.uniforms;
+  su.uBreath.value = b; su.uA.value = oA; BEY.stream.visible = oA > .004;
+  renderer.getDrawingBufferSize(dvSize); su.uPx.value = dvSize.y/(2*Math.tan(camera.fov*Math.PI/360)); BEY.dust.material.uniforms.uPx.value = su.uPx.value;
+  const out = ph < .5, L = BEY.breathL;
+  if (L.out !== out){ L.out = out; L.el.querySelector('span').textContent = out ? 'Breathing out' : 'Breathing in';
+    L.el.querySelector('small').textContent = out ? 'universes come from His pores' : 'universes enter His body again'; L.w = 0; }
+  // our universe, marked from afar
+  const bA = on ? sstep(8000, 24000, camR)*(1 - sstep(1.2e6, 2.6e6, camR)) : 0;
+  BEY.beacon.visible = BEY.ringBill.visible = bA > .004;
+  if (bA > .004){ fade(BEY.beacon.material, bA); BEY.beacon.scale.setScalar(camR*.03);
+    fade(BEY.ring.material, bA); BEY.ring.scale.setScalar(camR*.028); BEY.ringBill.quaternion.copy(camera.quaternion); }
+  // the brahmajyoti, the Vaikuṇṭha planets and Goloka
+  const sA = on ? sstep(30e3, 160e3, camR) : 0;
+  spGroup.visible = sA > .004;
+  if (spGroup.visible){
+    spGroup.traverse(o => { if (o.isSprite || o.isPoints) fade(o.material, sA); });
+    BEY.vaikMat.uniforms.uA.value = sA; BEY.golMat.uniforms.uA.value = sA; fade(BEY.sqMat, sA);
+  }
+  // the sky: indigo inside the universe, dark in the cloud of māyā, golden in the brahmajyoti
+  const mix = on ? sstep(oD*1.6, oD*4.5, camR) : 0, dm = BEY.dome.material.uniforms;
+  BEY.dome.visible = mix > .004; dm.uMix.value = mix; dm.uCloud.value = 1 - sstep(1.0, 2.4, cd);
+  dm.uSp.value.copy(SP_C).sub(cam); BEY.dome.position.copy(cam); BEY.dome.scale.setScalar(10);
+  // the figure of light is a sign, seen from a respectful distance: the view never comes closer than this
+  if (mvGroup.visible){ BEY.mvC = BEY.mvC || MV_P.clone().add(new THREE.Vector3(0, 6500, 0)); const off = cam.clone().sub(BEY.mvC), dd = off.length(), g = 30000;
+    if (dd < g && dd > 1){ cam.copy(BEY.mvC).addScaledVector(off, g/dd); } }
+  // far out, the inside of our universe is smaller than a pixel: stop drawing it
+  const deep = BEY.deep ? camR > 22000 : camR > 26000;
+  if (deep !== BEY.deep){ BEY.deep = deep; refreshVisibility(); }
+}
+/* Fit a span (world units across) into the screen space the open panels leave free */
+function panelFit(span){
+  const W = canvas.clientWidth || window.innerWidth, H = canvas.clientHeight || window.innerHeight, asp = camera.aspect || 1.6, tv = Math.tan(camera.fov*Math.PI/360);
+  let x0 = 0, x1 = W;
+  if (W >= 900){ const lad = $('#ladder'), ins = $('#inspector');
+    if (lad && !lad.hidden) x0 = lad.getBoundingClientRect().right;
+    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left; }
+  const kMax = Math.max(40, x1 - x0 - 24)/span;
+  const d = Math.max((W/2/kMax)/(tv*asp), span*.56/tv);
+  const k = (W/2)/(d*tv*asp);
+  return {d, off: -((x0 + x1)/2 - W/2)/k};
+}
+function beyondView(p, span, dir, shift=0){
+  dir = dir.clone().normalize(); const f = panelFit(span), right = new THREE.Vector3(0,1,0).cross(dir).normalize();
+  return {p: p.clone().addScaledVector(right, f.off + shift), d: f.d, dir};
+}
+// The coverings: the onion on the left, its column of labels on the right, both inside the free screen space
+function coversView(){
+  const W = canvas.clientWidth || window.innerWidth, H = canvas.clientHeight || window.innerHeight, asp = camera.aspect || 1.6, tv = Math.tan(camera.fov*Math.PI/360);
+  let x0 = 0, x1 = W;
+  if (W >= 900){ const lad = $('#ladder'), ins = $('#inspector');
+    if (lad && !lad.hidden) x0 = lad.getBoundingClientRect().right;
+    if (ins && !ins.hidden) x1 = ins.getBoundingClientRect().left; }
+  const lab = 150, avail = Math.max(120, x1 - x0 - 28);
+  const k = Math.min((avail - lab)/(COV_OUT + COV_COL), H*.62/(2*COV_OUT));    // pixels per unit
+  const d = (W/2)/(k*tv*asp), dir = new THREE.Vector3(0,.12,1).normalize(), right = new THREE.Vector3(0,1,0).cross(dir).normalize();
+  const centre = ((COV_COL + lab/k) - COV_OUT)/2, off = -((x0 + x1)/2 - W/2)/k;
+  return {p: new THREE.Vector3().addScaledVector(right, centre + off), d, dir};
+}
+function beyondFocus(id){
+  if (COVER_IDS.includes(id) || id === 'pradhana' || id === 'avarana') return coversView();
+  switch(id){
+    case 'brahmandas': return beyondView(new THREE.Vector3(-3000, 2500, -5000), 52000, new THREE.Vector3(.42,.3,.86));
+    case 'karana':     return beyondView(new THREE.Vector3(OCEAN_C.x + 8e3, Y_OC + 16e3, OCEAN_C.z), 200e3, new THREE.Vector3(.4,.4,.82));
+    case 'mahavisnu':  return beyondView(MV_P.clone().add(new THREE.Vector3(-1500, 9000, 0)), 52e3, new THREE.Vector3(.3,.24,.92));
+    case 'brahmajyoti':return beyondView(CLOUD_C.clone().lerp(SP_C, .5), 1.3e6, new THREE.Vector3(.5,.18,.85));
+    case 'vaikuntha':  return beyondView(SP_C, 1.5e6, new THREE.Vector3(.48,.26,.84));
+    case 'goloka':     return beyondView(GOLOKA_P.clone().add(new THREE.Vector3(0, 50e3, 0)), 560e3, new THREE.Vector3(.4,.52,.75));
+    case 'paravyoma':  return beyondView(CLOUD_C.clone().lerp(SP_C, .5).add(new THREE.Vector3(0, 150e3, 0)), 2.1e6, new THREE.Vector3(.5,.24,.83));
+  }
+  return null;
+}
+/* The coverings as a strip of bands on a log scale, in the details panel */
+const POW_SHOW = new Set(['avarana', ...COVER_IDS, 'pradhana']);
+function powSVG(selId){
+  const X = R => 30 + Math.log10(R)*36.5, short = ['Earth','Water','Fire','Air','Ether','Ego','Mahat'], val = ['5 bn','50 bn','500 bn','5 tn','50 tn','500 tn','5,000 tn'];
+  let s = `<svg viewBox="0 0 330 124" class="pw" role="group" aria-label="The seven coverings on a log scale"><defs><linearGradient id="pwg" x1="0" x2="1"><stop offset="0" stop-color="#3a2d55"/><stop offset="1" stop-color="#3a2d55" stop-opacity="0"/></linearGradient></defs>`;
+  s += `<circle cx="16" cy="45" r="7.5" fill="#F6DDA2"/><text x="16" y="78" text-anchor="middle" class="pw-v">ours</text>`;
+  COVERS.forEach((c, i) => {
+    const k = i + 1, x0 = X(covRtrue(k-1)), x1 = X(covRtrue(k)), mx = (x0 + x1)/2;
+    s += `<g class="pw-b${selId === c.id ? ' on' : ''}" data-k="${c.id}" role="button" tabindex="0" aria-label="${esc(c.n)}, ${esc(c.yj)} yojanas thick">`
+      + `<rect x="${(x0 + .7).toFixed(1)}" y="27" width="${(x1 - x0 - 1.4).toFixed(1)}" height="36" rx="3" fill="${hexCss(c.hex)}"/>`
+      + `<text x="${mx.toFixed(1)}" y="49" text-anchor="middle" class="pw-n">${short[i]}</text>`
+      + `<text x="${mx.toFixed(1)}" y="78" text-anchor="middle" class="pw-v">${val[i]}</text>`
+      + `<text x="${mx.toFixed(1)}" y="19" text-anchor="middle" class="pw-x">×10</text></g>`;
+  });
+  const xp = X(covRtrue(7));
+  s += `<g class="pw-b${selId === 'pradhana' ? ' on' : ''}" data-k="pradhana" role="button" tabindex="0" aria-label="Pradhāna, unmeasured"><rect x="${(xp + .7).toFixed(1)}" y="27" width="22" height="36" fill="url(#pwg)"/><text x="${(xp + 4).toFixed(1)}" y="19" class="pw-x">∞</text></g>`;
+  s += `<line x1="16" x2="322" y1="92" y2="92" class="pw-ax"/>`;
+  ['1','10','100','1k','10k','100k','1M','10M'].forEach((t, j) => { const x = X(Math.pow(10, j)); s += `<line x1="${x}" x2="${x}" y1="89" y2="95" class="pw-ax"/><text x="${x}" y="105" text-anchor="middle" class="pw-v">${t}</text>`; });
+  s += `<text x="16" y="119" class="pw-c">Distance from the centre, in radii of our universe (log scale)</text></svg>`;
+  return s + '<p class="pw-cap">Each covering is ten times thicker than the one inside it. Thickness in yojanas; bn = billion, tn = trillion.</p>';
+}
+function powSync(id){
+  const w = $('#i-pow'); if (!w) return;
+  w.hidden = !POW_SHOW.has(id); if (w.hidden) return;
+  w.innerHTML = powSVG(id); w.classList.toggle('has-sel', id !== 'avarana');
+}
+(() => { const w = $('#i-pow'); if (!w) return;
+  const act = e => { const g = e.target.closest('[data-k]'); if (g && g.dataset.k !== sel) select(g.dataset.k, BEY.covA < .9); };
+  w.addEventListener('click', act);
+  w.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('[data-k]')){ e.preventDefault(); act(e); } }); })();
+
+/* ------------------------------------------------------------------
    LADDER
 ------------------------------------------------------------------- */
 const LADDER = [
-  {h:'The universe', items:[['overview','Brahmāṇḍa','⌀ 500 M',0xE0AE55],['ganga','Gaṅgā\'s descent','SB 5.17',0x7FD3DC],['karana','Beyond the shell','Kāraṇa',0xC9A24A]]},
+  {h:'Beyond the universe', band:0xF2D9A0, chip:'BS 5.43', items:[['paravyoma','The whole creation','¼ and ¾',0xE8D9A8],['goloka','Goloka','above all',0xF4C6CF],['vaikuntha','Vaikuṇṭha planets','Hari-dhāma',0x9FD8F0],['brahmajyoti','Brahmajyoti','effulgence',0xFFF1C8],['karana','Kāraṇa Ocean','the Virajā',0x7FC4CC],['mahavisnu','Mahā-Viṣṇu','first puruṣa',0x4F6FC0],['brahmandas','Countless universes','ours smallest',0xE0AE55],['avarana','Seven coverings','×10 each',0xC9A24A]], covers:true},
+  {h:'The universe', items:[['overview','Brahmāṇḍa','⌀ 500 M',0xE0AE55],['ganga','Gaṅgā\'s descent','SB 5.17',0x7FD3DC]]},
   {h:'Upper 4–7 · Mahar to Satya', band:0xA99BE0, chip:'VP 2.7', items:[['satya','Satyaloka','233.8 M',0xF2CB74],['tapa','Tapoloka','113.8 M',0xD08FBC],['jana','Janaloka','33.8 M',0xB894E0],['mahar','Maharloka','13.8 M',0x9D8FE0]]},
   {h:'Upper 1–3 · Trailokya', band:0xD9C08A, chip:'SB 5.20.37', items:[['trailokya','Trailokya, the three worlds','inside Lokāloka',0xD9C08A]]},
   {h:'Upper 3 · Svar · heaven', band:0xE0AE55, chip:'VP 2.7', items:[['svar','Svarloka','to 3.8 M',0xE0AE55],['sisumara','Śiśumāra','figure',0x8FD0C9],['dhruva','Dhruvaloka','3.8 M',0xE3F3FF],['saptarsi','Seven sages','2.5 M',0xE7DBFF],['sani','Śani · Saturn','1.4 M',0x9A93B8],['brhaspati','Bṛhaspati · Jupiter','1.2 M',0xE8B85C],['angaraka','Aṅgāraka · Mars','1.0 M',0xD9563D],['budha','Budha · Mercury','800 k',0x9ED6C8],['sukra','Śukra · Venus','600 k',0xFFF0C8],['naksatra','28 Nakṣatras','400 k',0xDCE8FF],['candra','Candra · Moon','200 k',0xE6E9F2]]},
@@ -3163,6 +3892,14 @@ const hexCss = h => '#' + h.toString(16).padStart(6,'0');
       list.appendChild(b);
     });
     sec.appendChild(list);
+    if (g.covers){
+      const grid = document.createElement('div'); grid.className='ring-grid';
+      grid.innerHTML = '<div class="sub"><span>The coverings, inside out</span></div>';
+      [...COVERS.map(c => [c.id, c.n === 'Mahat-tattva' ? 'Mahat' : c.n, c.hex]), ['pradhana','Pradhāna',0x3A2D55]].forEach(([id,nm,hex]) => {
+        const b=document.createElement('button'); b.type='button'; b.dataset.go=id; b.style.setProperty('--sw', hexCss(hex));
+        b.innerHTML = `<i></i><span>${esc(nm)}</span>`; b.addEventListener('click', () => select(id, true)); grid.appendChild(b); });
+      sec.appendChild(grid);
+    }
     if (g.varsas){
       const grid = document.createElement('div'); grid.className='ring-grid';
       grid.innerHTML = '<div class="sub"><span>Nine varṣas of Jambūdvīpa</span></div>';
@@ -3241,7 +3978,7 @@ window.addEventListener('hashchange', () => { const id = location.hash.slice(1);
 ------------------------------------------------------------------- */
 const LAYERS = [
   ['bhu','Bhūrloka: the disc'],['graha','Bhuvar and Svar: planets and stars'],['cords','Ropes of wind'],['sisu','Śiśumāra figure'],
-  ['high','Mahar to Satya (upper 4–7)'],['low','Lower worlds and Naraka'],['water','Garbhodaka and Ananta'],['ganga','Gaṅgā\'s descent'],['shell','Universe shell'],['ruler','Height ruler and zone names'],['labels','Labels']
+  ['high','Mahar to Satya (upper 4–7)'],['low','Lower worlds and Naraka'],['water','Garbhodaka and Ananta'],['ganga','Gaṅgā\'s descent'],['shell','Universe shell'],['beyond','Beyond the shell'],['ruler','Height ruler and zone names'],['labels','Labels']
 ];
 (() => {
   const box = $('#layer-list');
@@ -3410,21 +4147,44 @@ const TOUR = [
   {id:'overview', title:'The true proportions', text:'Until now, distances were compressed so you could see everything. This is the real scale. All the planets from the Sun to the pole star sit in a thin layer just above the disc, and the seven islands take up only its middle fifth. Click any world to read about it, or double-click to go inside.',
    go(){ leaveFocus(); setTimeMode('year'); setSel('overview'); setMode(1); flyTo('overview'); }}
 ];
-let tourI = -1;
-(() => { const dots=$('#tour-dots'); TOUR.forEach(() => dots.appendChild(document.createElement('i'))); })();
+const JOURNEY = [
+  {title:'Arjuna\'s journey', text:'In Dvārakā a brāhmaṇa\'s sons were taken one after another at birth. Arjuna vowed to protect the next child and failed. To keep His friend\'s word, Kṛṣṇa had Arjuna join Him on His chariot, and together they set off toward the west (SB 10.89.46).',
+   go(){ leaveFocus(); setMode(0); select('bharata', true); }},
+  {title:'Over the seven islands', text:'The chariot passed over the seven islands of the middle universe, each with its ocean and its seven principal mountains. Then it crossed the Lokāloka boundary, past where sunlight reaches (10.89.47).',
+   go(){ leaveFocus(); setMode(0); select('lokaloka', true); }},
+  {title:'Into the darkness', text:'Beyond Lokāloka lay total darkness: the coverings of the universe, "dense oblivion expanded from primeval matter". The horses lost their way, and Kṛṣṇa sent His Sudarśana disc ahead, shining like thousands of suns, to cut a path (10.89.47–50). Each covering is ten times thicker than the one inside it (3.11.41).',
+   go(){ leaveFocus(); select('avarana', true); }},
+  {title:'One of countless universes', text:'Outside its coverings, our universe is one of countless others, like atoms in a huge combination (3.11.41). Kṛṣṇa tells Brahmā that ours, four billion miles across, is the smallest of all (CC Madhya 21.84).',
+   go(){ select('brahmandas', true); }},
+  {title:'The brahmajyoti', text:'Following the Sudarśana disc, the chariot went beyond the darkness and reached the endless spiritual light of the all-pervasive brahmajyoti. Its glare hurt Arjuna\'s eyes, and he shut them (10.89.51).',
+   go(){ select('brahmajyoti', true); }},
+  {title:'The Causal Ocean', text:'From there they entered a body of water with huge waves churned by a mighty wind. In it stood a palace more radiant than anything Arjuna had ever seen, with thousands of jewelled pillars (10.89.52).',
+   go(){ select('karana', true); }},
+  {title:'Mahā-Viṣṇu', text:'In the palace lay Ananta Śeṣa, white as Mount Kailāsa, and on Him Mahā-Viṣṇu, bluish like a rain cloud, in yellow, with eight arms. "I brought the brāhmaṇa\'s sons here," He said, "because I wanted to see the two of you." Universes come from His pores as He breathes out, and enter Him again as He breathes in (10.89.53–58; CC Ādi 5.68–69).',
+   go(){ select('mahavisnu', true); }},
+  {title:'The whole creation', text:'Here Arjuna\'s journey turns back. The Brahma-saṁhitā and the Caitanya-caritāmṛta describe the rest. All the universes together are Devī-dhāma, one fourth of the Lord\'s energy. Beyond the Virajā lie the Vaikuṇṭha planets in the brahmajyoti, three fourths (BS 5.43; CC Madhya 21.51–55).',
+   go(){ select('paravyoma', true); }},
+  {title:'Goloka', text:'Above all is Goloka, Kṛṣṇa\'s own abode: a lotus of thousands of petals around His hexagonal abode, ringed by Śvetadvīpa (BS 5.2–5, 5.43). Pick anything on the left to read its verses, or zoom all the way back into our universe.',
+   go(){ select('goloka', true); }}
+];
+let tourI = -1, TL = TOUR, tourName = 'Tour';
+function tourDots(){ const dots=$('#tour-dots'); dots.innerHTML=''; TL.forEach(() => dots.appendChild(document.createElement('i'))); }
+tourDots();
+function tourStart(list, name){ TL = list; tourName = name; tourDots(); tourShow(0); }
 function tourShow(i){
-  tourI = i; const st = TOUR[i];
+  tourI = i; const st = TL[i];
   $('#tour').hidden = false; document.getElementById('app').classList.add('touring');
-  $('#tour-step').textContent = `Tour · ${i+1} of ${TOUR.length}`;
+  $('#tour-step').textContent = `${tourName} · ${i+1} of ${TL.length}`;
   $('#tour-title').textContent = st.title; $('#tour-text').textContent = st.text;
   $('#tour-back').disabled = i===0; $('#tour-back').style.visibility = i===0 ? 'hidden' : 'visible';
-  $('#tour-next').textContent = i===TOUR.length-1 ? 'Finish' : 'Next';
+  $('#tour-next').textContent = i===TL.length-1 ? 'Finish' : 'Next';
   [...$('#tour-dots').children].forEach((d,k) => d.classList.toggle('on', k===i));
   st.go();
 }
 function tourEnd(){ $('#tour').hidden = true; document.getElementById('app').classList.remove('touring'); tourI = -1; try{ localStorage.setItem('bc-tour','1'); }catch(_){} }
-$('#btn-tour').addEventListener('click', () => tourShow(0));
-$('#tour-next').addEventListener('click', () => { if (tourI < TOUR.length-1) tourShow(tourI+1); else tourEnd(); });
+$('#btn-tour').addEventListener('click', () => tourStart(TOUR, 'Tour'));
+['#btn-journey','#btn-journey-m'].forEach(q => $(q) && $(q).addEventListener('click', () => { $('#more') && $('#more').classList.remove('open'); tourStart(JOURNEY, 'Arjuna\'s journey'); }));
+$('#tour-next').addEventListener('click', () => { if (tourI < TL.length-1) tourShow(tourI+1); else tourEnd(); });
 $('#tour-back').addEventListener('click', () => { if (tourI > 0) tourShow(tourI-1); });
 $('#tour-end').addEventListener('click', tourEnd);
 
@@ -3549,7 +4309,7 @@ function onWheel(e){
   if (!v) return;
   const P = zoomPoint(e.clientX, e.clientY);
   const d = camera.position.distanceTo(controls.target), dp = camera.position.distanceTo(P);
-  let s = Math.exp(clamp(v, -240, 240) * .0011 * controls.zoomSpeed);
+  let s = Math.exp(clamp(v, -240, 240) * .0011 * controls.zoomSpeed * (d > 3000 ? 1.7 : 1));   // faster across the scales beyond the shell
   s = clamp(d*s, controls.minDistance, controls.maxDistance) / d;          // pivot distance limits
   if (s < 1 && dp*s < Math.max(.004, d*.002)) return;                      // don't fly into the surface
   if (s < 1){ const rg = solidGuard(); if (rg && camera.position.clone().sub(P).multiplyScalar(s).add(P).distanceTo(gC) < rg) return; }   // or into a selected planet
@@ -3653,19 +4413,30 @@ function frame(now){
   surfMat.uniforms.uTime.value = now/1000; FLOW_MATS.forEach(m => m.uniforms.uTime.value = now/1000);
   if (flight){
     const p = clamp((now-flight.t0)/flight.dur, 0, 1), k = easeIO(p);
-    camera.position.lerpVectors(flight.fromP, flight.toP, k);
-    controls.target.lerpVectors(flight.fromT, flight.toT, k);
+    if (flight.log){
+      const w = flight.out ? Math.pow(k, flight.e) : 1 - Math.pow(1-k, flight.e);
+      controls.target.lerpVectors(flight.fromT, flight.toT, w);
+      const d = Math.exp(lerp(flight.l0, flight.l1, k))*(1 + flight.hump*Math.sin(Math.PI*k));
+      camera.position.copy(flight.u0).lerp(flight.u1, k).normalize().multiplyScalar(d).add(controls.target);
+    } else {
+      camera.position.lerpVectors(flight.fromP, flight.toP, k);
+      controls.target.lerpVectors(flight.fromT, flight.toT, k);
+    }
     if (p>=1) flight=null;
   }
   controls.update();
   // keep the view inside the universe so the model can't be lost off-screen
   const tl = Math.hypot(controls.target.x, controls.target.z), lim = 300;
-  if (tl > lim){ const k = lim/tl; const dx = controls.target.x*(k-1), dz = controls.target.z*(k-1); controls.target.x += dx; controls.target.z += dz; camera.position.x += dx; camera.position.z += dz; }
-  const ylim = 260; if (Math.abs(controls.target.y) > ylim){ const dy = Math.sign(controls.target.y)*ylim - controls.target.y; controls.target.y += dy; camera.position.y += dy; }
+  const outside = flight || camera.position.distanceTo(controls.target) > 1800 || controls.target.length() > 5000;
+  if (outside){ // beyond the shell: keep the pivot within the whole creation
+    const bx = 2.2e6; ['x','y','z'].forEach(a => { const c = clamp(controls.target[a], a==='y' ? -6e5 : -bx, a==='y' ? 1.8e6 : bx), dd = c - controls.target[a]; if (dd){ controls.target[a] += dd; camera.position[a] += dd; } });
+  } else if (tl > lim){ const k = lim/tl; const dx = controls.target.x*(k-1), dz = controls.target.z*(k-1); controls.target.x += dx; controls.target.z += dz; camera.position.x += dx; camera.position.z += dz; }
+  const ylim = 260; if (!outside && Math.abs(controls.target.y) > ylim){ const dy = Math.sign(controls.target.y)*ylim - controls.target.y; controls.target.y += dy; camera.position.y += dy; }
   rulerMark.position.y = clamp(controls.target.y, -lerp(240,250,T), lerp(240,250,T));
   const dist = camera.position.distanceTo(controls.target);
-  const near = clamp(dist*.004, .002, 1.5);
-  if (Math.abs(near - camera.near) / camera.near > .15){ camera.near = near; camera.updateProjectionMatrix(); }
+  const near = clamp(dist*.004, .002, Math.max(1.5, dist*.0012)), far = dist < 1600 && camera.position.length() < 2400 ? 8000 : clamp(dist*30, 8000, 9e7);
+  if (Math.abs(near - camera.near) / camera.near > .15 || Math.abs(far - camera.far) / camera.far > .15){ camera.near = near; camera.far = far; camera.updateProjectionMatrix(); }
+  updateBeyond(dt);
   guardSolid();
   checkInView(now);
   stepCut(dt);
@@ -3687,6 +4458,7 @@ syncCaption();
 applyPanels();
 { const f = focusFor('overview'); camera.position.copy(f.p.clone().add(f.dir.clone().multiplyScalar(f.d))); controls.target.copy(f.p); }   // re-fit once the saved panel layout is applied
 requestAnimationFrame(frame);
+if (/[?&]debug\b/.test(location.search)) window.__bc = {camera, controls, select, flyView, BEY, get sel(){ return sel; }};   // test hook, only with ?debug
 (() => {
   const start = HASH_OK(START_HASH) ? START_HASH : null;
   if (start){ setTimeout(() => select(start, true), 400); return; }   // a shared link skips the tour
