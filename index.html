@@ -126,6 +126,8 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
 #i-name{font-family:var(--display);font-weight:400;font-size:29px;line-height:1.12;margin:6px 0 0;text-wrap:balance}
 #i-deva{font-family:var(--display);font-size:19px;color:var(--gold-hi);opacity:.85;margin-top:2px;min-height:1px}
 #i-gloss{color:var(--muted);margin:1px 0 0;font-size:13.5px}
+.ipic{margin:12px 0 4px}.ipic img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--panel-edge)}
+.ipic figcaption{font-size:12px;color:var(--faint);margin-top:5px;line-height:1.4}
 #i-explore{margin:12px 0 2px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;padding:9px 12px;background:var(--gold);color:#1b1404;font-weight:700;font-size:13.5px;cursor:pointer}
 #i-explore:hover{background:var(--gold-hi)}
 .facts{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);margin:14px 0 0;border-top:1px solid var(--rule)}
@@ -528,6 +530,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.lbl:focus-visible{outl
     <div class="ins-scroll">
       <div class="xsec" id="i-xsec" hidden></div>
       <div class="xsec pow" id="i-pow" hidden></div>
+      <figure class="ipic" id="i-pic" hidden><img alt="" loading="lazy" decoding="async"><figcaption></figcaption></figure>
       <dl class="facts" id="i-facts"></dl>
       <p id="i-body"></p>
       <div class="sec" id="i-feat-wrap"><h3>Look closer</h3><div class="feats" id="i-feat"></div></div>
@@ -1114,7 +1117,8 @@ E.mahavisnu = {name:'Mahā-Viṣṇu', deva:'महाविष्णु', gloss
   facts:[['Rests','at ease on Ananta Śeṣa, in a palace within the water','SB 10.89.52–56'],['Complexion','bluish, the colour of a dense rain cloud','SB 10.89.54–56'],['Dress','a beautiful yellow garment','SB 10.89.54–56'],['Arms','eight, long and handsome','SB 10.89.54–56'],['Ornaments','crown, earrings, the Kaustubha gem, Śrīvatsa, a garland of forest flowers','SB 10.89.54–56'],['Universes','come from His pores as He breathes out, and enter as He breathes in','CC Ādi 5.68–69'],['One out-breath','the lifetime of a Brahmā','BS 5.48'],['A Brahmā\'s lifetime','311 trillion 40 billion years','pp'],['First of three puruṣas','creator of the total material energy','CC Madhya 20.251']],
   body:'Kṛṣṇa and Arjuna found Him seated at ease on the serpent bed, served by Sunanda, Nanda and His other attendants, His cakra and weapons in their personal forms, and His potencies Puṣṭi, Śrī, Kīrti and Ajā. He had taken the brāhmaṇa\'s sons, He said, because He wanted to see the two of them. He is the first of three puruṣas. Mahā-Viṣṇu creates the total material energy, Garbhodakaśāyī Viṣṇu lies within each universe, and Kṣīrodakaśāyī Viṣṇu lives in every heart. He glances at māyā from a distance, and universes appear from the pores of His body as He breathes out and enter Him again as He breathes in. Each Brahmā lives for one of His out-breaths.',
   refs:[['SB 10.89.53','Ananta Śeṣa shone with the gems on His thousands of hoods; He resembled white Mount Kailāsa, and His necks and tongues were dark blue.'],['SB 10.89.54–56','Arjuna saw Mahā-Viṣṇu sitting at ease on the serpent bed: bluish like a dense rain cloud, in a yellow garment, with eight long arms, crown and earrings, the Kaustubha gem, Śrīvatsa and a garland of forest flowers.'],['SB 10.89.58','I brought the brāhmaṇa\'s sons here because I wanted to see the two of you, My expansions.'],['BS 5.47','Reposing in the Causal Ocean with the infinity of the world in the pores of His hair, He enjoys creative sleep.'],['BS 5.48','Brahmā and the other lords of the worlds, appearing from His pores, live as long as one of His exhalations.'],['BG 8.17 purport','Brahmā\'s hundred years, by earth calculation, total 311 trillion 40 billion years.'],['CC Ādi 5.65–70','The first puruṣa glances at māyā from a distance; the universes come out with each outward breath and re-enter as He inhales, passing through His pores like dust through a window.'],['CC Madhya 20.251','Viṣṇu has three forms called puruṣas: Mahā-Viṣṇu, Garbhodakaśāyī and Kṣīrodakaśāyī.']],
-  drawn:'Shown as a painting set upright in the palace, turning to face you; it is a devotional image, not a likeness, and not to scale. It follows the description in 10.89.53–56 in His colour, yellow garment, eight arms, crown, Kaustubha, Śrīvatsa and garland. The conch, disc, club and lotus in His hands follow the usual way of depicting Lord Viṣṇu; the text says His weapons served Him in their personal forms. The painting shows Ananta\'s necks white and tongues red, where the text has them dark blue. If the painting cannot load, a simple figure of light is drawn instead. Play the breath to see the universes come out of His pores and go back in; one breath, a whole lifetime of Brahmā, takes about fifty seconds there. He, the palace and the universes are not to scale.'};
+  drawn:'Shown as a painting set upright in the palace, turning to face you; it is a devotional image, not a likeness, and not to scale. It follows 10.89.53–56 in His rain-cloud colour, yellow garment, eight arms, crown and earrings, Kaustubha, Śrīvatsa and garland, and Ananta\'s white body, gems on the hoods and dark-blue necks. Two things were changed to match the text: Ananta\'s tongues, painted red, were recoloured dark blue (10.89.53), and a peacock feather on the crown, which the text does not describe, was removed. The conch, disc, club and lotus in His hands follow the usual way of depicting Lord Viṣṇu; the text says His weapons served Him in their personal forms. If the painting cannot load, a simple figure of light is drawn instead. Play the breath to see the universes come out of His pores and go back in; one breath, a whole lifetime of Brahmā, takes about fifty seconds there. He, the palace and the universes are not to scale.',
+  pic:{src:'img/mahavisnu-palace.webp', alt:'Mahā-Viṣṇu with eight arms on Ananta Śeṣa, in a palace of jewelled pillars amid churning waves', cap:'As Arjuna saw Him: in a palace of thousands of jewelled pillars, in water churned by a mighty wind (SB 10.89.52–56).'}};
 E.brahmajyoti = {name:'Brahmajyoti', deva:'ब्रह्मज्योति', gloss:'The effulgence of the Lord\'s body', eyebrow:'Beyond the shell · Siddhaloka',
   facts:[['Source','the effulgence of Govinda\'s body','BS 5.40'],['Place','outside the Vaikuṇṭha planets','CC Ādi 5.32'],['Also called','Siddhaloka','CC Ādi 5.33'],['Nature','spiritual, but without spiritual varieties','CC Ādi 5.33'],['Who lives there','those who attain brahma-sāyujya, merging into Brahman','CC Ādi 5.31'],['Seen by Arjuna','an endless light that hurt his eyes','SB 10.89.51']],
   body:'Past the darkness of the coverings, Kṛṣṇa\'s chariot reached the endless spiritual light of the all-pervasive brahmajyoti, and Arjuna had to shut his eyes. The Brahma-saṁhitā calls this light the effulgence of Govinda, the undifferentiated Brahman of the Upaniṣads. It surrounds the Vaikuṇṭha planets. Those who seek to merge into Brahman live in it, outside Vaikuṇṭha, without the variety of spiritual pastimes.',
@@ -1856,9 +1860,9 @@ const MVF = {};
   mvGroup.add(new THREE.Points(cg, new THREE.PointsMaterial({size:340, vertexColors:true, sizeAttenuation:true, transparent:true, depthWrite:false})));
   MVF.palace = anchorAt(mvGroup, -1.4, 11.5, -13.2);
   // The painting of the Lord on Ananta Śeṣa
-  BEY.mvImg = paintingBoard('img/mahavisnu.webp', 46, 46*921/1400, mvGroup, b => {
+  BEY.mvImg = paintingBoard('img/mahavisnu.webp', 46, 46*928/1400, mvGroup, b => {
     BEY.mvProc.forEach(o => { o.visible = false; });
-    onBoard(b, MVF.head, .25, .27); onBoard(b, MVF.hoods, .36, .03); onBoard(b, MVF.feet, .88, .74); onBoard(b, MVF.kaus, .37, .47);
+    onBoard(b, MVF.head, .22, .19); onBoard(b, MVF.hoods, .31, .04); onBoard(b, MVF.feet, .89, .73); onBoard(b, MVF.kaus, .33, .55);
     LABELS.forEach(L => { L.w = 0; });
   });
   BEY.mvImg.g.position.set(-1.4, .3, 1.5); pickable(BEY.mvImg.mesh, 'mahavisnu');
@@ -1911,17 +1915,18 @@ const spGroup = new THREE.Group(); karanaGroup.add(spGroup);
     vertexShader:`uniform float uPx; attribute float aSeed; varying vec3 vN; varying vec3 vV; varying float vS; varying float vF;
       void main(){ mat4 mm = modelMatrix*instanceMatrix; vec4 mv = viewMatrix*mm*vec4(position,1.);
         vec4 mc = viewMatrix*mm*vec4(0.,0.,0.,1.); float px = length(instanceMatrix[0].xyz)*uPx/max(-mc.z, 1.);
-        vF = 1. - smoothstep(40., 110., px);
+        vF = 1. - smoothstep(14., 36., px);
         vN = normalize(mat3(viewMatrix)*mat3(mm)*normal); vV = normalize(-mv.xyz); vS = aSeed; gl_Position = projectionMatrix*mv; }`,
     fragmentShader:`uniform float uA; varying vec3 vN; varying vec3 vV; varying float vS; varying float vF;
       void main(){ float a = uA*vF; if (a < .01) discard; float c = max(dot(normalize(vN), normalize(vV)), 0.);
         vec3 core = mix(vec3(1.,.95,.82), vec3(.9,.97,1.), vS), rim = mix(vec3(.25,.55,1.), vec3(1.,.7,.3), vS);
         vec3 col = mix(rim, core, pow(c, 1.6))*.98;
         gl_FragColor = vec4(col, a); }`, transparent:true});
-  const P = [];
+  const VK_FEAT = SP_C.clone().add(new THREE.Vector3(0, -30e3, 60e3));   // the planet shown up close
+  const P = [{p:VK_FEAT.clone(), r:20e3, s:.5}];
   for (let t=0; t<6000 && P.length<170; t++){
     const p = inEll().multiply(new THREE.Vector3(640e3, 330e3, 640e3)).add(SP_C);
-    if (p.y < SP_C.y - 230e3 || p.distanceTo(GOLOKA_P) < 260e3) continue;
+    if (p.y < SP_C.y - 230e3 || p.distanceTo(GOLOKA_P) < 260e3 || p.distanceTo(VK_FEAT) < 250e3) continue;
     const r = 7e3 + Math.pow(brnd(), 2)*13e3;
     if (P.some(o => o.p.distanceTo(p) < o.r + r + 26e3)) continue;
     P.push({p, r, s:brnd()});
@@ -1940,7 +1945,15 @@ const spGroup = new THREE.Group(); karanaGroup.add(spGroup);
         gl_FragColor = vec4(vec3(1.,.9,.72), uA*.28*vF*exp(-r*r*3.)); }`,
       transparent:true, depthWrite:false, blending:THREE.AdditiveBlending});
     BEY.vaikHalo = new THREE.Points(hg, hm); BEY.vaikHalo.frustumCulled = false; spGroup.add(BEY.vaikHalo); }
-  BEY.vaikA = P.slice().sort((a, b) => b.r - a.r)[0].p;
+  BEY.vaikA = VK_FEAT.clone().add(new THREE.Vector3(0, 40e3, 0));
+  const VW = 300e3, VH = VW*1091/1100;
+  BEY.vkFeatA = anchorAt(spGroup, VK_FEAT.x, VK_FEAT.y, VK_FEAT.z);
+  BEY.vkImg = paintingBoard('img/vaikuntha.webp', VW, VH, spGroup, b => {
+    M.compose(VK_FEAT, Q, S.setScalar(0)); im.setMatrixAt(0, M); im.instanceMatrix.needsUpdate = true;   // the painting takes that planet's place
+    BEY.vaikA.y = VK_FEAT.y + VH*.5; onBoard(b, BEY.vkFeatA, .5, .5); pickable(b.mesh, 'vaikuntha'); LABELS.forEach(L => { L.w = 0; });
+    E.vaikuntha.drawn = 'Drawn as self-luminous spheres in the effulgence; how many, how large and where are illustrative. One planet is shown up close as a devotional painting, far larger than the rest and not to scale: its residents four-armed, sky-bluish and in yellow (SB 2.9.11), the glowing airplanes of the devotees around it (SB 2.9.13), and forests of desire trees in flower and fruit (SB 3.15.16), with the Lord and Lakṣmī among them. The peacock feather on the Lord\'s crown is the painter\'s.';
+    if (sel === 'vaikuntha') showInspector('vaikuntha'); });
+  BEY.vkImg.g.position.set(VK_FEAT.x, VK_FEAT.y - VH*.5, VK_FEAT.z);
 }
 // Govinda's effulgence pouring down from Goloka (BS 5.40), drawn as soft rays
 {
@@ -2022,6 +2035,13 @@ const golGroup = new THREE.Group(); golGroup.position.copy(GOLOKA_P); golGroup.s
   [[0,1.38],[1.38,0],[0,-1.38],[-1.38,0]].forEach(([x, z]) => { const s = bSprite(smoothTex, 0xFFFFFF, .32, .8); s.position.set(x, 0, z); golGroup.add(s); });
   const halo = bSprite(smoothTex, 0xFFD8C8, 5.5, .32); golGroup.add(halo);
   BEY.golA = anchorAt(golGroup, 0, 1.0, 0); BEY.svetaA = anchorAt(golGroup, 1.38, .05, 1.38); BEY.whorlA = anchorAt(golGroup, 0, .5, 0);
+  const drawnGol = golGroup.children.filter(o => o !== halo && o !== BEY.golA && o !== BEY.svetaA && o !== BEY.whorlA);
+  BEY.golImg = paintingBoard('img/goloka.webp', 3.3, 3.3*917/1400, golGroup, b => {
+    drawnGol.forEach(o => { o.visible = false; });
+    onBoard(b, BEY.golA, .5, .02); onBoard(b, BEY.whorlA, .5, .32); onBoard(b, BEY.svetaA, .88, .78); pickable(b.mesh, 'goloka'); LABELS.forEach(L => { L.w = 0; });
+    E.goloka.drawn = 'Shown as a devotional painting, turning to face you, not to scale: a lotus of many petals around a hexagonal whorl, Kṛṣṇa\'s abode (BS 5.2, 5.4), with gardens, gem-built houses, desire trees and cows on the petals (BS 5.29), inside a white square for Śvetadvīpa (BS 5.5). Kṛṣṇa is not drawn. The text speaks of thousands of petals; the painting shows fewer. Its size and distance are not to scale.';
+    if (sel === 'goloka') showInspector('goloka'); });
+  BEY.golImg.g.position.y = -1.1;
 }
 
 /* The sky beyond: dark inside the cloud of māyā, golden in the brahmajyoti, brightest toward the spiritual sky */
@@ -2060,6 +2080,7 @@ addLabel({id:'paravyoma', text:'The spiritual sky', sub:'three fourths of the Lo
 const bzFeat = (id, name, anchor, note, d) => { addLabel({text:name, cls:'c-gold feat bz', pri:46, only:[id], anchor, lod:0, win:() => true}); feat(id, name, note, anchor, d); };
 bzFeat('mahavisnu', 'Ananta Śeṣa', MVF.hoods, 'White like Mount Kailāsa, with gems on thousands of hoods; His necks and tongues are dark blue (10.89.53).', 34);
 bzFeat('mahavisnu', 'The palace', MVF.palace, 'A palace more radiant than anything Arjuna had seen, its beauty enhanced by thousands of jewelled pillars (10.89.52).', 60);
+bzFeat('vaikuntha', 'One Vaikuṇṭha planet', BEY.vkFeatA, 'Its residents four-armed and sky-bluish, in yellow (SB 2.9.11), with the glowing airplanes of the devotees around it (SB 2.9.13).', 520e3);
 bzFeat('goloka', 'The whorl', BEY.whorlA, 'The hexagonal abode of Kṛṣṇa; the petals around it are the abodes of the gopīs (BS 5.4).', 1.2);
 bzFeat('goloka', 'Śvetadvīpa', BEY.svetaA, 'A quadrangular place in four parts, the abodes of Vāsudeva, Saṅkarṣaṇa, Pradyumna and Aniruddha (BS 5.5).', 1.6);
 
@@ -2878,19 +2899,22 @@ const GV_X = 19;
   sg.setAttribute('aUp', new THREE.BufferAttribute(up, 1));
   const sm = new THREE.ShaderMaterial({uniforms:{uA:{value:1}}, vertexShader:`attribute float aUp; varying float vU; void main(){ vU = aUp; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
     fragmentShader:`uniform float uA; varying float vU; void main(){ gl_FragColor = vec4(vec3(1.,.82,.45), uA*.75*(1. - smoothstep(.15, .9, vU))); }`, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending});
-  g.add(new THREE.Mesh(sg, sm));
+  const stem = new THREE.Mesh(sg, sm); g.add(stem);
   const navel = bSprite(smoothTex, 0xFFD27A, 1, .8); navel.scale.set(1.8, 1.8, 1); navel.position.set(.6, 1.8, .3); g.add(navel);
   const hit = new THREE.Mesh(new THREE.SphereGeometry(1, 12, 8), new THREE.MeshBasicMaterial({visible:false})); hit.scale.set(11, 3, 3); hit.position.y = 1.5; g.add(hit); pickable(hit, 'garbhodakasayi');
   BEY.gvHead = anchorAt(g, -5, 4.2, 0); BEY.gvNavel = anchorAt(g, .6, 1.8, 0); BEY.gvStem = anchorAt(g, -2.4, 12, 0);
   // a painting can take the place of the light, as with Mahā-Viṣṇu and Ananta: set GV_IMG to its path once there is one
-  const GV_IMG = null;
-  if (GV_IMG) BEY.gvImg = paintingBoard(GV_IMG, 22, 22*.66, g, b => { [bed, body, cloth, hoods].forEach(o => o.visible = false); onBoard(b, BEY.gvHead, .2, .35); onBoard(b, BEY.gvNavel, .52, .55); pickable(b.mesh, 'garbhodakasayi');
-    E.garbhodakasayi.drawn = 'Shown as a devotional painting set in the water, turning to face you, not to scale; His body occupies the three planetary systems (SB 3.8.25). The lotus stem from His navel rises and fades into the worlds above, which are within it (CC Ādi 5.103). Hidden in True proportions.'; });
+  const GV_IMG = 'img/garbhodakasayi.webp';
+  if (GV_IMG){ BEY.gvImg = paintingBoard(GV_IMG, 25, 25*904/1400, g, b => { [bed, body, cloth, hoods, navel, stem].forEach(o => o.visible = false);
+    onBoard(b, BEY.gvHead, .19, .2); onBoard(b, BEY.gvNavel, .414, .58); onBoard(b, BEY.gvStem, .6, .17); pickable(b.mesh, 'garbhodakasayi'); LABELS.forEach(L => { L.w = 0; });
+    E.garbhodakasayi.drawn = 'Shown as a devotional painting set on the water, turning to face you, not to scale; His body occupies the three planetary systems (SB 3.8.25). It follows SB 3.8.23–31 in Śeṣa\'s white lotus-like bed and jewelled hoods, the yellow cloth and belt, the necklace, jewels, pearls and garlands, and the lotus from His navel blazing like the sun (SB 3.20.16). His two arms and complexion are the painter\'s; the text does not state them. The lotus is shown just above Him; the text says the fourteen worlds are within its stem (CC Ādi 5.103). Hidden in True proportions.';
+    if (sel === 'garbhodakasayi') showInspector('garbhodakasayi'); });
+    BEY.gvImg.g.position.set(-1, -.4, 0); }
 }
 addLabel({id:'garbhodakasayi', text:'Garbhodakaśāyī Viṣṇu', sub:'the second puruṣa', cls:'c-high', pri:73, anchor:BEY.gvHead});
 featLabel('garbhodakasayi', 'The lotus from His navel', BEY.gvNavel, 'c-gold');
 feat('garbhodakasayi', 'The lotus from His navel', 'A lotus effulgent like a thousand suns, Brahmā\'s birthplace (SB 3.20.16).', BEY.gvNavel, 14);
-feat('garbhodakasayi', 'The lotus stem', 'Within the stem of that lotus were the fourteen worlds (CC Ādi 5.103).', BEY.gvStem, 26);
+feat('garbhodakasayi', 'The lotus', 'Within the stem of that lotus were the fourteen worlds (CC Ādi 5.103); Brahmā was born on it (SB 3.20.16).', BEY.gvStem, 26);
 addLabel({id:'ananta', text:'Ananta Śeṣa', sub:'30,000 below Pātāla', cls:'c-gold', pri:74, anchor:anchorAt(ananta,0,12,-2)});
 
 // Garbhodaka
@@ -3602,7 +3626,7 @@ function focusFor(id){
     case 'naraka':     return {p:v.set(0,Yh(-85e3),R(9.35e6)), d:lerp(95,30,t), dir:DIR_LOW};
     case 'ananta':     return {p:v.set(0,Yh(-100e3)+6*lerp(1,.004,t),0), d:lerp(42,1,t), dir:new THREE.Vector3(.3,.18,.94).normalize()};
     case 'garbhodaka': return {p:v.set(0,Yh(-100e3)-60*(1-t),0), d:lerp(420,480,t), dir:DIR_LOW};
-    case 'garbhodakasayi': { const k = lerp(1,.004,t); return {p:v.set(GV_X*k*.9,Yh(-100e3)+4*k,0), d:lerp(46,1,t), dir:new THREE.Vector3(.12,.2,.97).normalize()}; }
+    case 'garbhodakasayi': { const k = lerp(1,.004,t); return {p:v.set(GV_X*k*.9,Yh(-100e3)+4*k,0), d:lerp(46,1,t)*Math.max(1, .8/(camera.aspect || 1.6)), dir:new THREE.Vector3(.12,.2,.97).normalize()}; }
     case 'ganga':      return {p:v.set(0,t?110:95,0), d:lerp(430,520,t), dir:new THREE.Vector3(.58,.22,.78).normalize()};
   }
   const VC = {ilavrta:[0,0],hari:[0,23.5e3],kimpurusa:[0,34.5e3],ramyaka:[0,-23.5e3],hiranmaya:[0,-34.5e3],kuru:[0,-45.5e3],ketumala:[-34e3,0],bhadrasva:[34e3,0]};
@@ -3681,6 +3705,9 @@ function showInspector(id){
   powSync(id);
   $('#i-facts').innerHTML = (e.facts||[]).map(([l,v,s]) => `<dt>${esc(l)}</dt><dd><span>${esc(v)}</span>${chipOf(s)}</dd>`).join('');
   $('#i-body').textContent = e.body || '';
+  { const f = $('#i-pic'), pic = e.pic; f.hidden = !pic;
+    if (pic){ const im = f.querySelector('img'); if (im.getAttribute('src') !== pic.src) im.src = pic.src; im.alt = pic.alt || ''; f.querySelector('figcaption').textContent = pic.cap || '';
+      im.onerror = () => { f.hidden = true; }; } }
   { const xs = $('#i-xsec'), show = XS_SHOW.has(id) || (XS_SHOW.has(xsPrevWorld) && XS_WORLD[id]);
     if (show){ const fresh = xs.hidden; xsMount(); xs.hidden = false; xsSync(id);
       if (fresh && !reduceMotion){ xs.classList.remove('play'); void xs.offsetWidth; xs.classList.add('play'); } }
@@ -3971,6 +3998,7 @@ function updateBeyond(dt){
   mvGroup.visible = oA > .004; BEY.figMat.uniforms.uT.value = BEY.t;
   if (mvGroup.visible && BEY.mvImg.g.visible) faceBoard(BEY.mvImg, mvGroup.rotation.y);
   if (BEY.anImg.g.visible && isVisibleDeep(ananta)) faceBoard(BEY.anImg, 0);
+  if (BEY.gvImg && BEY.gvImg.g.visible && isVisibleDeep(ananta)) faceBoard(BEY.gvImg, 0);
   const br = BEY.br;
   if (br.play && camR < 30000) breathPresent();                      // close in, the inside of our universe is drawn: stay in the present
   if (br.play) br.ph = (br.ph + dt/BR_P) % 1;
@@ -3996,6 +4024,7 @@ function updateBeyond(dt){
   if (spGroup.visible){
     spGroup.traverse(o => { if (o.isSprite || o.isPoints) fade(o.material, sA); });
     BEY.vaikMat.uniforms.uA.value = sA; BEY.golMat.uniforms.uA.value = sA; fade(BEY.sqMat, sA); BEY.rays.uniforms.uA.value = sA; BEY.motes.material.uniforms.uA.value = sA; BEY.vaikHalo.material.uniforms.uA.value = sA;
+    [BEY.golImg, BEY.vkImg].forEach(b => { if (b.g.visible){ b.mesh.material.opacity = sA; faceBoard(b, 0); } });
   }
   // the sky: indigo inside the universe, dark in the cloud of māyā, golden in the brahmajyoti
   const mix = on ? sstep(oD*1.6, oD*4.5, camR) : 0, dm = BEY.dome.material.uniforms;
@@ -4108,7 +4137,7 @@ function breathPhase(ph){
 function breathPresent(){ BEY.br.play = false; BEY.br.ph = BR_NOW; }
 function breathUI(b, camR, oA){
   const w = $('#breath'), show = oA > .5 && camR > 30000 && camR < 1.4e6 && !introOn && tourI < 0 && LAYER_ON.beyond !== false
-    && (window.innerWidth >= 900 || BEY.br.play || sel === 'mahavisnu' || sel === 'brahmandas');   // on a phone it would cover the view, so only where the breath is the subject
+    && (BEY.br.play || (window.innerWidth >= 900 ? !['brahmajyoti','vaikuntha','goloka','paravyoma'].includes(sel) : (sel === 'mahavisnu' || sel === 'brahmandas')));   // the breath belongs to the material creation; on a phone it would cover the view   // on a phone it would cover the view, so only where the breath is the subject
   if (w.hidden === show) w.hidden = !show;
   const br = BEY.br, atNow = !br.play && Math.abs(br.ph - BR_NOW) < 1e-3, [t, sub] = atNow ? ['The present', 'second half of our Brahmā\'s life (SB 3.11.34)'] : breathPhase(br.ph);
   const key = t + sub + br.play;
@@ -4857,7 +4886,7 @@ syncCaption();
 applyPanels();
 { const f = focusFor('overview'); camera.position.copy(f.p.clone().add(f.dir.clone().multiplyScalar(f.d))); controls.target.copy(f.p); }   // re-fit once the saved panel layout is applied
 requestAnimationFrame(frame);
-if (/[?&]debug\b/.test(location.search)) window.__bc = {camera, controls, select, flyView, BEY, focusFor, railPose, railU, get sel(){ return sel; }};   // test hook, only with ?debug
+if (/[?&]debug\b/.test(location.search)) window.__bc = {camera, controls, select, flyView, BEY, focusFor, railPose, railU, FEAT, flyFeature, get sel(){ return sel; }};   // test hook, only with ?debug
 (() => {
   const start = HASH_OK(START_HASH) ? START_HASH : null;
   if (start){ setTimeout(() => select(start, true), 400); return; }   // a shared link skips the tour
