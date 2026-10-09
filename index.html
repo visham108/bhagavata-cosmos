@@ -3663,6 +3663,7 @@ function exploreView(id){
   const f = focusFor(id); f.d *= .85; return f;
 }
 let flight = null, pendingFly = null;
+let railGoal = null, glideGoal = null;   // where the scale of creation, and the height ruler, are gliding to
 function flyView(f){
   const toPos = f.p.clone().add(f.dir.clone().multiplyScalar(f.d));
   if (reduceMotion){ camera.position.copy(toPos); controls.target.copy(f.p); return; }
@@ -3671,7 +3672,7 @@ function flyView(f){
   // across many scales: zoom on a log scale, and move the pivot while the view is widest
   const log = r > Math.log(4) || move > 2;
   const dur = f.dur || (log ? 1500 + 420*Math.min(r, 7) : 1500);
-  navT = performance.now() + dur; zoomQ = 0;
+  navT = performance.now() + dur; zoomQ = 0; railGoal = null; glideGoal = null;
   flight = {t0:performance.now(), dur, fromP:camera.position.clone(), fromT, toP:toPos, toT:f.p.clone(), log,
     l0:Math.log(d0), l1:Math.log(d1), e:1 + Math.min(2, r/2.5), out:d1 > d0, hump:Math.max(0, move - .6)*.5,
     u0:camera.position.clone().sub(fromT).normalize(), u1:f.dir.clone().normalize()};
@@ -4215,7 +4216,8 @@ function railPose(u){
   RAIL.forEach((r, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'sc-stop'; b.style.bottom = (i/(n-1)*100) + '%';
     b.innerHTML = `<span>${esc(r.n)}</span>`; b.title = r.n; b.dataset.i = i; b.addEventListener('click', e => { if (e.detail === 0) select(r.id, true); }); track.appendChild(b); r.el = b; });   // keyboard; pointer presses go through the track
   const uAt = e => { const rc = track.getBoundingClientRect(); return clamp((rc.bottom - e.clientY)/rc.height, 0, 1)*(n - 1); };
-  const go = u => { flight = null; zoomQ = 0; railDragU = u; const f = railPose(u); controls.target.copy(f.p); camera.position.copy(f.p).addScaledVector(f.dir, f.d); };
+  // asked for a level, the view glides there at a steady pace rather than jumping
+  const go = u => { if (railGoal === null){ railDragU = railU(); } flight = null; zoomQ = 0; glideGoal = null; railGoal = clamp(u, 0, n - 1); };
   // a press anywhere on the track drags; a press on a level that does not move flies there
   let press = null;
   const start = e => { const st = e.target.closest('.sc-stop'); press = {y:e.clientY, stop:st ? +st.dataset.i : -1, moved:false};
@@ -4227,7 +4229,9 @@ function railPose(u){
   const end = () => { if (press && !press.moved && press.stop >= 0) select(RAIL[press.stop].id, true); press = null; railDrag = false; };
   track.addEventListener('pointerup', end);
   track.addEventListener('pointercancel', () => { press = null; railDrag = false; });
-  track.addEventListener('wheel', e => { e.preventDefault(); go(clamp(railU() - Math.sign(e.deltaY)*.25, 0, n - 1)); }, {passive:false});
+  // the wheel moves along the rail in proportion to how far it turns: a notch is about a fifth of a level, a trackpad glides
+  track.addEventListener('wheel', e => { e.preventDefault(); const v = e.deltaMode === 1 ? e.deltaY*33 : e.deltaMode === 2 ? e.deltaY*400 : e.deltaY;
+    const from = railGoal === null ? railU() : railGoal; go(from - clamp(v, -120, 120)*.0018); }, {passive:false});
   mark.addEventListener('keydown', e => { const k = {ArrowUp:1, ArrowDown:-1, PageUp:1, PageDown:-1}[e.key]; if (k){ e.preventDefault(); select(RAIL[clamp(Math.round(railU()) + k, 0, n - 1)].id, true); } });
 })();
 let railLast = -1, railPlace = 0;
@@ -4235,13 +4239,20 @@ function placeRail(){   // sit just left of the details panel
   const ins = $('#inspector'), sc = $('#scale'), W = window.innerWidth; if (!sc) return;
   if (W >= 900) sc.style.right = (ins && !ins.hidden ? Math.round(W - ins.getBoundingClientRect().left + 10) : 16) + 'px'; else sc.style.right = '';
 }
+function stepRail(dt){   // ease toward the goal, never faster than about two levels a second
+  if (railGoal === null) return;
+  const gap = railGoal - railDragU, step = Math.sign(gap)*Math.min(Math.abs(gap)*(1 - Math.exp(-dt*5)), 2.2*dt);
+  railDragU = Math.abs(gap) < 1e-3 ? railGoal : railDragU + step;
+  const f = railPose(railDragU); controls.target.copy(f.p); camera.position.copy(f.p).addScaledVector(f.dir, f.d);
+  if (railDragU === railGoal && !railDrag) railGoal = null;
+}
 function railUpdate(){
   const now = performance.now();
   if (now - railPlace > 500){ railPlace = now; placeRail(); }
-  const u = railDrag ? railDragU : railU(), key = u.toFixed(3) + sel; if (key === railLast) return; railLast = key;
+  const u = (railDrag || railGoal !== null) ? railDragU : railU(), key = u.toFixed(3) + sel; if (key === railLast) return; railLast = key;
   const n = RAIL.length, pct = u/(n - 1)*100;
   $('#sc-mark').style.bottom = pct + '%'; $('#sc-fill').style.height = pct + '%';
-  const si = RAIL.findIndex(r => r.id === sel), here = si >= 0 && !railDrag && Math.abs(u - si) < 2.5 ? si : Math.round(u);   // the level you picked, while you are near it (a close look at one of its parts stands nearer than the level's own view)
+  const si = RAIL.findIndex(r => r.id === sel), here = si >= 0 && !railDrag && railGoal === null && Math.abs(u - si) < 2.5 ? si : Math.round(u);   // the level you picked, while you are near it (a close look at one of its parts stands nearer than the level's own view)
   RAIL.forEach((r, i) => { r.el.classList.toggle('past', i <= u + .02); r.el.classList.toggle('here', i === here); });
   $('#sc-mark').setAttribute('aria-valuetext', RAIL[here].n);
 }
@@ -4694,6 +4705,13 @@ $('#tool-rotate').addEventListener('click', () => setTool('rotate'));
 $('#tool-pan').addEventListener('click', () => { setTool('pan'); toast('Pan: drag to move the view left, right, up or down without zooming.'); });
 canvas.addEventListener('pointerdown', () => { if (tool==='pan' || spaceHeld) canvas.style.cursor = 'grabbing'; });
 canvas.addEventListener('pointerup', () => { if (tool==='pan' || spaceHeld) canvas.style.cursor = 'grab'; });
+function stepGlide(dt){   // ease toward the goal height, never faster than a set fraction of the view each second
+  if (glideGoal === null) return;
+  const gap = glideGoal - controls.target.y, d = camera.position.distanceTo(controls.target);
+  const step = Math.abs(gap) < d*1e-4 ? gap : Math.sign(gap)*Math.min(Math.abs(gap)*(1 - Math.exp(-dt*5)), Math.max(d*.5, 30)*dt);
+  controls.target.y += step; camera.position.y += step;
+  if (step === gap) glideGoal = null;
+}
 function shiftView(dx, dy, dz){ flight = null; controls.target.x += dx; controls.target.y += dy; controls.target.z += dz; camera.position.x += dx; camera.position.y += dy; camera.position.z += dz; }
 function glideTo(y){
   const dy = y - controls.target.y;
@@ -4728,11 +4746,12 @@ function onWheel(e){
   e.preventDefault(); e.stopImmediatePropagation();
   flight = null;
   const v = e.deltaMode === 1 ? e.deltaY*33 : e.deltaMode === 2 ? e.deltaY*400 : e.deltaY;
-  if (e.shiftKey){
-    const d = camera.position.distanceTo(controls.target), sv = v || e.deltaX;
-    shiftView(0, -Math.sign(sv) * d * .04, 0); return;
+  if (e.shiftKey){   // glide in proportion to how far the wheel turns
+    const d = camera.position.distanceTo(controls.target), sv = v || e.deltaX, eb = lerp(240,250,T);
+    glideGoal = clamp((glideGoal === null ? controls.target.y : glideGoal) - clamp(sv, -120, 120)*d*.00025, -eb, eb); railGoal = null; return;
   }
   if (!v) return;
+  railGoal = null; glideGoal = null;
   zoomPt.copy(zoomPoint(e.clientX, e.clientY));
   const d = camera.position.distanceTo(controls.target);
   zoomQ = clamp(zoomQ + clamp(v, -240, 240) * .0011 * controls.zoomSpeed * (d > 3000 ? 1.7 : 1), -3, 3);   // faster across the scales beyond the shell
@@ -4792,9 +4811,9 @@ canvas.addEventListener('pointerdown', e => {
   ray.setFromCamera(ndc, camera);
   if (!ray.intersectObject(rulerHit, false).length) return;
   rulerDrag = true; controls.enabled = false; down = null; canvas.setPointerCapture(e.pointerId); canvas.style.cursor = 'ns-resize';
-  const y = rulerY(e); if (y !== null) shiftView(0, y - controls.target.y, 0);
+  const y = rulerY(e); if (y !== null){ flight = null; railGoal = null; glideGoal = y; }
 }, {capture:true});
-canvas.addEventListener('pointermove', e => { if (!rulerDrag) return; const y = rulerY(e); if (y !== null) shiftView(0, y - controls.target.y, 0); });
+canvas.addEventListener('pointermove', e => { if (!rulerDrag) return; const y = rulerY(e); if (y !== null) glideGoal = y; });
 canvas.addEventListener('pointerup', e => { if (!rulerDrag) return; rulerDrag = false; controls.enabled = true; try{ canvas.releasePointerCapture(e.pointerId); }catch(_){} applyTool(); });
 canvas.addEventListener('dblclick', e => { const id = hitAt(e.clientX, e.clientY); if (id) explore(id); });
 const tip = $('#tip'); let hoverT=0;
@@ -4858,7 +4877,7 @@ function frame(now){
     }
     if (p>=1) flight=null;
   }
-  stepZoom(dt);
+  stepZoom(dt); stepRail(dt); stepGlide(dt);
   controls.update();
   // keep the view inside the universe so the model can't be lost off-screen
   const tl = Math.hypot(controls.target.x, controls.target.z), lim = 300;
